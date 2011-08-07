@@ -23,6 +23,17 @@
 #include <util/24c.h>
 #include <util/atomic.h>
 
+typedef struct{
+	uint16_t wMilli;
+	uint8_t bSec;
+	uint8_t bMin;
+	uint8_t bHour;
+	uint8_t bDay;
+	uint8_t bMonth;
+	uint8_t bYear;
+} TIME_DATE;
+
+
 
 #define DEBOUNCE_TIME 15		// RTC counting tens of milliseconds: this is 150ms!
 #define LONG_PRESSION 100		// and this 1s.
@@ -42,9 +53,9 @@
 		{ z = 1; }\
 	else{ z=0; }
 
-#define EDIT_TIME(bPos, bBtnUP, bBtnDOWN, bPressed, bMod, bHdecine, unita, b2DigitMax, b1DigitMax)\
+#define EDIT_TIME_DATE(bPos, bBtnUP, bBtnDOWN, bPressed, bMod, bHdecine, unita, b2DigitMax, b1DigitMax)\
 	if(bPos==0){\
-		if(bPressed==bBtnUP && bMod<(b2DigitMax*10-1)){ bMod += 10; }\
+		if(bPressed==bBtnUP && bMod<((b2DigitMax-1)*10+(b1DigitMax+1))){ bMod += 10; }\
 		else if(bPressed == bBtnDOWN && bMod > 9){ bMod -= 10; }\
 	}else{\
 		if(bPressed==bBtnUP && (unita<(b1DigitMax))){ bMod = bHdecine*10 + (++unita);	}\
@@ -54,6 +65,10 @@
 
 #define LCD_CURSOR_LEFT_N(n) for(int i=0; i<n; i++) LCDCmd(0x10);
 #define LCD_CURSOR_RIGHT_N(n) for(int i=0; i<n; i++) LCDCmd(0x14);
+
+//changes cursor position keeping it in the same row
+#define LCD_SET_CURSOR_POSITION(n)\
+		LCDHome(); LCD_CURSOR_RIGHT_N(n)
 
 /* bBtn:	0=nessun bottone premuto
  *			1=non usata (rendiamo pari ciò che sarebbe dispari)
@@ -79,10 +94,13 @@
  *			=1:  menu - entered here from long-pression of a button (button C).
  *			=2,3... : various sub-menu levels (such as USB transfer, BACKLIGHT)
  */
-#define STATE_IDLE			0
-#define STATE_MENU			1
-#define STATE_EDIT_DATE		2
-#define STATE_EDIT_TIME		3
+#define STATE_IDLE						0
+#define STATE_MENU						1
+#define STATE_EDIT_DATE					2
+#define STATE_EDIT_DATE_CONFIRM			3
+#define STATE_EDIT_TIME					4
+#define STATE_EDIT_TIME_CONFIRM			5
+
 
 
 /*		bSelection
@@ -103,12 +121,22 @@
 #define PRI_MAIN	9
 
 
+#define BIT0	1
+#define BIT1	2
+#define BIT2	4
+#define BIT3	8
+#define BIT4	16
+#define BIT5	32
+#define BIT6	64
+#define BIT7	128
+
 void _init();
 void getTemperature();
 void refreshQuote();
 int isLeapYear(uint8_t year);
 void changeEditDate(uint8_t bPosition, uint8_t bButton);
-void changeEditTime(uint8_t bPosition, uint8_t bButton);
+void changeEditTimeDate(uint8_t bPosition, uint8_t bButton);
+void checkDate(TIME_DATE time, int* days);
 
 void writeLCD(int caller); /*	Function that displays the content on the LCD depending on the state of the machine.
 							*	"caller" is helpful to recognize if the LCD is really to be refreshed:

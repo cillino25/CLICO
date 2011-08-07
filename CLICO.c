@@ -19,15 +19,7 @@ Hungarian notation:
 #include "CLICO.h"
 
 
-typedef struct{
-	uint16_t wMilli;
-	uint8_t bSec;
-	uint8_t bMin;
-	uint8_t bHour;
-	uint8_t bDay;
-	uint8_t bMonth;
-	uint8_t bYear;
-} TIME_DATE;
+
 
 typedef struct{
 	uint16_t wA;
@@ -42,8 +34,8 @@ volatile TIME_DATE tTimeEditing;
 volatile COUNT cIntegrator;
 
 volatile uint8_t bTimeChanged;
+volatile uint8_t bDateChanged=1;
 volatile uint8_t bTempChanged;
-volatile uint8_t bSelectionMenuChanged;
 volatile uint8_t bFirst=1;
 
 volatile double dVp;
@@ -62,15 +54,18 @@ volatile uint8_t bBtn;
 
 							
 volatile uint8_t bSelectionMenu;
+volatile uint8_t bSelectionMenuChanged;
 volatile uint8_t bSelectionDate;
+volatile uint8_t bSelectionDateChanged;
 volatile uint8_t bSelectionTime;
+volatile uint8_t bSelectionTimeChanged;
 volatile uint8_t bPriLev;
 volatile uint8_t bState=STATE_IDLE;
 
 
 
 char temp_str[5]="";
-char rtc_str[10]="";
+char str[10]="";
 char options[8][16]={"1.Timezone     ","2.Date         ", "3.Time         ",
 					"4.USB transfer ", "5.hello        ", "6.world        ", "7.osti         ", "               "};
 
@@ -78,6 +73,12 @@ char tmp_str[13]="";
 char rtc_LCD_str[8]="";
 
 char white_str[16]="               ";
+
+
+
+/******************************************************************************/
+/*********************************  Main  *************************************/
+/******************************************************************************/
 
 int main(void){
 	
@@ -87,6 +88,13 @@ int main(void){
 	
 	DDRC = 0x13;		//
 	PORTD = 0x13;		// pins 0,1,4 of PORTC are pulled high
+	
+	tTime.bDay=7;
+	tTime.bMonth=8;
+	tTime.bYear=11;
+	
+	
+	
 	
 	_init();
 	
@@ -163,6 +171,9 @@ int main(void){
 						bBtn=NO_BTN;
 						LCDClear();
 						bSelectionMenu=0;
+						bDateChanged=1;
+						bTimeChanged=1;
+						bTempChanged=1;
 						break;
 					
 					default:
@@ -170,78 +181,182 @@ int main(void){
 				}				
 				break;
 			
-				
+			
 			case STATE_EDIT_DATE:
 				switch(bBtn){
 					case NO_BTN:
 						if(bFirst){
 							bFirst=0;
-							LCDClear();								
-							sprintf(rtc_str, "%02d/%02d/20%02d", tTime.bDay, tTime.bMonth, tTime.bYear);
-							tTimeEditing = tTime;
+							LCDClear();
+							tTimeEditing = (bSelectionDateChanged==1) ? tTimeEditing : tTime;
+							bSelectionDateChanged=0;
+							sprintf(str, "%02d/%02d/%02d", tTimeEditing.bDay, tTimeEditing.bMonth, tTimeEditing.bYear);
 							LCDWriteStringXY(0,0, "Editing date:");
-							LCDWriteStringXY(2,1, rtc_str);
-							LCDCmd(0x0f);	// set blinking cursor
-							for(int i=0; i<10;i++)	LCDCmd(0x10);
-						}
-						break;
-					case BTN_C_LONG:
-						bState=STATE_MENU;
-						bBtn=NO_BTN;
-						bFirst=1;
-						
-					default:
-						break;
-				}
-				
-				
-			case STATE_EDIT_TIME:
-				switch(bBtn){
-					case NO_BTN:
-						if(bFirst){
-							bFirst=0;
-							LCDClear();								
-							sprintf(rtc_str, "%02d:%02d:%02d", tTime.bHour, tTime.bMin, tTime.bSec);
-							tTimeEditing = tTime;
-							LCDWriteStringXY(0,0, "Editing time:");
-							LCDWriteStringXY(3,1, rtc_str);
+							LCDWriteStringXY(3,1, str);
 							LCDCmd(0x0f);	// set blinking cursor
 							LCD_CURSOR_LEFT_N(8);
 						}
 						break;
 					case BTN_A:
 						bBtn = NO_BTN;
-						changeEditTime(bSelectionTime, BTN_A);
-						sprintf(rtc_str, "%02d:%02d:%02d", tTimeEditing.bHour, tTimeEditing.bMin, tTimeEditing.bSec);
-						LCDWriteStringXY(3,1,rtc_str);
-						LCD_CURSOR_LEFT_N(8-bSelectionTime);
+						changeEditDate(bSelectionDate, BTN_A);
+						sprintf(str, "%02d/%02d/%02d", tTimeEditing.bDay, tTimeEditing.bMonth, tTimeEditing.bYear);
+						LCDWriteStringXY(3,1,str);
+						LCD_CURSOR_LEFT_N(8-bSelectionDate);
 						break;
 					case BTN_B:
 						bBtn = NO_BTN;
-						changeEditTime(bSelectionTime, BTN_B);
-						sprintf(rtc_str, "%02d:%02d:%02d", tTimeEditing.bHour, tTimeEditing.bMin, tTimeEditing.bSec);
-						LCDWriteStringXY(3,1,rtc_str);
-						LCD_CURSOR_LEFT_N(8-bSelectionTime);
+						changeEditDate(bSelectionDate, BTN_B);
+						sprintf(str, "%02d/%02d/%02d", tTimeEditing.bDay, tTimeEditing.bMonth, tTimeEditing.bYear);
+						LCDWriteStringXY(3,1,str);
+						LCD_CURSOR_LEFT_N(8-bSelectionDate);
 						break;
 					case BTN_C:
-						if(bSelectionTime<7){ LCDCmd(0x14); bSelectionTime++; }
-						else{ bSelectionTime=0; LCD_CURSOR_LEFT_N(7); }
-						if(bSelectionTime==2 || bSelectionTime==5){ LCDCmd(0x14); bSelectionTime++; }
+						if(bSelectionDate<7){ LCDCmd(0x14); bSelectionDate++; }
+						else{ bSelectionDate=0; LCD_CURSOR_LEFT_N(7); }
+						if(bSelectionDate==2 || bSelectionDate==5){ LCDCmd(0x14); bSelectionDate++; }
 						bBtn = NO_BTN;
 						break;
 					case BTN_C_LONG:
-						tTime = tTimeEditing;
-						bState=STATE_MENU;
+						bState=STATE_EDIT_DATE_CONFIRM;
 						bBtn=NO_BTN;
 						bFirst=1;
-						
-						LCDCmd(0x02);	// Home
-						LCDCmd(0x0C);	// Make cursor invisible
 						break;
 					default:
 						break;
 				}
 				break;
+				
+				case STATE_EDIT_DATE_CONFIRM:
+					switch(bBtn){
+						case NO_BTN:
+							if(bFirst){ 
+								LCDWriteStringXY(0,0, "Confermi? Si/No");
+								LCD_CURSOR_LEFT_N(5);
+								bFirst=0;
+								bSelectionDate=0;
+							}
+							if(bSelectionDateChanged){
+								if(bSelectionDate==0){ LCD_SET_CURSOR_POSITION(10); }
+								else{ LCD_SET_CURSOR_POSITION(13); }
+								bSelectionDateChanged=0;
+							}
+							break;
+						
+						case BTN_C:
+							bSelectionDate = (bSelectionDate == 0)?1:0;
+							bSelectionDateChanged=1;
+							bBtn=NO_BTN;
+							break;
+						
+						case BTN_C_LONG:
+							if(bSelectionDate){
+								bState = STATE_EDIT_DATE;
+								bSelectionDate=0;
+								bSelectionDateChanged=1;
+							}else{
+								tTime.bDay = tTimeEditing.bDay;
+								tTime.bMonth = tTimeEditing.bMonth;
+								tTime.bYear = tTimeEditing.bYear;
+								bState = STATE_MENU;
+								LCDCmd(0x02);	// Home
+								LCDCmd(0x0C);	// Make cursor invisible
+							}
+							bBtn = NO_BTN;
+							bFirst=1;
+							break;
+						default: break;
+					}
+				break;
+				
+			case STATE_EDIT_TIME:
+					switch(bBtn){
+						case NO_BTN:
+							if(bFirst){
+								bFirst=0;
+								LCDClear();
+								tTimeEditing = (bSelectionTimeChanged==1) ? tTimeEditing : tTime;
+								bSelectionTimeChanged=0;
+								sprintf(str, "%02d:%02d:%02d", tTimeEditing.bHour, tTimeEditing.bMin, tTimeEditing.bSec);
+								LCDWriteStringXY(0,0, "Editing time:");
+								LCDWriteStringXY(3,1, str);
+								LCDCmd(0x0f);	// set blinking cursor
+								LCD_CURSOR_LEFT_N(8);
+							}
+							break;
+						case BTN_A:
+							bBtn = NO_BTN;
+							changeEditTime(bSelectionTime, BTN_A);
+							sprintf(str, "%02d:%02d:%02d", tTimeEditing.bHour, tTimeEditing.bMin, tTimeEditing.bSec);
+							LCDWriteStringXY(3,1,str);
+							LCD_CURSOR_LEFT_N(8-bSelectionTime);
+							break;
+						case BTN_B:
+							bBtn = NO_BTN;
+							changeEditTime(bSelectionTime, BTN_B);
+							sprintf(str, "%02d:%02d:%02d", tTimeEditing.bHour, tTimeEditing.bMin, tTimeEditing.bSec);
+							LCDWriteStringXY(3,1,str);
+							LCD_CURSOR_LEFT_N(8-bSelectionTime);
+							break;
+						case BTN_C:
+							if(bSelectionTime<7){ LCDCmd(0x14); bSelectionTime++; }
+							else{ bSelectionTime=0; LCD_CURSOR_LEFT_N(7); }
+							if(bSelectionTime==2 || bSelectionTime==5){ LCDCmd(0x14); bSelectionTime++; }
+							bBtn = NO_BTN;
+							break;
+						case BTN_C_LONG:
+							bState=STATE_EDIT_TIME_CONFIRM;
+							bBtn=NO_BTN;
+							bFirst=1;
+							break;
+						default:
+							break;
+					}
+				break;
+				
+			case STATE_EDIT_TIME_CONFIRM:
+					switch(bBtn){
+						case NO_BTN:
+							if(bFirst){ 
+								LCDWriteStringXY(0,0, "Confermi? Si/No");
+								LCD_CURSOR_LEFT_N(5);
+								bFirst=0;
+								bSelectionTime=0;
+							}
+							if(bSelectionTimeChanged){
+								if(bSelectionTime==0){ LCD_SET_CURSOR_POSITION(10); }
+								else{ LCD_SET_CURSOR_POSITION(13); }
+								bSelectionTimeChanged=0;
+							}
+							break;
+						
+						case BTN_C:
+							bSelectionTime = (bSelectionTime == 0)?1:0;
+							bSelectionTimeChanged=1;
+							bBtn=NO_BTN;
+							break;
+						
+						case BTN_C_LONG:
+							if(bSelectionTime){
+								bState = STATE_EDIT_TIME;
+								bSelectionTime=0;
+								bSelectionTimeChanged=1;
+							}else{
+								tTime.bSec = tTimeEditing.bSec;
+								tTime.bMin = tTimeEditing.bMin;
+								tTime.bHour = tTimeEditing.bHour;
+								bState = STATE_MENU;
+								LCDCmd(0x02);	// Home
+								LCDCmd(0x0C);	// Make cursor invisible
+							}
+							bBtn = NO_BTN;
+							bFirst=1;
+							break;
+						default: break;
+					}
+				break;
+				
+			
 			default:
 				break;
 		}
@@ -263,9 +378,9 @@ ISR(TIMER0_COMP_vect){
 	bPriLev=PRI_TIMER0;
 	
 	bPort = PIND;
-	bBtnAPressed = bPort & 0b00000001;		// UP
-	bBtnBPressed = bPort & 0b00010000;		// DOWN
-	bBtnCPressed = bPort & 0b00000010;		// MENU
+	bBtnAPressed = bPort & BIT0;		// UP
+	bBtnBPressed = bPort & BIT4;		// DOWN
+	bBtnCPressed = bPort & BIT1;		// MENU
 	if(!bBtnCPressed&&(!bInhibite)){  // bBtnXPressed=0  -->bottone x premuto! (collegati a massa)
 		cIntegrator.wC++;
 		if(cIntegrator.wC>LONG_PRESSION){ bInhibite=1; }
@@ -302,12 +417,10 @@ ISR(TIMER0_COMP_vect){
 	}
 	
 /* ******************* RTC ******************** */	
-/* caller=0										*/
 
 	if(tTime.wMilli<99) tTime.wMilli++;
 	else{
 		tTime.wMilli=0;
-		bTimeChanged=1;
 		if(tTime.bSec<59) tTime.bSec++;
 		else{
 			tTime.bSec=0;
@@ -317,22 +430,24 @@ ISR(TIMER0_COMP_vect){
 				if(tTime.bHour<23) tTime.bHour++;
 				else {
 					tTime.bHour=0;
-					if(tTime.bDay<aDays[tTime.bMonth]){
+					if(tTime.bDay<(aDays[tTime.bMonth-1])){
 						tTime.bDay++;
 						if(tTime.bDay==29 && tTime.bMonth==2 && (!isLeapYear(tTime.bYear))){
-							tTime.bDay=0;
+							tTime.bDay=1;
 							tTime.bMonth=3;
 						}
 					}else{
-						tTime.bDay=0;
+						tTime.bDay=1;
 						if(tTime.bMonth<12) tTime.bMonth++;
 						else{
-							tTime.bMonth=0;
+							tTime.bMonth=1;
 							tTime.bYear++;
 						}
 					}
+					bDateChanged=1;
 				}				
 			}
+			bTimeChanged=1;
 		}
 	}
 	bPriLev = bOldPriLev;
@@ -371,7 +486,7 @@ void _init(){
 	/******************* LCD Setup *********************/
 	InitLCD(0);
 	LCDClear();
-	LCDWriteStringXY(8,0,"00:00:00");
+	LCDWriteStringXY(11,0,"00:00");
 	LCDWriteStringXY(0,1,"T= 0.00");
 	
 	
@@ -403,7 +518,7 @@ void writeLCD(int caller){
 		cli();
 		LCDClear();
 		LCDCmd(0x0F);
-		LCDWriteStringXY(8,0, rtc_str);
+		LCDWriteStringXY(8,0, str);
 		LCDWriteStringXY(0,1, "T= ");
 		LCDGotoXY(3,1);
 		LCDWriteString(temp_str);
@@ -432,12 +547,18 @@ void writeLCD(int caller){
 
 
 void refreshQuote(){
+	if(!bDateChanged){ NULL; }
+	else{
+		bDateChanged=0;
+		sprintf(str, "%02d/%02d/%02d,", tTime.bDay, tTime.bMonth, tTime.bYear);
+		LCDWriteStringXY(0,0,str);
+	}
 	if(!bTimeChanged){ NULL; }
 	else{
 		bTimeChanged=0;
-		sprintf(rtc_str, "%02d:%02d:%02d ", tTime.bHour, tTime.bMin, tTime.bSec);
-		LCDWriteStringXY(0,0,"        ");
-		LCDWriteStringXY(8,0,rtc_str);
+		sprintf(str, "%02d:%02d", tTime.bHour, tTime.bMin, tTime.bSec);
+		//LCDWriteStringXY(0,0,"        ");
+		LCDWriteStringXY(11,0,str);
 	}
 	if(!bTempChanged){ NULL; }
 	else{
@@ -471,35 +592,83 @@ void changeEditTime(uint8_t bPosition, uint8_t bButton){
 		
 	switch(bPosition){
 		case 0:
-			/*
-			if(bButton==BTN_A && tTimeEditing.bHour<14){
-				tTimeEditing.bHour += 10;
-			}else if(bButton==BTN_B && tTimeEditing.bHour>9){
-				tTimeEditing.bHour -= 10;
-			}else{ NULL; }*/
-			
-			;EDIT_TIME(0,BTN_A,BTN_B,bButton, tTimeEditing.bHour, bHdecine, bHunita, 2,3)
+			;EDIT_TIME_DATE(0,BTN_A,BTN_B,bButton, tTimeEditing.bHour, bHdecine, bHunita, 2,3)
 			break;
 		case 1:
-			;EDIT_TIME(1,BTN_A,BTN_B,bButton, tTimeEditing.bHour, bHdecine, bHunita, 2,3)
+			;EDIT_TIME_DATE(1,BTN_A,BTN_B,bButton, tTimeEditing.bHour, bHdecine, bHunita, 2,3)
 			break;
 		case 3:
-			;EDIT_TIME(0,BTN_A,BTN_B,bButton, tTimeEditing.bMin, bMdecine, bMunita, 5,9)
+			;EDIT_TIME_DATE(0,BTN_A,BTN_B,bButton, tTimeEditing.bMin, bMdecine, bMunita, 5,9)
 			break;
 		case 4:
-			;EDIT_TIME(1,BTN_A,BTN_B,bButton, tTimeEditing.bMin, bMdecine, bMunita, 5,9)
+			;EDIT_TIME_DATE(1,BTN_A,BTN_B,bButton, tTimeEditing.bMin, bMdecine, bMunita, 5,9)
 			break;
 		case 6:
-			;EDIT_TIME(0,BTN_A,BTN_B,bButton, tTimeEditing.bSec, bSdecine, bSunita, 5,9)
+			;EDIT_TIME_DATE(0,BTN_A,BTN_B,bButton, tTimeEditing.bSec, bSdecine, bSunita, 5,9)
 			break;
 		case 7:
-			;EDIT_TIME(1,BTN_A,BTN_B,bButton, tTimeEditing.bSec, bSdecine, bSunita, 5,9)
+			;EDIT_TIME_DATE(1,BTN_A,BTN_B,bButton, tTimeEditing.bSec, bSdecine, bSunita, 5,9)
 			break;
 		default:
 			break;
 	}
 	
 }
+
+void changeEditDate(uint8_t bPosition, uint8_t bButton){
+	
+	int bYunita;
+	int bYdecine;
+	int bMunita;
+	int bMdecine;
+	int bDunita;
+	int bDdecine;
+	
+	bYunita = tTimeEditing.bYear % 10;
+	bYdecine = tTimeEditing.bYear / 10;
+	bMunita = tTimeEditing.bMonth % 10;
+	bMdecine = tTimeEditing.bMonth / 10;
+	bDunita = tTimeEditing.bDay % 10;
+	bDdecine = tTimeEditing.bDay / 10;
+		
+	switch(bPosition){
+		case 0:
+			;EDIT_TIME_DATE(0,BTN_A,BTN_B,bButton, tTimeEditing.bDay, bDdecine, bDunita, 3,1)
+			break;
+		case 1:
+			;EDIT_TIME_DATE(1,BTN_A,BTN_B,bButton, tTimeEditing.bDay, bDdecine, bDunita, 3,1)
+			if(tTimeEditing.bDay==0) tTimeEditing.bDay=1;
+			break;
+		case 3:
+			;EDIT_TIME_DATE(0,BTN_A,BTN_B,bButton, tTimeEditing.bMonth, bMdecine, bMunita, 1,2)
+			break;
+		case 4:
+			;EDIT_TIME_DATE(1,BTN_A,BTN_B,bButton, tTimeEditing.bMonth, bMdecine, bMunita, 1,2)
+			if(tTimeEditing.bMonth==0) tTimeEditing.bMonth=1;
+			break;
+		case 6:
+			;EDIT_TIME_DATE(0,BTN_A,BTN_B,bButton, tTimeEditing.bYear, bYdecine, bYunita, 9,9)
+			break;
+		case 7:
+			;EDIT_TIME_DATE(1,BTN_A,BTN_B,bButton, tTimeEditing.bYear, bYdecine, bYunita, 9,9)
+			break;
+		default:
+			break;
+	}
+	//checkDate(tTimeEditing, &aDays[0]);
+	
+}
+
+void checkDate(TIME_DATE time, int * days){		// se bDay supera il valore massimo del corrispondente bMonth,
+									// esso viene portato al massimo valore consentito.
+	if(tTimeEditing.bDay<days[tTimeEditing.bMonth-1]) return;
+	else tTimeEditing.bDay = days[tTimeEditing.bMonth-1];
+	
+}
+
+
+
+
 
 // PAx --> Offset del pin x all'interno del registro PINA
 //

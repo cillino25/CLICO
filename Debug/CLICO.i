@@ -533,20 +533,6 @@ static __inline__ void __iRestore(const uint8_t *__s)
     __asm__ volatile ("" ::: "memory");
 }
 # 25 ".././CLICO.h" 2
-# 106 ".././CLICO.h"
-void _init();
-void getTemperature();
-void refreshQuote();
-int isLeapYear(uint8_t year);
-void changeEditDate(uint8_t bPosition, uint8_t bButton);
-void changeEditTime(uint8_t bPosition, uint8_t bButton);
-
-void writeLCD(int caller);
-# 128 ".././CLICO.h"
-char *itoa(int value, char * str, int base);
-int sprintf(char * str, const char * format, ...);
-# 20 ".././CLICO.c" 2
-
 
 typedef struct{
  uint16_t wMilli;
@@ -557,6 +543,23 @@ typedef struct{
  uint8_t bMonth;
  uint8_t bYear;
 } TIME_DATE;
+# 133 ".././CLICO.h"
+void _init();
+void getTemperature();
+void refreshQuote();
+int isLeapYear(uint8_t year);
+void changeEditDate(uint8_t bPosition, uint8_t bButton);
+void changeEditTimeDate(uint8_t bPosition, uint8_t bButton);
+void checkDate(TIME_DATE time, int* days);
+
+void writeLCD(int caller);
+# 156 ".././CLICO.h"
+char *itoa(int value, char * str, int base);
+int sprintf(char * str, const char * format, ...);
+# 20 ".././CLICO.c" 2
+
+
+
 
 typedef struct{
  uint16_t wA;
@@ -571,8 +574,8 @@ volatile TIME_DATE tTimeEditing;
 volatile COUNT cIntegrator;
 
 volatile uint8_t bTimeChanged;
+volatile uint8_t bDateChanged=1;
 volatile uint8_t bTempChanged;
-volatile uint8_t bSelectionMenuChanged;
 volatile uint8_t bFirst=1;
 
 volatile double dVp;
@@ -591,15 +594,18 @@ volatile uint8_t bBtn;
 
 
 volatile uint8_t bSelectionMenu;
+volatile uint8_t bSelectionMenuChanged;
 volatile uint8_t bSelectionDate;
+volatile uint8_t bSelectionDateChanged;
 volatile uint8_t bSelectionTime;
+volatile uint8_t bSelectionTimeChanged;
 volatile uint8_t bPriLev;
 volatile uint8_t bState=0;
 
 
 
 char temp_str[5]="";
-char rtc_str[10]="";
+char str[10]="";
 char options[8][16]={"1.Timezone     ","2.Date         ", "3.Time         ",
      "4.USB transfer ", "5.hello        ", "6.world        ", "7.osti         ", "               "};
 
@@ -607,6 +613,12 @@ char tmp_str[13]="";
 char rtc_LCD_str[8]="";
 
 char white_str[16]="               ";
+
+
+
+
+
+
 
 int main(void){
 
@@ -616,6 +628,13 @@ int main(void){
 
  (*(volatile uint8_t *)((0x14) + 0x20)) = 0x13;
  (*(volatile uint8_t *)((0x12) + 0x20)) = 0x13;
+
+ tTime.bDay=7;
+ tTime.bMonth=8;
+ tTime.bYear=11;
+
+
+
 
  _init();
 
@@ -678,7 +697,7 @@ int main(void){
         bBtn = 0;
         break;
        case 2:
-        bState = 3;
+        bState = 4;
         bBtn = 0;
         break;
        default:
@@ -690,9 +709,11 @@ int main(void){
      case 7:
       bState = 0;
       bBtn=0;
-
       (LCDByte(0b00000001,0));
       bSelectionMenu=0;
+      bDateChanged=1;
+      bTimeChanged=1;
+      bTempChanged=1;
       break;
 
      default:
@@ -707,86 +728,190 @@ int main(void){
       if(bFirst){
        bFirst=0;
        (LCDByte(0b00000001,0));
-       sprintf(rtc_str, "%02d/%02d/20%02d", tTime.bDay, tTime.bMonth, tTime.bYear);
-       tTimeEditing = tTime;
+       tTimeEditing = (bSelectionDateChanged==1) ? tTimeEditing : tTime;
+       bSelectionDateChanged=0;
+       sprintf(str, "%02d/%02d/%02d", tTimeEditing.bDay, tTimeEditing.bMonth, tTimeEditing.bYear);
        LCDWriteStringXY(0,0, "Editing date:");
-       LCDWriteStringXY(2,1, rtc_str);
-       (LCDByte(0x0f,0));
-       for(int i=0; i<10;i++) (LCDByte(0x10,0));
-      }
-      break;
-     case 7:
-      bState=1;
-      bBtn=0;
-      bFirst=1;
-
-     default:
-      break;
-    }
-
-
-   case 3:
-    switch(bBtn){
-     case 0:
-      if(bFirst){
-       bFirst=0;
-       (LCDByte(0b00000001,0));
-       sprintf(rtc_str, "%02d:%02d:%02d", tTime.bHour, tTime.bMin, tTime.bSec);
-       tTimeEditing = tTime;
-       LCDWriteStringXY(0,0, "Editing time:");
-       LCDWriteStringXY(3,1, rtc_str);
+       LCDWriteStringXY(3,1, str);
        (LCDByte(0x0f,0));
        for(int i=0; i<8; i++) (LCDByte(0x10,0));;
       }
       break;
      case 2:
       bBtn = 0;
-      changeEditTime(bSelectionTime, 2);
-      sprintf(rtc_str, "%02d:%02d:%02d", tTimeEditing.bHour, tTimeEditing.bMin, tTimeEditing.bSec);
-      LCDWriteStringXY(3,1,rtc_str);
-      for(int i=0; i<8-bSelectionTime; i++) (LCDByte(0x10,0));;
+      changeEditDate(bSelectionDate, 2);
+      sprintf(str, "%02d/%02d/%02d", tTimeEditing.bDay, tTimeEditing.bMonth, tTimeEditing.bYear);
+      LCDWriteStringXY(3,1,str);
+      for(int i=0; i<8-bSelectionDate; i++) (LCDByte(0x10,0));;
       break;
      case 4:
       bBtn = 0;
-      changeEditTime(bSelectionTime, 4);
-      sprintf(rtc_str, "%02d:%02d:%02d", tTimeEditing.bHour, tTimeEditing.bMin, tTimeEditing.bSec);
-      LCDWriteStringXY(3,1,rtc_str);
-      for(int i=0; i<8-bSelectionTime; i++) (LCDByte(0x10,0));;
+      changeEditDate(bSelectionDate, 4);
+      sprintf(str, "%02d/%02d/%02d", tTimeEditing.bDay, tTimeEditing.bMonth, tTimeEditing.bYear);
+      LCDWriteStringXY(3,1,str);
+      for(int i=0; i<8-bSelectionDate; i++) (LCDByte(0x10,0));;
       break;
      case 6:
-      if(bSelectionTime<7){ (LCDByte(0x14,0)); bSelectionTime++; }
-      else{ bSelectionTime=0; for(int i=0; i<7; i++) (LCDByte(0x10,0));; }
-      if(bSelectionTime==2 || bSelectionTime==5){ (LCDByte(0x14,0)); bSelectionTime++; }
+      if(bSelectionDate<7){ (LCDByte(0x14,0)); bSelectionDate++; }
+      else{ bSelectionDate=0; for(int i=0; i<7; i++) (LCDByte(0x10,0));; }
+      if(bSelectionDate==2 || bSelectionDate==5){ (LCDByte(0x14,0)); bSelectionDate++; }
       bBtn = 0;
       break;
      case 7:
-      tTime = tTimeEditing;
-      bState=1;
+      bState=3;
       bBtn=0;
       bFirst=1;
-
-      (LCDByte(0x02,0));
-      (LCDByte(0x0C,0));
       break;
      default:
       break;
     }
     break;
+
+    case 3:
+     switch(bBtn){
+      case 0:
+       if(bFirst){
+        LCDWriteStringXY(0,0, "Confermi? Si/No");
+        for(int i=0; i<5; i++) (LCDByte(0x10,0));;
+        bFirst=0;
+        bSelectionDate=0;
+       }
+       if(bSelectionDateChanged){
+        if(bSelectionDate==0){ (LCDByte(0b00000010,0));; for(int i=0; i<10; i++) (LCDByte(0x14,0));; }
+        else{ (LCDByte(0b00000010,0));; for(int i=0; i<13; i++) (LCDByte(0x14,0));; }
+        bSelectionDateChanged=0;
+       }
+       break;
+
+      case 6:
+       bSelectionDate = (bSelectionDate == 0)?1:0;
+       bSelectionDateChanged=1;
+       bBtn=0;
+       break;
+
+      case 7:
+       if(bSelectionDate){
+        bState = 2;
+        bSelectionDate=0;
+        bSelectionDateChanged=1;
+       }else{
+        tTime.bDay = tTimeEditing.bDay;
+        tTime.bMonth = tTimeEditing.bMonth;
+        tTime.bYear = tTimeEditing.bYear;
+        bState = 1;
+        (LCDByte(0x02,0));
+        (LCDByte(0x0C,0));
+       }
+       bBtn = 0;
+       bFirst=1;
+       break;
+      default: break;
+     }
+    break;
+
+   case 4:
+     switch(bBtn){
+      case 0:
+       if(bFirst){
+        bFirst=0;
+        (LCDByte(0b00000001,0));
+        tTimeEditing = (bSelectionTimeChanged==1) ? tTimeEditing : tTime;
+        bSelectionTimeChanged=0;
+        sprintf(str, "%02d:%02d:%02d", tTimeEditing.bHour, tTimeEditing.bMin, tTimeEditing.bSec);
+        LCDWriteStringXY(0,0, "Editing time:");
+        LCDWriteStringXY(3,1, str);
+        (LCDByte(0x0f,0));
+        for(int i=0; i<8; i++) (LCDByte(0x10,0));;
+       }
+       break;
+      case 2:
+       bBtn = 0;
+       changeEditTime(bSelectionTime, 2);
+       sprintf(str, "%02d:%02d:%02d", tTimeEditing.bHour, tTimeEditing.bMin, tTimeEditing.bSec);
+       LCDWriteStringXY(3,1,str);
+       for(int i=0; i<8-bSelectionTime; i++) (LCDByte(0x10,0));;
+       break;
+      case 4:
+       bBtn = 0;
+       changeEditTime(bSelectionTime, 4);
+       sprintf(str, "%02d:%02d:%02d", tTimeEditing.bHour, tTimeEditing.bMin, tTimeEditing.bSec);
+       LCDWriteStringXY(3,1,str);
+       for(int i=0; i<8-bSelectionTime; i++) (LCDByte(0x10,0));;
+       break;
+      case 6:
+       if(bSelectionTime<7){ (LCDByte(0x14,0)); bSelectionTime++; }
+       else{ bSelectionTime=0; for(int i=0; i<7; i++) (LCDByte(0x10,0));; }
+       if(bSelectionTime==2 || bSelectionTime==5){ (LCDByte(0x14,0)); bSelectionTime++; }
+       bBtn = 0;
+       break;
+      case 7:
+       bState=5;
+       bBtn=0;
+       bFirst=1;
+       break;
+      default:
+       break;
+     }
+    break;
+
+   case 5:
+     switch(bBtn){
+      case 0:
+       if(bFirst){
+        LCDWriteStringXY(0,0, "Confermi? Si/No");
+        for(int i=0; i<5; i++) (LCDByte(0x10,0));;
+        bFirst=0;
+        bSelectionTime=0;
+       }
+       if(bSelectionTimeChanged){
+        if(bSelectionTime==0){ (LCDByte(0b00000010,0));; for(int i=0; i<10; i++) (LCDByte(0x14,0));; }
+        else{ (LCDByte(0b00000010,0));; for(int i=0; i<13; i++) (LCDByte(0x14,0));; }
+        bSelectionTimeChanged=0;
+       }
+       break;
+
+      case 6:
+       bSelectionTime = (bSelectionTime == 0)?1:0;
+       bSelectionTimeChanged=1;
+       bBtn=0;
+       break;
+
+      case 7:
+       if(bSelectionTime){
+        bState = 4;
+        bSelectionTime=0;
+        bSelectionTimeChanged=1;
+       }else{
+        tTime.bSec = tTimeEditing.bSec;
+        tTime.bMin = tTimeEditing.bMin;
+        tTime.bHour = tTimeEditing.bHour;
+        bState = 1;
+        (LCDByte(0x02,0));
+        (LCDByte(0x0C,0));
+       }
+       bBtn = 0;
+       bFirst=1;
+       break;
+      default: break;
+     }
+    break;
+
+
    default:
     break;
   }
  }
 }
-# 261 ".././CLICO.c"
+# 375 ".././CLICO.c"
 void __vector_15 (void) __attribute__ ((signal,used, externally_visible)) ; void __vector_15 (void){
  if(bPriLev<1) return;
  uint8_t bOldPriLev = bPriLev;
  bPriLev=1;
 
  bPort = (*(volatile uint8_t *)((0x10) + 0x20));
- bBtnAPressed = bPort & 0b00000001;
- bBtnBPressed = bPort & 0b00010000;
- bBtnCPressed = bPort & 0b00000010;
+ bBtnAPressed = bPort & 1;
+ bBtnBPressed = bPort & 16;
+ bBtnCPressed = bPort & 2;
  if(!bBtnCPressed&&(!bInhibite)){
   cIntegrator.wC++;
   if(cIntegrator.wC>100){ bInhibite=1; }
@@ -824,11 +949,9 @@ void __vector_15 (void) __attribute__ ((signal,used, externally_visible)) ; void
 
 
 
-
  if(tTime.wMilli<99) tTime.wMilli++;
  else{
   tTime.wMilli=0;
-  bTimeChanged=1;
   if(tTime.bSec<59) tTime.bSec++;
   else{
    tTime.bSec=0;
@@ -838,22 +961,24 @@ void __vector_15 (void) __attribute__ ((signal,used, externally_visible)) ; void
     if(tTime.bHour<23) tTime.bHour++;
     else {
      tTime.bHour=0;
-     if(tTime.bDay<aDays[tTime.bMonth]){
+     if(tTime.bDay<(aDays[tTime.bMonth-1])){
       tTime.bDay++;
       if(tTime.bDay==29 && tTime.bMonth==2 && (!isLeapYear(tTime.bYear))){
-       tTime.bDay=0;
+       tTime.bDay=1;
        tTime.bMonth=3;
       }
      }else{
-      tTime.bDay=0;
+      tTime.bDay=1;
       if(tTime.bMonth<12) tTime.bMonth++;
       else{
-       tTime.bMonth=0;
+       tTime.bMonth=1;
        tTime.bYear++;
       }
      }
+     bDateChanged=1;
     }
    }
+   bTimeChanged=1;
   }
  }
  bPriLev = bOldPriLev;
@@ -892,7 +1017,7 @@ void _init(){
 
  InitLCD(0);
  (LCDByte(0b00000001,0));
- LCDWriteStringXY(8,0,"00:00:00");
+ LCDWriteStringXY(11,0,"00:00");
  LCDWriteStringXY(0,1,"T= 0.00");
 
 
@@ -924,7 +1049,7 @@ void writeLCD(int caller){
   __asm__ __volatile__ ("cli" ::: "memory");
   (LCDByte(0b00000001,0));
   (LCDByte(0x0F,0));
-  LCDWriteStringXY(8,0, rtc_str);
+  LCDWriteStringXY(8,0, str);
   LCDWriteStringXY(0,1, "T= ");
   LCDGotoXY(3,1);
   LCDWriteString(temp_str);
@@ -953,12 +1078,18 @@ void writeLCD(int caller){
 
 
 void refreshQuote(){
+ if(!bDateChanged){ ((void *)0); }
+ else{
+  bDateChanged=0;
+  sprintf(str, "%02d/%02d/%02d,", tTime.bDay, tTime.bMonth, tTime.bYear);
+  LCDWriteStringXY(0,0,str);
+ }
  if(!bTimeChanged){ ((void *)0); }
  else{
   bTimeChanged=0;
-  sprintf(rtc_str, "%02d:%02d:%02d ", tTime.bHour, tTime.bMin, tTime.bSec);
-  LCDWriteStringXY(0,0,"        ");
-  LCDWriteStringXY(8,0,rtc_str);
+  sprintf(str, "%02d:%02d", tTime.bHour, tTime.bMin, tTime.bSec);
+
+  LCDWriteStringXY(11,0,str);
  }
  if(!bTempChanged){ ((void *)0); }
  else{
@@ -992,32 +1123,76 @@ void changeEditTime(uint8_t bPosition, uint8_t bButton){
 
  switch(bPosition){
   case 0:
-
-
-
-
-
-
-
-   ;if(0==0){ if(bButton==2 && tTimeEditing.bHour<(2*10-1)){ tTimeEditing.bHour += 10; } else if(bButton == 4 && tTimeEditing.bHour > 9){ tTimeEditing.bHour -= 10; } }else{ if(bButton==2 && (bHunita<(3))){ tTimeEditing.bHour = bHdecine*10 + (++bHunita); } else if(bButton==2 && (bHdecine<(2)) && (bHunita<9)){ tTimeEditing.bHour = bHdecine*10 + (++bHunita); } else if(bButton==4 && (bHunita>0)){ tTimeEditing.bHour = bHdecine*10 + (--bHunita); }else{ ((void *)0); } }
+   ;if(0==0){ if(bButton==2 && tTimeEditing.bHour<((2 -1)*10+(3 +1))){ tTimeEditing.bHour += 10; } else if(bButton == 4 && tTimeEditing.bHour > 9){ tTimeEditing.bHour -= 10; } }else{ if(bButton==2 && (bHunita<(3))){ tTimeEditing.bHour = bHdecine*10 + (++bHunita); } else if(bButton==2 && (bHdecine<(2)) && (bHunita<9)){ tTimeEditing.bHour = bHdecine*10 + (++bHunita); } else if(bButton==4 && (bHunita>0)){ tTimeEditing.bHour = bHdecine*10 + (--bHunita); }else{ ((void *)0); } }
    break;
   case 1:
-   ;if(1==0){ if(bButton==2 && tTimeEditing.bHour<(2*10-1)){ tTimeEditing.bHour += 10; } else if(bButton == 4 && tTimeEditing.bHour > 9){ tTimeEditing.bHour -= 10; } }else{ if(bButton==2 && (bHunita<(3))){ tTimeEditing.bHour = bHdecine*10 + (++bHunita); } else if(bButton==2 && (bHdecine<(2)) && (bHunita<9)){ tTimeEditing.bHour = bHdecine*10 + (++bHunita); } else if(bButton==4 && (bHunita>0)){ tTimeEditing.bHour = bHdecine*10 + (--bHunita); }else{ ((void *)0); } }
+   ;if(1==0){ if(bButton==2 && tTimeEditing.bHour<((2 -1)*10+(3 +1))){ tTimeEditing.bHour += 10; } else if(bButton == 4 && tTimeEditing.bHour > 9){ tTimeEditing.bHour -= 10; } }else{ if(bButton==2 && (bHunita<(3))){ tTimeEditing.bHour = bHdecine*10 + (++bHunita); } else if(bButton==2 && (bHdecine<(2)) && (bHunita<9)){ tTimeEditing.bHour = bHdecine*10 + (++bHunita); } else if(bButton==4 && (bHunita>0)){ tTimeEditing.bHour = bHdecine*10 + (--bHunita); }else{ ((void *)0); } }
    break;
   case 3:
-   ;if(0==0){ if(bButton==2 && tTimeEditing.bMin<(5*10-1)){ tTimeEditing.bMin += 10; } else if(bButton == 4 && tTimeEditing.bMin > 9){ tTimeEditing.bMin -= 10; } }else{ if(bButton==2 && (bMunita<(9))){ tTimeEditing.bMin = bMdecine*10 + (++bMunita); } else if(bButton==2 && (bMdecine<(5)) && (bMunita<9)){ tTimeEditing.bMin = bMdecine*10 + (++bMunita); } else if(bButton==4 && (bMunita>0)){ tTimeEditing.bMin = bMdecine*10 + (--bMunita); }else{ ((void *)0); } }
+   ;if(0==0){ if(bButton==2 && tTimeEditing.bMin<((5 -1)*10+(9 +1))){ tTimeEditing.bMin += 10; } else if(bButton == 4 && tTimeEditing.bMin > 9){ tTimeEditing.bMin -= 10; } }else{ if(bButton==2 && (bMunita<(9))){ tTimeEditing.bMin = bMdecine*10 + (++bMunita); } else if(bButton==2 && (bMdecine<(5)) && (bMunita<9)){ tTimeEditing.bMin = bMdecine*10 + (++bMunita); } else if(bButton==4 && (bMunita>0)){ tTimeEditing.bMin = bMdecine*10 + (--bMunita); }else{ ((void *)0); } }
    break;
   case 4:
-   ;if(1==0){ if(bButton==2 && tTimeEditing.bMin<(5*10-1)){ tTimeEditing.bMin += 10; } else if(bButton == 4 && tTimeEditing.bMin > 9){ tTimeEditing.bMin -= 10; } }else{ if(bButton==2 && (bMunita<(9))){ tTimeEditing.bMin = bMdecine*10 + (++bMunita); } else if(bButton==2 && (bMdecine<(5)) && (bMunita<9)){ tTimeEditing.bMin = bMdecine*10 + (++bMunita); } else if(bButton==4 && (bMunita>0)){ tTimeEditing.bMin = bMdecine*10 + (--bMunita); }else{ ((void *)0); } }
+   ;if(1==0){ if(bButton==2 && tTimeEditing.bMin<((5 -1)*10+(9 +1))){ tTimeEditing.bMin += 10; } else if(bButton == 4 && tTimeEditing.bMin > 9){ tTimeEditing.bMin -= 10; } }else{ if(bButton==2 && (bMunita<(9))){ tTimeEditing.bMin = bMdecine*10 + (++bMunita); } else if(bButton==2 && (bMdecine<(5)) && (bMunita<9)){ tTimeEditing.bMin = bMdecine*10 + (++bMunita); } else if(bButton==4 && (bMunita>0)){ tTimeEditing.bMin = bMdecine*10 + (--bMunita); }else{ ((void *)0); } }
    break;
   case 6:
-   ;if(0==0){ if(bButton==2 && tTimeEditing.bSec<(5*10-1)){ tTimeEditing.bSec += 10; } else if(bButton == 4 && tTimeEditing.bSec > 9){ tTimeEditing.bSec -= 10; } }else{ if(bButton==2 && (bSunita<(9))){ tTimeEditing.bSec = bSdecine*10 + (++bSunita); } else if(bButton==2 && (bSdecine<(5)) && (bSunita<9)){ tTimeEditing.bSec = bSdecine*10 + (++bSunita); } else if(bButton==4 && (bSunita>0)){ tTimeEditing.bSec = bSdecine*10 + (--bSunita); }else{ ((void *)0); } }
+   ;if(0==0){ if(bButton==2 && tTimeEditing.bSec<((5 -1)*10+(9 +1))){ tTimeEditing.bSec += 10; } else if(bButton == 4 && tTimeEditing.bSec > 9){ tTimeEditing.bSec -= 10; } }else{ if(bButton==2 && (bSunita<(9))){ tTimeEditing.bSec = bSdecine*10 + (++bSunita); } else if(bButton==2 && (bSdecine<(5)) && (bSunita<9)){ tTimeEditing.bSec = bSdecine*10 + (++bSunita); } else if(bButton==4 && (bSunita>0)){ tTimeEditing.bSec = bSdecine*10 + (--bSunita); }else{ ((void *)0); } }
    break;
   case 7:
-   ;if(1==0){ if(bButton==2 && tTimeEditing.bSec<(5*10-1)){ tTimeEditing.bSec += 10; } else if(bButton == 4 && tTimeEditing.bSec > 9){ tTimeEditing.bSec -= 10; } }else{ if(bButton==2 && (bSunita<(9))){ tTimeEditing.bSec = bSdecine*10 + (++bSunita); } else if(bButton==2 && (bSdecine<(5)) && (bSunita<9)){ tTimeEditing.bSec = bSdecine*10 + (++bSunita); } else if(bButton==4 && (bSunita>0)){ tTimeEditing.bSec = bSdecine*10 + (--bSunita); }else{ ((void *)0); } }
+   ;if(1==0){ if(bButton==2 && tTimeEditing.bSec<((5 -1)*10+(9 +1))){ tTimeEditing.bSec += 10; } else if(bButton == 4 && tTimeEditing.bSec > 9){ tTimeEditing.bSec -= 10; } }else{ if(bButton==2 && (bSunita<(9))){ tTimeEditing.bSec = bSdecine*10 + (++bSunita); } else if(bButton==2 && (bSdecine<(5)) && (bSunita<9)){ tTimeEditing.bSec = bSdecine*10 + (++bSunita); } else if(bButton==4 && (bSunita>0)){ tTimeEditing.bSec = bSdecine*10 + (--bSunita); }else{ ((void *)0); } }
    break;
   default:
    break;
  }
+
+}
+
+void changeEditDate(uint8_t bPosition, uint8_t bButton){
+
+ int bYunita;
+ int bYdecine;
+ int bMunita;
+ int bMdecine;
+ int bDunita;
+ int bDdecine;
+
+ bYunita = tTimeEditing.bYear % 10;
+ bYdecine = tTimeEditing.bYear / 10;
+ bMunita = tTimeEditing.bMonth % 10;
+ bMdecine = tTimeEditing.bMonth / 10;
+ bDunita = tTimeEditing.bDay % 10;
+ bDdecine = tTimeEditing.bDay / 10;
+
+ switch(bPosition){
+  case 0:
+   ;if(0==0){ if(bButton==2 && tTimeEditing.bDay<((3 -1)*10+(1 +1))){ tTimeEditing.bDay += 10; } else if(bButton == 4 && tTimeEditing.bDay > 9){ tTimeEditing.bDay -= 10; } }else{ if(bButton==2 && (bDunita<(1))){ tTimeEditing.bDay = bDdecine*10 + (++bDunita); } else if(bButton==2 && (bDdecine<(3)) && (bDunita<9)){ tTimeEditing.bDay = bDdecine*10 + (++bDunita); } else if(bButton==4 && (bDunita>0)){ tTimeEditing.bDay = bDdecine*10 + (--bDunita); }else{ ((void *)0); } }
+   break;
+  case 1:
+   ;if(1==0){ if(bButton==2 && tTimeEditing.bDay<((3 -1)*10+(1 +1))){ tTimeEditing.bDay += 10; } else if(bButton == 4 && tTimeEditing.bDay > 9){ tTimeEditing.bDay -= 10; } }else{ if(bButton==2 && (bDunita<(1))){ tTimeEditing.bDay = bDdecine*10 + (++bDunita); } else if(bButton==2 && (bDdecine<(3)) && (bDunita<9)){ tTimeEditing.bDay = bDdecine*10 + (++bDunita); } else if(bButton==4 && (bDunita>0)){ tTimeEditing.bDay = bDdecine*10 + (--bDunita); }else{ ((void *)0); } }
+   if(tTimeEditing.bDay==0) tTimeEditing.bDay=1;
+   break;
+  case 3:
+   ;if(0==0){ if(bButton==2 && tTimeEditing.bMonth<((1 -1)*10+(2 +1))){ tTimeEditing.bMonth += 10; } else if(bButton == 4 && tTimeEditing.bMonth > 9){ tTimeEditing.bMonth -= 10; } }else{ if(bButton==2 && (bMunita<(2))){ tTimeEditing.bMonth = bMdecine*10 + (++bMunita); } else if(bButton==2 && (bMdecine<(1)) && (bMunita<9)){ tTimeEditing.bMonth = bMdecine*10 + (++bMunita); } else if(bButton==4 && (bMunita>0)){ tTimeEditing.bMonth = bMdecine*10 + (--bMunita); }else{ ((void *)0); } }
+   break;
+  case 4:
+   ;if(1==0){ if(bButton==2 && tTimeEditing.bMonth<((1 -1)*10+(2 +1))){ tTimeEditing.bMonth += 10; } else if(bButton == 4 && tTimeEditing.bMonth > 9){ tTimeEditing.bMonth -= 10; } }else{ if(bButton==2 && (bMunita<(2))){ tTimeEditing.bMonth = bMdecine*10 + (++bMunita); } else if(bButton==2 && (bMdecine<(1)) && (bMunita<9)){ tTimeEditing.bMonth = bMdecine*10 + (++bMunita); } else if(bButton==4 && (bMunita>0)){ tTimeEditing.bMonth = bMdecine*10 + (--bMunita); }else{ ((void *)0); } }
+   if(tTimeEditing.bMonth==0) tTimeEditing.bMonth=1;
+   break;
+  case 6:
+   ;if(0==0){ if(bButton==2 && tTimeEditing.bYear<((9 -1)*10+(9 +1))){ tTimeEditing.bYear += 10; } else if(bButton == 4 && tTimeEditing.bYear > 9){ tTimeEditing.bYear -= 10; } }else{ if(bButton==2 && (bYunita<(9))){ tTimeEditing.bYear = bYdecine*10 + (++bYunita); } else if(bButton==2 && (bYdecine<(9)) && (bYunita<9)){ tTimeEditing.bYear = bYdecine*10 + (++bYunita); } else if(bButton==4 && (bYunita>0)){ tTimeEditing.bYear = bYdecine*10 + (--bYunita); }else{ ((void *)0); } }
+   break;
+  case 7:
+   ;if(1==0){ if(bButton==2 && tTimeEditing.bYear<((9 -1)*10+(9 +1))){ tTimeEditing.bYear += 10; } else if(bButton == 4 && tTimeEditing.bYear > 9){ tTimeEditing.bYear -= 10; } }else{ if(bButton==2 && (bYunita<(9))){ tTimeEditing.bYear = bYdecine*10 + (++bYunita); } else if(bButton==2 && (bYdecine<(9)) && (bYunita<9)){ tTimeEditing.bYear = bYdecine*10 + (++bYunita); } else if(bButton==4 && (bYunita>0)){ tTimeEditing.bYear = bYdecine*10 + (--bYunita); }else{ ((void *)0); } }
+   break;
+  default:
+   break;
+ }
+
+
+}
+
+void checkDate(TIME_DATE time, int * days){
+
+ if(tTimeEditing.bDay<days[tTimeEditing.bMonth-1]) return;
+ else tTimeEditing.bDay = days[tTimeEditing.bMonth-1];
 
 }
