@@ -1,0 +1,20 @@
+	CLICO -- CLImate microCOntroller
+
+Versions:
+
+--0.01:
+	*date: 03/08/2011, 15.38
+	
+	Backup effettuato perchè nel main verrà invertito l'ordine di controllo tra bState e bBtn: diventerà
+	
+		switch(bState){
+			switch(bBtn){
+				..
+			}
+		}
+
+
+--0.02 ____ 04/08/2011
+
+	Terminata opzione di modifica dell'ora corrente,
+	+macro EDIT_TIME, per gestire i dati introdotti dall'utente al momento della modifica.
