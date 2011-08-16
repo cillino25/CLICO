@@ -53,14 +53,14 @@ typedef struct{
 		{ z = 1; }\
 	else{ z=0; }
 
-#define EDIT_TIME_DATE(bPos, bBtnUP, bBtnDOWN, bPressed, bMod, bHdecine, unita, b2DigitMax, b1DigitMax)\
+#define EDIT_TIME_DATE(bPos, bBtnUP, bBtnDOWN, bPressed, bMod, decine, unita, b2DigitMax, b1DigitMax)\
 	if(bPos==0){\
 		if(bPressed==bBtnUP && bMod<((b2DigitMax-1)*10+(b1DigitMax+1))){ bMod += 10; }\
 		else if(bPressed == bBtnDOWN && bMod > 9){ bMod -= 10; }\
 	}else{\
-		if(bPressed==bBtnUP && (unita<(b1DigitMax))){ bMod = bHdecine*10 + (++unita);	}\
-		else if(bPressed==bBtnUP && (bHdecine<(b2DigitMax)) && (unita<9)){ bMod = bHdecine*10 + (++unita);	}\
-		else if(bPressed==bBtnDOWN && (unita>0)){ bMod = bHdecine*10 + (--unita);	}else{ NULL; }\
+		if(bPressed==bBtnUP && (unita<(b1DigitMax))){ bMod = decine*10 + (++unita);	}\
+		else if(bPressed==bBtnUP && (decine<(b2DigitMax)) && (unita<9)){ bMod = decine*10 + (++unita);	}\
+		else if(bPressed==bBtnDOWN && (unita>0)){ bMod = decine*10 + (--unita);	}else{ NULL; }\
 	} 
 
 #define LCD_CURSOR_LEFT_N(n) for(int i=0; i<n; i++) LCDCmd(0x10);
@@ -69,6 +69,10 @@ typedef struct{
 //changes cursor position keeping it in the same row
 #define LCD_SET_CURSOR_POSITION(n)\
 		LCDHome(); LCD_CURSOR_RIGHT_N(n)
+
+#define LCD_RESET()\
+		LCDClear(); LCDCmd(0x02); LCDCmd(0x0C);
+
 
 /* bBtn:	0=nessun bottone premuto
  *			1=non usata (rendiamo pari ciò che sarebbe dispari)
@@ -136,9 +140,10 @@ void refreshQuote();
 int isLeapYear(uint8_t year);
 void changeEditDate(uint8_t bPosition, uint8_t bButton);
 void changeEditTimeDate(uint8_t bPosition, uint8_t bButton);
-void checkDate(TIME_DATE time, int* days);
+int checkDate(TIME_DATE *time, uint8_t* days);
 
-void writeLCD(int caller); /*	Function that displays the content on the LCD depending on the state of the machine.
+//void writeLCD(int caller);
+							/*	Function that displays the content on the LCD depending on the state of the machine.
 							*	"caller" is helpful to recognize if the LCD is really to be refreshed:
 							*	it could be that the function shouldn't write the display for the event who called it;
 							*	for instance, if the menu is running and the RTC calls for

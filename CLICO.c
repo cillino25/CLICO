@@ -19,15 +19,13 @@ Hungarian notation:
 #include "CLICO.h"
 
 
-
-
 typedef struct{
 	uint16_t wA;
 	uint16_t wB;
 	uint16_t wC;
 } COUNT;
 
-uint8_t aDays[12]={31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+uint8_t aDays[12]={31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
 volatile TIME_DATE tTime;
 volatile TIME_DATE tTimeEditing;
@@ -84,10 +82,7 @@ int main(void){
 	
 	bPriLev=PRI_MAIN;
 	
-	DDRA = 0xff;		// PORTA = output
 	
-	DDRC = 0x13;		//
-	PORTD = 0x13;		// pins 0,1,4 of PORTC are pulled high
 	
 	tTime.bDay=7;
 	tTime.bMonth=8;
@@ -100,7 +95,8 @@ int main(void){
 	
 	while(1) { /* Infinite Loop */
 		switch(bState){
-			
+
+/*--------------------------------------------------------------------------------------------------*/
 			case STATE_IDLE:
 				switch(bBtn){
 					case NO_BTN:
@@ -110,6 +106,7 @@ int main(void){
 					// case BNT_A_LONG:
 					// case BTN_B_LONG:
 					//		BACKLIGHT!
+					//		S
 					case BTN_C_LONG:
 						bState = STATE_MENU;
 						bBtn=NO_BTN;
@@ -119,7 +116,7 @@ int main(void){
 				}
 				break;
 				
-				
+/*--------------------------------------------------------------------------------------------------*/				
 			case STATE_MENU:
 				switch(bBtn){
 					case NO_BTN:
@@ -169,9 +166,11 @@ int main(void){
 					case BTN_C_LONG:
 						bState = STATE_IDLE;
 						bBtn=NO_BTN;
-						LCDClear();
+						
+						LCD_RESET();
+						
 						bSelectionMenu=0;
-						bDateChanged=1;
+						bDateChanged=1;		// Appena rientro in idle stampo le quote
 						bTimeChanged=1;
 						bTempChanged=1;
 						break;
@@ -181,15 +180,14 @@ int main(void){
 				}				
 				break;
 			
-			
+/*--------------------------------------------------------------------------------------------------*/			
 			case STATE_EDIT_DATE:
 				switch(bBtn){
 					case NO_BTN:
 						if(bFirst){
 							bFirst=0;
 							LCDClear();
-							tTimeEditing = (bSelectionDateChanged==1) ? tTimeEditing : tTime;
-							bSelectionDateChanged=0;
+							tTimeEditing = tTime;
 							sprintf(str, "%02d/%02d/%02d", tTimeEditing.bDay, tTimeEditing.bMonth, tTimeEditing.bYear);
 							LCDWriteStringXY(0,0, "Editing date:");
 							LCDWriteStringXY(3,1, str);
@@ -214,7 +212,16 @@ int main(void){
 					case BTN_C:
 						if(bSelectionDate<7){ LCDCmd(0x14); bSelectionDate++; }
 						else{ bSelectionDate=0; LCD_CURSOR_LEFT_N(7); }
-						if(bSelectionDate==2 || bSelectionDate==5){ LCDCmd(0x14); bSelectionDate++; }
+						// eseguo il controllo della data solo se passo da giorno a mese e da mese a anno
+						if(bSelectionDate==2 || bSelectionDate==5){
+							LCD_CURSOR_RIGHT_N(1);
+							bSelectionDate++;
+							if(checkDate(&tTimeEditing, aDays)){
+								sprintf(str, "%02d/%02d/%02d", tTimeEditing.bDay, tTimeEditing.bMonth, tTimeEditing.bYear);
+								LCDWriteStringXY(3,1,str);
+								LCD_CURSOR_LEFT_N(8-bSelectionDate);
+							}
+						}
 						bBtn = NO_BTN;
 						break;
 					case BTN_C_LONG:
@@ -226,7 +233,8 @@ int main(void){
 						break;
 				}
 				break;
-				
+
+/*--------------------------------------------------------------------------------------------------*/
 				case STATE_EDIT_DATE_CONFIRM:
 					switch(bBtn){
 						case NO_BTN:
@@ -251,16 +259,14 @@ int main(void){
 						
 						case BTN_C_LONG:
 							if(bSelectionDate){
-								bState = STATE_EDIT_DATE;
+								bState = STATE_MENU;
 								bSelectionDate=0;
-								bSelectionDateChanged=1;
 							}else{
 								tTime.bDay = tTimeEditing.bDay;
 								tTime.bMonth = tTimeEditing.bMonth;
 								tTime.bYear = tTimeEditing.bYear;
 								bState = STATE_MENU;
-								LCDCmd(0x02);	// Home
-								LCDCmd(0x0C);	// Make cursor invisible
+								LCD_RESET();
 							}
 							bBtn = NO_BTN;
 							bFirst=1;
@@ -268,15 +274,15 @@ int main(void){
 						default: break;
 					}
 				break;
-				
+
+/*--------------------------------------------------------------------------------------------------*/
 			case STATE_EDIT_TIME:
 					switch(bBtn){
 						case NO_BTN:
 							if(bFirst){
 								bFirst=0;
 								LCDClear();
-								tTimeEditing = (bSelectionTimeChanged==1) ? tTimeEditing : tTime;
-								bSelectionTimeChanged=0;
+								tTimeEditing = tTime;
 								sprintf(str, "%02d:%02d:%02d", tTimeEditing.bHour, tTimeEditing.bMin, tTimeEditing.bSec);
 								LCDWriteStringXY(0,0, "Editing time:");
 								LCDWriteStringXY(3,1, str);
@@ -313,7 +319,8 @@ int main(void){
 							break;
 					}
 				break;
-				
+
+/*--------------------------------------------------------------------------------------------------*/
 			case STATE_EDIT_TIME_CONFIRM:
 					switch(bBtn){
 						case NO_BTN:
@@ -338,16 +345,14 @@ int main(void){
 						
 						case BTN_C_LONG:
 							if(bSelectionTime){
-								bState = STATE_EDIT_TIME;
+								bState = STATE_MENU;
 								bSelectionTime=0;
-								bSelectionTimeChanged=1;
 							}else{
 								tTime.bSec = tTimeEditing.bSec;
 								tTime.bMin = tTimeEditing.bMin;
 								tTime.bHour = tTimeEditing.bHour;
 								bState = STATE_MENU;
-								LCDCmd(0x02);	// Home
-								LCDCmd(0x0C);	// Make cursor invisible
+								LCD_RESET();
 							}
 							bBtn = NO_BTN;
 							bFirst=1;
@@ -377,6 +382,7 @@ ISR(TIMER0_COMP_vect){
 	uint8_t bOldPriLev = bPriLev;
 	bPriLev=PRI_TIMER0;
 	
+/*	*************** FILTERS **************	*/
 	bPort = PIND;
 	bBtnAPressed = bPort & BIT0;		// UP
 	bBtnBPressed = bPort & BIT4;		// DOWN
@@ -470,6 +476,12 @@ ISR(ADC_vect){
 /*******************************************************************/
 
 void _init(){
+	DDRA = 0xff;		// PORTA = output
+	
+	DDRC = 0x13;		//
+	PORTD = 0x13;		// pins 0,1,4 of PORTC are pulled high
+	
+	
 	/******************* ADC Setup *********************/
 	ADCSRA = (1<<ADPS2)|(1<<ADPS1)|(1<<ADPS0);		// ADC Prescaler = Fck/128
 	//ADMUX = (1<<ADLAR);							// Left-adjusting result
@@ -503,46 +515,12 @@ void _init(){
 
 
 void getTemperature(){
-	cli();				//	togliamo le int durante l'esecuzione di questo codice: operazioni con fp
+	cli();				//	togliamo le int durante l'esecuzione di questo codice: operazioni con float
 	dVp = VM + ADC * VREF/(1024*GAIN);
 	dRpt = (dVp*(R1+R2) - VREF*R2)/(VREF - dVp);
 	dTemperature = (dRpt-RPT0) / K;
 	bTempChanged=1;
 	sei();
-}
-
-void writeLCD(int caller){
-	if(caller!=bState) return;
-	switch(bState){
-	case 0:		// idle/RTC+temp
-		cli();
-		LCDClear();
-		LCDCmd(0x0F);
-		LCDWriteStringXY(8,0, str);
-		LCDWriteStringXY(0,1, "T= ");
-		LCDGotoXY(3,1);
-		LCDWriteString(temp_str);
-		sei();
-		break;
-		
-	case 1:		// backlight
-		LCDClear();
-		LCDWriteStringXY(0,0, "nothing");
-		break;
-		
-	case 2:		// Main menu
-		LCDClear();
-		LCDWriteStringXY(0,0,"-");
-		LCDWriteStringXY(1,0, options[bSelectionMenu]);
-		LCDWriteStringXY(1,1, options[bSelectionMenu+1]);
-		break;
-	case 3:
-		LCDClear();
-		
-		break;
-	default:
-		break;
-	}
 }
 
 
@@ -659,11 +637,14 @@ void changeEditDate(uint8_t bPosition, uint8_t bButton){
 	
 }
 
-void checkDate(TIME_DATE time, int * days){		// se bDay supera il valore massimo del corrispondente bMonth,
-									// esso viene portato al massimo valore consentito.
-	if(tTimeEditing.bDay<days[tTimeEditing.bMonth-1]) return;
-	else tTimeEditing.bDay = days[tTimeEditing.bMonth-1];
+int checkDate(TIME_DATE *time, uint8_t * days){		// se bDay supera il valore massimo del corrispondente bMonth,
+														// esso viene portato al massimo valore consentito.
 	
+	if(time->bDay > days[time->bMonth-1]){
+		time->bDay = days[time->bMonth-1];
+		return 1;
+	}	
+	return 0;
 }
 
 
