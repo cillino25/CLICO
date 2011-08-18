@@ -23,14 +23,18 @@
 #include <util/24c.h>
 #include <util/atomic.h>
 
+typedef uint8_t byte;
+typedef uint16_t word;
+
+
 typedef struct{
-	uint16_t wMilli;
-	uint8_t bSec;
-	uint8_t bMin;
-	uint8_t bHour;
-	uint8_t bDay;
-	uint8_t bMonth;
-	uint8_t bYear;
+	word wMilli;
+	byte bSec;
+	byte bMin;
+	byte bHour;
+	byte bDay;
+	byte bMonth;
+	byte bYear;
 } TIME_DATE;
 
 
@@ -47,11 +51,20 @@ typedef struct{
 #define K 0.3878461538
 #define GAIN 200.0
 
-#define CMP_TIME(x, y, z)\
-	if(x.wMilli == y.wMilli && x.bSec == y.bSec &&\
-		x.bMin == y.bMin && x.bHour == y.bHour)\
-		{ z = 1; }\
-	else{ z=0; }
+#define NUMBER_OF_OPTIONS 7
+
+
+#define BACKLIGHT_ON() PORTB |= 0x1;
+#define BACKLIGHT_OFF() PORTB &= 0xfe;
+
+#define START_BACKLIGHT()\
+	PORTB |= 0x1;\
+	TCCR2 |= (1<<CS22)|(0<<CS21)|(1<<CS20);
+	
+#define STOP_BACKLIGHT()\
+	PORTB &= 0xfe;\
+	TCCR2 &= (0<<CS22)|(0<<CS21)|(0<<CS20);
+
 
 #define EDIT_TIME_DATE(bPos, bBtnUP, bBtnDOWN, bPressed, bMod, decine, unita, b2DigitMax, b1DigitMax)\
 	if(bPos==0){\
@@ -63,6 +76,10 @@ typedef struct{
 		else if(bPressed==bBtnDOWN && (unita>0)){ bMod = decine*10 + (--unita);	}else{ NULL; }\
 	} 
 
+
+
+/****************************** LCD Macros ******************************/
+
 #define LCD_CURSOR_LEFT_N(n) for(int i=0; i<n; i++) LCDCmd(0x10);
 #define LCD_CURSOR_RIGHT_N(n) for(int i=0; i<n; i++) LCDCmd(0x14);
 
@@ -73,6 +90,8 @@ typedef struct{
 #define LCD_RESET()\
 		LCDClear(); LCDCmd(0x02); LCDCmd(0x0C);
 
+
+/****************************** Button values ***************************************/
 
 /* bBtn:	0=nessun bottone premuto
  *			1=non usata (rendiamo pari ciò che sarebbe dispari)
@@ -92,6 +111,7 @@ typedef struct{
 #define BTN_C_LONG	7
 
 
+/******************************************* State Values *************************************************/
 
 /*		bState: depending on its value the display and the mcu will behave differently.
  *		bState=0: idle - normal condition; the display will show dTemperature, humidity and the clock.
@@ -107,21 +127,25 @@ typedef struct{
 
 
 
-/*		bSelection
+/*		bSelectionMenu
  */
 #define SEL_TIMEZONE	0
 #define SEL_DATE		1
 #define SEL_TIME		2
 
+
+/******************************************** Priority Level values *******************************************/
+
 /*	bPriLev: livello di priorità
  *		     =1  -->timer0_int
  *			 =2  -->ADC_int
- *			 =3  -->boh
+ *			 =3  -->timer2_int
  *			 ..
  *			 =9  -->idle(main)
  */
 #define PRI_TIMER0	1
 #define PRI_ADC		2
+#define PRI_TIMER2	3
 #define PRI_MAIN	9
 
 
@@ -134,13 +158,16 @@ typedef struct{
 #define BIT6	64
 #define BIT7	128
 
-void _init();
-void getTemperature();
-void refreshQuote();
-int isLeapYear(uint8_t year);
-void changeEditDate(uint8_t bPosition, uint8_t bButton);
-void changeEditTimeDate(uint8_t bPosition, uint8_t bButton);
-int checkDate(TIME_DATE *time, uint8_t* days);
+/*********************************** Headers *****************************************/
+
+void _init(void);
+void getTemperature(void);
+void refreshQuote(void);
+int isLeapYear(byte year);
+void changeEditDate(byte bPosition, byte bButton);
+void changeEditTimeDate(byte bPosition, byte bButton);
+int checkDate(TIME_DATE *time, byte* days);
+void toggleTimeColon(void);
 
 //void writeLCD(int caller);
 							/*	Function that displays the content on the LCD depending on the state of the machine.

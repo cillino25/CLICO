@@ -20,51 +20,56 @@ Hungarian notation:
 
 
 typedef struct{
-	uint16_t wA;
-	uint16_t wB;
-	uint16_t wC;
+	word wA;
+	word wB;
+	word wC;
 } COUNT;
 
-uint8_t aDays[12]={31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+byte aDays[12]={31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+volatile byte sreg;
 
 volatile TIME_DATE tTime;
 volatile TIME_DATE tTimeEditing;
-volatile COUNT cIntegrator;
+volatile COUNT cButtonIntegrator;
 
-volatile uint8_t bTimeChanged;
-volatile uint8_t bDateChanged=1;
-volatile uint8_t bTempChanged;
-volatile uint8_t bFirst=1;
+volatile byte bTimeChanged;
+volatile byte bDateChanged=1;
+volatile byte bTempChanged;
+volatile byte bFirst=1;
 
 volatile double dVp;
 volatile double dRpt;
-volatile uint16_t wCount_eInt0, wCount_adc;
+
+volatile word wCount_eInt0, wCount_adc;
 volatile double dTemperature;
 volatile double dTemperatureOld;
 
+volatile byte bBacklight;
+volatile word wBacklightCounter;
 
-volatile uint8_t bBtnAPressed;
-volatile uint8_t bBtnBPressed;
-volatile uint8_t bBtnCPressed;
-volatile uint8_t bInhibite;
-volatile uint8_t bPort;
-volatile uint8_t bBtn;
+volatile byte bBtnAPressed;
+volatile byte bBtnBPressed;
+volatile byte bBtnCPressed;
+volatile byte bInhibite;
+volatile byte bPort;
+volatile byte bBtn;
 
 							
-volatile uint8_t bSelectionMenu;
-volatile uint8_t bSelectionMenuChanged;
-volatile uint8_t bSelectionDate;
-volatile uint8_t bSelectionDateChanged;
-volatile uint8_t bSelectionTime;
-volatile uint8_t bSelectionTimeChanged;
-volatile uint8_t bPriLev;
-volatile uint8_t bState=STATE_IDLE;
-
+volatile byte bSelectionMenu;
+volatile byte bSelectionMenuChanged;
+volatile byte bSelectionDate;
+volatile byte bSelectionDateChanged;
+volatile byte bSelectionTime;
+volatile byte bSelectionTimeChanged;
+volatile byte bPriLev;
+volatile byte bState=STATE_IDLE;
+volatile byte bTimeCommaState;
+volatile byte bTimeColonToToggle;
 
 
 char temp_str[5]="";
 char str[10]="";
-char options[8][16]={"1.Timezone     ","2.Date         ", "3.Time         ",
+char options[NUMBER_OF_OPTIONS+1][16]={"1.Timezone     ","2.Date         ", "3.Time         ",
 					"4.USB transfer ", "5.hello        ", "6.world        ", "7.osti         ", "               "};
 
 char tmp_str[13]="";
@@ -100,15 +105,22 @@ int main(void){
 			case STATE_IDLE:
 				switch(bBtn){
 					case NO_BTN:
+						if(bTimeColonToToggle){ toggleTimeColon(); bTimeColonToToggle=0; }
 						refreshQuote();
 						bFirst=1;
+						
 						break;
-					// case BNT_A_LONG:
-					// case BTN_B_LONG:
-					//		BACKLIGHT!
-					//		S
+					case BTN_A:
+					case BTN_B:
+					case BTN_C:
+					case BTN_A_LONG:
+					case BTN_B_LONG:
+						START_BACKLIGHT();
+						bBtn=NO_BTN;
+						break;
 					case BTN_C_LONG:
 						bState = STATE_MENU;
+						BACKLIGHT_ON();
 						bBtn=NO_BTN;
 						break;
 					default:
@@ -132,15 +144,15 @@ int main(void){
 					
 					case BTN_A:
 						bSelectionMenu++;
-						bSelectionMenu %= 7;
+						bSelectionMenu %= NUMBER_OF_OPTIONS;
 						bSelectionMenuChanged=1;
 						bBtn=0;
 						break;
 					
 					case BTN_B:
 						if(bSelectionMenu>0) bSelectionMenu--;
-						else bSelectionMenu=6;
-						bSelectionMenu %= 7;
+						else bSelectionMenu=(NUMBER_OF_OPTIONS-1);
+						bSelectionMenu %= NUMBER_OF_OPTIONS;
 						bSelectionMenuChanged=1;
 						bBtn=0;
 						break;
@@ -166,6 +178,8 @@ int main(void){
 					case BTN_C_LONG:
 						bState = STATE_IDLE;
 						bBtn=NO_BTN;
+						BACKLIGHT_OFF();
+						START_BACKLIGHT();
 						
 						LCD_RESET();
 						
@@ -210,7 +224,7 @@ int main(void){
 						LCD_CURSOR_LEFT_N(8-bSelectionDate);
 						break;
 					case BTN_C:
-						if(bSelectionDate<7){ LCDCmd(0x14); bSelectionDate++; }
+						if(bSelectionDate<7){ LCD_CURSOR_RIGHT_N(1); bSelectionDate++; }
 						else{ bSelectionDate=0; LCD_CURSOR_LEFT_N(7); }
 						// eseguo il controllo della data solo se passo da giorno a mese e da mese a anno
 						if(bSelectionDate==2 || bSelectionDate==5){
@@ -371,15 +385,15 @@ int main(void){
 
 
 
-/************************************************************/
-/*******************   Interrupts   *************************/
-/************************************************************/
+/************************************************************************************/
+/*******************************   Interrupts   *************************************/
+/************************************************************************************/
 
 
-/****************  RealTimeClock Interrupt ******************/
+/****************************  RealTimeClock Interrupt ******************************/
 ISR(TIMER0_COMP_vect){
 	if(bPriLev<PRI_TIMER0)	return;
-	uint8_t bOldPriLev = bPriLev;
+	byte bOldPriLev = bPriLev;
 	bPriLev=PRI_TIMER0;
 	
 /*	*************** FILTERS **************	*/
@@ -388,46 +402,46 @@ ISR(TIMER0_COMP_vect){
 	bBtnBPressed = bPort & BIT4;		// DOWN
 	bBtnCPressed = bPort & BIT1;		// MENU
 	if(!bBtnCPressed&&(!bInhibite)){  // bBtnXPressed=0  -->bottone x premuto! (collegati a massa)
-		cIntegrator.wC++;
-		if(cIntegrator.wC>LONG_PRESSION){ bInhibite=1; }
+		cButtonIntegrator.wC++;
+		if(cButtonIntegrator.wC>LONG_PRESSION){ bInhibite=1; }
 	}
 	else{
 		if(bBtnCPressed!=0){ bInhibite=0; }
-		if(cIntegrator.wC<DEBOUNCE_TIME){ cIntegrator.wC=0; }
-		else if((cIntegrator.wC>DEBOUNCE_TIME)&&(cIntegrator.wC<LONG_PRESSION)){
+		if(cButtonIntegrator.wC<DEBOUNCE_TIME){ cButtonIntegrator.wC=0; }
+		else if((cButtonIntegrator.wC>DEBOUNCE_TIME)&&(cButtonIntegrator.wC<LONG_PRESSION)){
 		//********* ACTION FOR MENU SHORT CLICK: backlight **************
-			cIntegrator.wC=0;
+			cButtonIntegrator.wC=0;
 			bBtn = BTN_C;
-		}else if(cIntegrator.wC>LONG_PRESSION){
+		}else if(cButtonIntegrator.wC>LONG_PRESSION){
 		//********* ACTION FOR MENU LONG PRESSION: entering menu  ************
-			cIntegrator.wC=0;
+			cButtonIntegrator.wC=0;
 			bBtn = BTN_C_LONG;
 		}
 	}
-	if((bState>0)&&(!bBtnAPressed)){ cIntegrator.wA++; }
+	if(!bBtnAPressed){ cButtonIntegrator.wA++; }
 	else{
-		if(cIntegrator.wA<DEBOUNCE_TIME){ cIntegrator.wA=0; }
+		if(cButtonIntegrator.wA<DEBOUNCE_TIME){ cButtonIntegrator.wA=0; }
 		else{
 			bBtn = BTN_A;
-			cIntegrator.wA=0;
+			cButtonIntegrator.wA=0;
 		}
 	}
 	
-	if((bState>0)&&(!bBtnBPressed)){ cIntegrator.wB++; }
+	if(!bBtnBPressed){ cButtonIntegrator.wB++; }
 	else{
-		if(cIntegrator.wB<DEBOUNCE_TIME){ cIntegrator.wB=0; }
+		if(cButtonIntegrator.wB<DEBOUNCE_TIME){ cButtonIntegrator.wB=0; }
 		else{
 			bBtn = BTN_B;
-			cIntegrator.wB=0;
+			cButtonIntegrator.wB=0;
 		}
 	}
 	
-/* ******************* RTC ******************** */	
+/* ******************************* RTC ******************************** */	
 
 	if(tTime.wMilli<99) tTime.wMilli++;
 	else{
 		tTime.wMilli=0;
-		if(tTime.bSec<59) tTime.bSec++;
+		if(tTime.bSec<59){ tTime.bSec++; bTimeColonToToggle=1; }
 		else{
 			tTime.bSec=0;
 			if(tTime.bMin<59) tTime.bMin++;
@@ -453,15 +467,30 @@ ISR(TIMER0_COMP_vect){
 					bDateChanged=1;
 				}				
 			}
-			bTimeChanged=1;
+			bTimeChanged=1;		// refresh quote every min
 		}
+		//bTimeChanged=1;  //refresh quote every sec
 	}
 	bPriLev = bOldPriLev;
 }
 
+/*************************** Timer2 Interrupt *****************************/
+ISR(TIMER2_COMP_vect){
+	if(bPriLev<PRI_TIMER2) return;
+	byte bOldPriLev = bPriLev;
+	
+	// Timer2_INT every 10ms --> for 5 seconds: 5/10e^(-3)
+	if(wBacklightCounter<300){ wBacklightCounter++; return; }
+	wBacklightCounter=0;
+	STOP_BACKLIGHT();
+	
+	bPriLev = bOldPriLev;
+}	
+
+/****************************  ADC Interrupt ******************************/
 ISR(ADC_vect){
 	if(bPriLev<PRI_ADC) return;
-	uint8_t bOldPriLev = bPriLev;
+	byte bOldPriLev = bPriLev;
 	
 	if(wCount_adc < 5000){		// to implement: average of values catched, MULTIPLEX for humidity
 		wCount_adc++;
@@ -472,14 +501,17 @@ ISR(ADC_vect){
 	bPriLev = bOldPriLev;
 }
 
+
+
 /*******************************************************************/
 /*******************************************************************/
 
 void _init(){
+	/******************* Pin Configuration ***********************/
 	DDRA = 0xff;		// PORTA = output
+	DDRB = 0x1;			// PORTB.0 = output (backlight)
 	
-	DDRC = 0x13;		//
-	PORTD = 0x13;		// pins 0,1,4 of PORTC are pulled high
+	PORTD = 0x13;		// pins 0,1,4 of PORTD are pulled high
 	
 	
 	/******************* ADC Setup *********************/
@@ -490,9 +522,9 @@ void _init(){
 	
 	
 	/******************* PWM Setup *********************/
-	DDRB |= (1<<PB7);
-	OCR2 = 64;
-	TCCR2 = (1<<WGM21)|(1<<WGM20)|(1<<COM21)|(1<<CS20)|(1<<CS21);
+	//DDRB |= (1<<PB7);
+	//OCR2 = 64;
+	//TCCR2 = (1<<WGM21)|(1<<WGM20)|(1<<COM21)|(1<<CS20)|(1<<CS21);
 	
 	
 	/******************* LCD Setup *********************/
@@ -508,19 +540,27 @@ void _init(){
 	TIMSK |= (1<<OCIE0);						// Output compare match interrupt enable
 	OCR0 = 156;									// Interrupt every 10ms
 	
+	/******************* Timer2 setup: backlight *********************/
+	//TCCR2 |= (1<<CS22)|(0<<CS21)|(1<<CS20);		// clock: F_CPU / 1024
+	TCCR2 |= (1<<WGM21)|(0<<WGM20);				// Clear Timer on Compare
+	TIMSK |= (1<<OCIE2);						// Output compare match interrupt enable
+	OCR2 = 156;									// Interrupt every 10ms
 	
+		
 	sei();
 	ADCSRA |= 1<<ADSC;		// ADC Start Conversion
 }
 
 
 void getTemperature(){
+	sreg = MCUSR;
 	cli();				//	togliamo le int durante l'esecuzione di questo codice: operazioni con float
 	dVp = VM + ADC * VREF/(1024*GAIN);
 	dRpt = (dVp*(R1+R2) - VREF*R2)/(VREF - dVp);
 	dTemperature = (dRpt-RPT0) / K;
 	bTempChanged=1;
 	sei();
+	MCUSR = sreg;
 }
 
 
@@ -534,9 +574,12 @@ void refreshQuote(){
 	if(!bTimeChanged){ NULL; }
 	else{
 		bTimeChanged=0;
-		sprintf(str, "%02d:%02d", tTime.bHour, tTime.bMin, tTime.bSec);
-		//LCDWriteStringXY(0,0,"        ");
-		LCDWriteStringXY(11,0,str);
+		//sprintf(str, "%02d:%02d:%02d", tTime.bHour, tTime.bMin, tTime.bSec);
+		//LCDWriteStringXY(8,0,str);
+		sprintf(str, "%02d", tTime.bHour);
+		LCDWriteStringXY(11, 0, str);
+		sprintf(str, "%02d", tTime.bMin);
+		LCDWriteStringXY(14, 0, str);
 	}
 	if(!bTempChanged){ NULL; }
 	else{
@@ -547,12 +590,12 @@ void refreshQuote(){
 	}
 }
 
-int isLeapYear(uint8_t year){
+int isLeapYear(byte year){
 	if((year%4)==0) return 1;
 	return 0;
 }
 
-void changeEditTime(uint8_t bPosition, uint8_t bButton){
+void changeEditTime(byte bPosition, byte bButton){
 	
 	int bHunita;
 	int bHdecine;
@@ -593,7 +636,7 @@ void changeEditTime(uint8_t bPosition, uint8_t bButton){
 	
 }
 
-void changeEditDate(uint8_t bPosition, uint8_t bButton){
+void changeEditDate(byte bPosition, byte bButton){
 	
 	int bYunita;
 	int bYdecine;
@@ -633,12 +676,11 @@ void changeEditDate(uint8_t bPosition, uint8_t bButton){
 		default:
 			break;
 	}
-	//checkDate(tTimeEditing, &aDays[0]);
-	
 }
 
-int checkDate(TIME_DATE *time, uint8_t * days){		// se bDay supera il valore massimo del corrispondente bMonth,
-														// esso viene portato al massimo valore consentito.
+int checkDate(TIME_DATE *time, byte * days){	
+	/* se bDay supera il valore massimo del corrispondente bMonth,	 *
+	 * esso viene portato al massimo valore consentito.				 */
 	
 	if(time->bDay > days[time->bMonth-1]){
 		time->bDay = days[time->bMonth-1];
@@ -647,11 +689,20 @@ int checkDate(TIME_DATE *time, uint8_t * days){		// se bDay supera il valore mas
 	return 0;
 }
 
-
+void toggleTimeColon(){
+	if(bTimeCommaState){
+		LCDWriteStringXY(13, 0, ":");
+		bTimeCommaState=0;
+	}else{
+		LCDWriteStringXY(13, 0, " ");
+		bTimeCommaState=1;
+	}
+}
 
 
 
 // PAx --> Offset del pin x all'interno del registro PINA
-//
+// DDxn = 1 --> Pxn = output pin, DDxn = 0 --> Pxn = input pin
+// 
 //
 
