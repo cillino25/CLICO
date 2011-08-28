@@ -5,7 +5,6 @@
  *  Author: cillino
  */ 
 
-
 #ifndef CLICO_H_
 #define CLICO_H_
 
@@ -23,8 +22,12 @@
 #include <util/24c.h>
 #include <util/atomic.h>
 
+
+
+
 typedef uint8_t byte;
 typedef uint16_t word;
+typedef uint32_t longword;
 
 
 typedef struct{
@@ -35,12 +38,47 @@ typedef struct{
 	byte bDay;
 	byte bMonth;
 	byte bYear;
-} TIME_DATE;
+} time_date;
+
+typedef struct{
+	byte bMin;
+	byte bHour;
+} time;
+
+typedef struct{
+	word wA;
+	word wB;
+	word wC;
+	word wAB;
+} count;
+
+typedef struct{
+	byte val_int;
+	byte val_dec;
+} read;
+
+/************************* MiddleWare ***************************/
+
+#define BUTTON_PORT		PORTE
+#define BUTTON_PINS		PINE
+#define BACKLIGHT_PORT	PORTB
 
 
 
-#define DEBOUNCE_TIME 15		// RTC counting tens of milliseconds: this is 150ms!
-#define LONG_PRESSION 100		// and this 1s.
+
+/************************* Constants ****************************/
+
+#define DEBOUNCE_TIME		15		// RTC counting tens of milliseconds: this is 150ms!
+#define LONG_PRESSION_TIME	100		// and this 1s.
+#define BACKLIGHT_TIME		300
+
+#define NUMBER_OF_OPTIONS		7
+#define NUMBER_OF_CONVERSIONS	100
+#define NUMBER_OF_GARBAGE		20
+
+#define TEMPERATURE		0
+#define HUMIDITY		1
+
 
 // Variabili per il calcolo della temperatura
 #define VREF 5.0
@@ -48,60 +86,10 @@ typedef struct{
 #define R2 1100.0
 #define RPT0 100
 #define VM 2.5
-#define K 0.3878461538
+#define K_Rpt 0.3878461538
 #define GAIN 200.0
 
-#define NUMBER_OF_OPTIONS 7
-
-
-#define BACKLIGHT_ON() PORTB |= 0x1;
-#define BACKLIGHT_OFF() PORTB &= 0xfe;
-
-#define START_BACKLIGHT()\
-	PORTB |= 0x1;\
-	TCCR2 |= (1<<CS22)|(0<<CS21)|(1<<CS20);
-	
-#define STOP_BACKLIGHT()\
-	PORTB &= 0xfe;\
-	TCCR2 &= (0<<CS22)|(0<<CS21)|(0<<CS20);
-
-
-#define EDIT_TIME_DATE(bPos, bBtnUP, bBtnDOWN, bPressed, bMod, decine, unita, b2DigitMax, b1DigitMax)\
-	if(bPos==0){\
-		if(bPressed==bBtnUP && bMod<((b2DigitMax-1)*10+(b1DigitMax+1))){ bMod += 10; }\
-		else if(bPressed == bBtnDOWN && bMod > 9){ bMod -= 10; }\
-	}else{\
-		if(bPressed==bBtnUP && (unita<(b1DigitMax))){ bMod = decine*10 + (++unita);	}\
-		else if(bPressed==bBtnUP && (decine<(b2DigitMax)) && (unita<9)){ bMod = decine*10 + (++unita);	}\
-		else if(bPressed==bBtnDOWN && (unita>0)){ bMod = decine*10 + (--unita);	}else{ NULL; }\
-	} 
-
-
-
-/****************************** LCD Macros ******************************/
-
-#define LCD_CURSOR_LEFT_N(n) for(int i=0; i<n; i++) LCDCmd(0x10);
-#define LCD_CURSOR_RIGHT_N(n) for(int i=0; i<n; i++) LCDCmd(0x14);
-
-//changes cursor position keeping it in the same row
-#define LCD_SET_CURSOR_POSITION(n)\
-		LCDHome(); LCD_CURSOR_RIGHT_N(n)
-
-#define LCD_RESET()\
-		LCDClear(); LCDCmd(0x02); LCDCmd(0x0C);
-
-
-/****************************** Button values ***************************************/
-
-/* bBtn:	0=nessun bottone premuto
- *			1=non usata (rendiamo pari ciò che sarebbe dispari)
- *			2=btnA
- *			3=btnA_Long
- *			4=btnB
- *			5=btnB_Long
- *			6=btnC
- *			7=btnC_Long
- */
+/*  bBtn  */
 #define NO_BTN		0
 #define BTN_A		2
 #define BTN_A_LONG	3
@@ -109,40 +97,29 @@ typedef struct{
 #define BTN_B_LONG	5
 #define BTN_C		6
 #define BTN_C_LONG	7
+#define BTN_AB		8
+#define BTN_AB_LONG	9
 
 
-/******************************************* State Values *************************************************/
-
-/*		bState: depending on its value the display and the mcu will behave differently.
- *		bState=0: idle - normal condition; the display will show dTemperature, humidity and the clock.
- *			=1:  menu - entered here from long-pression of a button (button C).
- *			=2,3... : various sub-menu levels (such as USB transfer, BACKLIGHT)
- */
+/*  bState  */
 #define STATE_IDLE						0
 #define STATE_MENU						1
 #define STATE_EDIT_DATE					2
 #define STATE_EDIT_DATE_CONFIRM			3
 #define STATE_EDIT_TIME					4
 #define STATE_EDIT_TIME_CONFIRM			5
+#define STATE_EDIT_TIMEZONE				6
+#define STATE_EDIT_TIMEZONE_CONFIRM		7
 
 
 
-/*		bSelectionMenu
- */
+/*  bSelectionMenu  */
 #define SEL_TIMEZONE	0
 #define SEL_DATE		1
 #define SEL_TIME		2
 
 
-/******************************************** Priority Level values *******************************************/
-
-/*	bPriLev: livello di priorità
- *		     =1  -->timer0_int
- *			 =2  -->ADC_int
- *			 =3  -->timer2_int
- *			 ..
- *			 =9  -->idle(main)
- */
+/*	bPriLev  */
 #define PRI_TIMER0	1
 #define PRI_ADC		2
 #define PRI_TIMER2	3
@@ -158,32 +135,76 @@ typedef struct{
 #define BIT6	64
 #define BIT7	128
 
+
+#define CLOCK_CURSOR_POSITION	11
+#define ZONE_CURSOR_POSITION	15
+#define TEMP_CURSOR_POSITION	2	
+#define HUM_CURSOR_POSITION		11
+
+/***********************************************************************/
+
+// ADC1 (V+) - ADC0 (V-), Gain=200
+#define ADC_SET_TEMPERATURE_CHANNEL()\
+	ADMUX=0;\
+	ADMUX |= (1<<MUX3)|(1<<MUX1)|(1<<MUX0);
+
+#define ADC_SET_HUMIDITY_CHANNEL()\
+	ADMUX=0;\
+	ADMUX |= (1<<MUX1);
+
+#define BACKLIGHT_ON() BACKLIGHT_PORT |= 0x1;
+#define BACKLIGHT_OFF() BACKLIGHT_PORT &= 0xfe;
+
+
+#define START_BACKLIGHT()\
+	BACKLIGHT_PORT |= 0x1;\
+	TCCR2 |= (1<<CS22)|(0<<CS21)|(1<<CS20);
+	
+#define STOP_BACKLIGHT()\
+	BACKLIGHT_PORT &= 0xfe;\
+	TCCR2 &= (0<<CS22)|(0<<CS21)|(0<<CS20);
+
+
+/****************************** LCD Macros ******************************/
+
+#define LCD_CURSOR_LEFT_N(n) for(int i=0; i<n; i++) LCDCmd(0x10);
+#define LCD_CURSOR_RIGHT_N(n) for(int i=0; i<n; i++) LCDCmd(0x14);
+
+//changes cursor position keeping it in the same row
+#define LCD_SET_CURSOR_POSITION(n)\
+		LCDHome(); LCD_CURSOR_RIGHT_N(n)
+
+#define LCD_RESET()\
+		LCDClear(); LCDCmd(0x02); LCDCmd(0x0C);
+
+
+/*************************************************************************/
+#define EDIT_TIME_DATE(bPos, bBtnUP, bBtnDOWN, bPressed, bMod, decine, unita, b2DigitMax, b1DigitMax)\
+	if(bPos==0){\
+		if(bPressed==bBtnUP && bMod<((b2DigitMax-1)*10+(b1DigitMax+1))){ bMod += 10; }\
+		else if(bPressed == bBtnDOWN && bMod > 9){ bMod -= 10; }\
+	}else{\
+		if(bPressed==bBtnUP && (unita<(b1DigitMax))){ bMod = decine*10 + (++unita);	}\
+		else if(bPressed==bBtnUP && (decine<(b2DigitMax)) && (unita<9)){ bMod = decine*10 + (++unita);	}\
+		else if(bPressed==bBtnDOWN && (unita>0)){ bMod = decine*10 + (--unita);	}else{ NULL; }\
+	} 
+
+
+
 /*********************************** Headers *****************************************/
 
 void _init(void);
-void getTemperature(void);
+double getTemperature(void);
+byte getHumidity(void);
+void multiplexADChannel(void);
+double ADC_average(double * valuesDOUBLE, byte * valuesBYTE);
 void refreshQuote(void);
 int isLeapYear(byte year);
 void changeEditDate(byte bPosition, byte bButton);
 void changeEditTimeDate(byte bPosition, byte bButton);
-int checkDate(TIME_DATE *time, byte* days);
+int checkDate(time_date *time, byte* days);
 void toggleTimeColon(void);
-
-//void writeLCD(int caller);
-							/*	Function that displays the content on the LCD depending on the state of the machine.
-							*	"caller" is helpful to recognize if the LCD is really to be refreshed:
-							*	it could be that the function shouldn't write the display for the event who called it;
-							*	for instance, if the menu is running and the RTC calls for
-							*	a LCD write, this one mustn't be done.
-							*
-							*
-							*	state: global variable;
-							*
-							*	caller  =0: RTC+temp / idle
-							*			=1: menu
-							*			=2: backlight
-							*			=3: timezone submenu
-							*/
+int round_(double x);
 
 char *itoa(int value, char * str, int base);
 int sprintf(char * str, const char * format, ...);

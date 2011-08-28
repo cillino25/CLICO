@@ -12,48 +12,46 @@ Hungarian notation:
 	l - longword (32 bit)
 	f - float (32 bit)
 	d - double (64 bit)
-	
-
 */
 
 #include "CLICO.h"
 
 
-typedef struct{
-	word wA;
-	word wB;
-	word wC;
-} COUNT;
-
-byte aDays[12]={31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-volatile byte sreg;
-
-volatile TIME_DATE tTime;
-volatile TIME_DATE tTimeEditing;
-volatile COUNT cButtonIntegrator;
+volatile time_date tTime;
+volatile time_date tTimeEditing;
+volatile count cButtonIntegrator;
 
 volatile byte bTimeChanged;
 volatile byte bDateChanged=1;
 volatile byte bTempChanged;
+volatile byte bHumChanged;
 volatile byte bFirst=1;
+
+volatile word wADC_garbage;
+volatile word wADC_counts;
+volatile byte bChannel;
+
+volatile word wBacklightCounter;
 
 volatile double dVp;
 volatile double dRpt;
-
-volatile word wCount_eInt0, wCount_adc;
 volatile double dTemperature;
+volatile double adTemperature[NUMBER_OF_CONVERSIONS];
 volatile double dTemperatureOld;
 
-volatile byte bBacklight;
-volatile word wBacklightCounter;
+volatile double AD;
+volatile double dRH;
+volatile double dRH_comp;
+volatile double dVout;
+volatile byte bHumidity;
+volatile byte adHumidity[NUMBER_OF_CONVERSIONS];
+volatile byte bSfo;
 
 volatile byte bBtnAPressed;
 volatile byte bBtnBPressed;
 volatile byte bBtnCPressed;
 volatile byte bInhibite;
 volatile byte bPort;
-volatile byte bBtn;
-
 							
 volatile byte bSelectionMenu;
 volatile byte bSelectionMenuChanged;
@@ -61,22 +59,24 @@ volatile byte bSelectionDate;
 volatile byte bSelectionDateChanged;
 volatile byte bSelectionTime;
 volatile byte bSelectionTimeChanged;
-volatile byte bPriLev;
-volatile byte bState=STATE_IDLE;
 volatile byte bTimeCommaState;
 volatile byte bTimeColonToToggle;
 
+volatile byte bZone=1;
+volatile time tZ1;
+volatile time tZ2;
 
-char temp_str[5]="";
+volatile byte sreg;
+volatile byte bPriLev;
+volatile byte bState=STATE_IDLE;
+volatile byte bBtn;
+
 char str[10]="";
 char options[NUMBER_OF_OPTIONS+1][16]={"1.Timezone     ","2.Date         ", "3.Time         ",
 					"4.USB transfer ", "5.hello        ", "6.world        ", "7.osti         ", "               "};
 
-char tmp_str[13]="";
-char rtc_LCD_str[8]="";
 
-char white_str[16]="               ";
-
+byte aDays[12]={31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
 
 /******************************************************************************/
@@ -87,12 +87,9 @@ int main(void){
 	
 	bPriLev=PRI_MAIN;
 	
-	
-	
 	tTime.bDay=7;
 	tTime.bMonth=8;
 	tTime.bYear=11;
-	
 	
 	
 	
@@ -146,7 +143,7 @@ int main(void){
 						bSelectionMenu++;
 						bSelectionMenu %= NUMBER_OF_OPTIONS;
 						bSelectionMenuChanged=1;
-						bBtn=0;
+						bBtn=NO_BTN;
 						break;
 					
 					case BTN_B:
@@ -154,19 +151,21 @@ int main(void){
 						else bSelectionMenu=(NUMBER_OF_OPTIONS-1);
 						bSelectionMenu %= NUMBER_OF_OPTIONS;
 						bSelectionMenuChanged=1;
-						bBtn=0;
+						bBtn=NO_BTN;
 						break;
 					
 					case BTN_C:
 						switch(bSelectionMenu){
-							case SEL_TIMEZONE:
-								break;
 							case SEL_DATE:
 								bState = STATE_EDIT_DATE;
 								bBtn = NO_BTN;
 								break;
 							case SEL_TIME:
 								bState = STATE_EDIT_TIME;
+								bBtn = NO_BTN;
+								break;
+							case SEL_TIMEZONE:
+								bState = STATE_EDIT_TIMEZONE;
 								bBtn = NO_BTN;
 								break;
 							default:
@@ -375,7 +374,22 @@ int main(void){
 					}
 				break;
 				
-			
+/*--------------------------------------------------------------------------------------------------*/
+			case STATE_EDIT_TIMEZONE:
+				switch(bBtn){
+					case NO_BTN:
+						if(bFirst){
+							bFirst=0;
+							LCDClear();
+							LCDWriteStringXY(0,0, "Edit timezone:");
+							LCDWriteStringXY(0,1,"1=");
+							
+						}
+						break;
+					default:
+						break;
+				}
+				break;
 			default:
 				break;
 		}
@@ -397,23 +411,23 @@ ISR(TIMER0_COMP_vect){
 	bPriLev=PRI_TIMER0;
 	
 /*	*************** FILTERS **************	*/
-	bPort = PIND;
+	bPort = BUTTON_PINS;
 	bBtnAPressed = bPort & BIT0;		// UP
 	bBtnBPressed = bPort & BIT4;		// DOWN
 	bBtnCPressed = bPort & BIT1;		// MENU
-	if(!bBtnCPressed&&(!bInhibite)){  // bBtnXPressed=0  -->bottone x premuto! (collegati a massa)
+	// bBtnXPressed=0  -->bottone x premuto! (collegati a massa)
+	
+	if(!bBtnCPressed&&(!bInhibite)){
 		cButtonIntegrator.wC++;
-		if(cButtonIntegrator.wC>LONG_PRESSION){ bInhibite=1; }
+		if(cButtonIntegrator.wC>LONG_PRESSION_TIME){ bInhibite=1; }
 	}
 	else{
 		if(bBtnCPressed!=0){ bInhibite=0; }
 		if(cButtonIntegrator.wC<DEBOUNCE_TIME){ cButtonIntegrator.wC=0; }
-		else if((cButtonIntegrator.wC>DEBOUNCE_TIME)&&(cButtonIntegrator.wC<LONG_PRESSION)){
-		//********* ACTION FOR MENU SHORT CLICK: backlight **************
+		else if((cButtonIntegrator.wC>DEBOUNCE_TIME)&&(cButtonIntegrator.wC<LONG_PRESSION_TIME)){
 			cButtonIntegrator.wC=0;
 			bBtn = BTN_C;
-		}else if(cButtonIntegrator.wC>LONG_PRESSION){
-		//********* ACTION FOR MENU LONG PRESSION: entering menu  ************
+		}else if(cButtonIntegrator.wC>LONG_PRESSION_TIME){
 			cButtonIntegrator.wC=0;
 			bBtn = BTN_C_LONG;
 		}
@@ -426,7 +440,6 @@ ISR(TIMER0_COMP_vect){
 			cButtonIntegrator.wA=0;
 		}
 	}
-	
 	if(!bBtnBPressed){ cButtonIntegrator.wB++; }
 	else{
 		if(cButtonIntegrator.wB<DEBOUNCE_TIME){ cButtonIntegrator.wB=0; }
@@ -435,9 +448,18 @@ ISR(TIMER0_COMP_vect){
 			cButtonIntegrator.wB=0;
 		}
 	}
+	if((!bBtnAPressed)&&(!bBtnBPressed)){ cButtonIntegrator.wAB++; }
+	else{
+		if(cButtonIntegrator.wAB<DEBOUNCE_TIME){ cButtonIntegrator.wAB=0; }
+		else{
+			bBtn = BTN_AB;
+			cButtonIntegrator.wAB=0;
+		}
+	}
+	
 	
 /* ******************************* RTC ******************************** */	
-
+	
 	if(tTime.wMilli<99) tTime.wMilli++;
 	else{
 		tTime.wMilli=0;
@@ -474,13 +496,12 @@ ISR(TIMER0_COMP_vect){
 	bPriLev = bOldPriLev;
 }
 
-/*************************** Timer2 Interrupt *****************************/
+/*************************** Timer2 Interrupt / Backlight *****************************/
 ISR(TIMER2_COMP_vect){
 	if(bPriLev<PRI_TIMER2) return;
 	byte bOldPriLev = bPriLev;
 	
-	// Timer2_INT every 10ms --> for 5 seconds: 5/10e^(-3)
-	if(wBacklightCounter<300){ wBacklightCounter++; return; }
+	if(wBacklightCounter<BACKLIGHT_TIME){ wBacklightCounter++; return; }
 	wBacklightCounter=0;
 	STOP_BACKLIGHT();
 	
@@ -492,15 +513,46 @@ ISR(ADC_vect){
 	if(bPriLev<PRI_ADC) return;
 	byte bOldPriLev = bPriLev;
 	
-	if(wCount_adc < 5000){		// to implement: average of values catched, MULTIPLEX for humidity
-		wCount_adc++;
+	sreg = MCUSR;	// togliamo le int durante l'esecuzione di questo codice: operazioni con float
+	cli();
+	
+	if(wADC_garbage < NUMBER_OF_GARBAGE){	// some of the values are not considered
+		wADC_garbage++;
 	}else{
-		wCount_adc=0;
-		getTemperature();
+		wADC_garbage=0;
+		if(wADC_counts<NUMBER_OF_CONVERSIONS){	
+			switch(bChannel){
+				case TEMPERATURE:
+					adTemperature[wADC_counts]=getTemperature();
+					break;
+				case HUMIDITY:
+					adHumidity[wADC_counts]=getHumidity();
+					break;
+				default: break;
+			}
+			wADC_counts++;
+		}else{
+			wADC_counts=0;
+			switch(bChannel){
+				case TEMPERATURE:
+					dTemperature=ADC_average(adTemperature, NULL);
+					bTempChanged=1;
+					break;
+				case HUMIDITY:
+					bHumidity = round_(ADC_average(NULL, adHumidity));
+					bHumChanged=1;
+					break;
+				default: break;
+			}
+			multiplexADChannel();
+		}
 	}
+	
+	sei();
+	MCUSR=sreg;
+	
 	bPriLev = bOldPriLev;
 }
-
 
 
 /*******************************************************************/
@@ -511,13 +563,11 @@ void _init(){
 	DDRA = 0xff;		// PORTA = output
 	DDRB = 0x1;			// PORTB.0 = output (backlight)
 	
-	PORTD = 0x13;		// pins 0,1,4 of PORTD are pulled high
+	BUTTON_PORT = 0x13;		// pins 0,1,4 of BUTTON_PORT (portE) are pulled high
 	
 	
-	/******************* ADC Setup *********************/
+	/******************* ADC Setup / Temperature first *********************/
 	ADCSRA = (1<<ADPS2)|(1<<ADPS1)|(1<<ADPS0);		// ADC Prescaler = Fck/128
-	//ADMUX = (1<<ADLAR);							// Left-adjusting result
-	ADMUX |= (1<<MUX3)|(1<<MUX1)|(1<<MUX0);			// ADC1 (V+) - ADC0 (V-), Gain=200
 	ADCSRA |= (1<<ADFR)|(1<<ADEN)|(1<<ADIE);		// Free-running mode, enabling ADC and ADC Interrupt
 	
 	
@@ -530,21 +580,25 @@ void _init(){
 	/******************* LCD Setup *********************/
 	InitLCD(0);
 	LCDClear();
-	LCDWriteStringXY(11,0,"00:00");
-	LCDWriteStringXY(0,1,"T= 0.00");
+	LCDWriteStringXY(CLOCK_CURSOR_POSITION,0,"00:00");
+	LCDWriteStringXY(0,1,"T=00.0");
+	LCDByte(0b11011111, 1);		// Scrive il carattere °: dalla tabella 4 del datasheet HD44780.pdf vediamo che il carattere è 11011111;
+								// lo mandiamo come byte (LCDByte()) sapendo che dobbiamo mettere RS a 1 (dato!)
+	LCDWriteStringXY(HUM_CURSOR_POSITION-4, 1, "C_H=88%");
+	LCDWriteStringXY(ZONE_CURSOR_POSITION-1,1,"_1");
 	
 	
 	/******************* RTC Setup *********************/
-	TCCR0 |= (1<<CS02)|(1<<CS01)|(1<<CS00);		// clock: F_CPU / 1024
-	TCCR0 |= (1<<WGM01)|(0<<WGM00);				// Clear Timer on Compare
-	TIMSK |= (1<<OCIE0);						// Output compare match interrupt enable
-	OCR0 = 156;									// Interrupt every 10ms
+	TCCR0 |= (1<<CS02)|(1<<CS01)|(1<<CS00);			// clock: F_CPU / 1024
+	TCCR0 |= (1<<WGM01)|(0<<WGM00);					// Clear Timer on Compare
+	TIMSK |= (1<<OCIE0);							// Output compare match interrupt enable
+	OCR0 = 156;										// Interrupt every 10ms
 	
 	/******************* Timer2 setup: backlight *********************/
 	//TCCR2 |= (1<<CS22)|(0<<CS21)|(1<<CS20);		// clock: F_CPU / 1024
-	TCCR2 |= (1<<WGM21)|(0<<WGM20);				// Clear Timer on Compare
-	TIMSK |= (1<<OCIE2);						// Output compare match interrupt enable
-	OCR2 = 156;									// Interrupt every 10ms
+	TCCR2 |= (1<<WGM21)|(0<<WGM20);					// Clear Timer on Compare
+	TIMSK |= (1<<OCIE2);							// Output compare match interrupt enable
+	OCR2 = 156;										// Interrupt every 10ms
 	
 		
 	sei();
@@ -552,41 +606,94 @@ void _init(){
 }
 
 
-void getTemperature(){
-	sreg = MCUSR;
-	cli();				//	togliamo le int durante l'esecuzione di questo codice: operazioni con float
+double getTemperature(){
+	double temp;
 	dVp = VM + ADC * VREF/(1024*GAIN);
 	dRpt = (dVp*(R1+R2) - VREF*R2)/(VREF - dVp);
-	dTemperature = (dRpt-RPT0) / K;
-	bTempChanged=1;
+	temp = (dRpt-RPT0) / K_Rpt;
+	
+	return temp;
+}
+
+byte getHumidity(void){
+	AD = ADC;
+	dVout = 5*(AD/1024);
+	dRH = (dVout - 0.16*VREF)/(VREF*0.0062);
+	dRH_comp = dRH/(1.0546-0.00216*(round_(dTemperature)));
+	return round_(dRH_comp);
+}
+
+void multiplexADChannel(){
+	switch(bChannel){
+		case TEMPERATURE:
+			ADC_SET_HUMIDITY_CHANNEL();
+			bChannel=HUMIDITY;
+			break;
+		case HUMIDITY:
+			ADC_SET_TEMPERATURE_CHANNEL();
+			bChannel = TEMPERATURE;
+			break;
+		default: break;
+	}
+}
+
+double ADC_average(double * valuesDOUBLE, byte * valuesBYTE){
+	sreg = MCUSR;
+	cli();
+	
+	double value;
+	double sumA=0;
+	word sumB=0;
+	byte i;
+	if(valuesDOUBLE != NULL){
+		for(i=0;i<NUMBER_OF_CONVERSIONS;i++){
+			sumA+=valuesDOUBLE[i];
+		}
+		value=sumA/i;
+	}else{
+		for(i=0;i<NUMBER_OF_CONVERSIONS;i++){
+			sumB+=valuesBYTE[i];
+		}
+		value=sumB/i;
+	}	
+	
+	
 	sei();
 	MCUSR = sreg;
+	return value;
 }
 
 
 void refreshQuote(){
-	if(!bDateChanged){ NULL; }
-	else{
+	if(bDateChanged){
 		bDateChanged=0;
 		sprintf(str, "%02d/%02d/%02d,", tTime.bDay, tTime.bMonth, tTime.bYear);
 		LCDWriteStringXY(0,0,str);
 	}
-	if(!bTimeChanged){ NULL; }
-	else{
+	if(bTimeChanged){
 		bTimeChanged=0;
 		//sprintf(str, "%02d:%02d:%02d", tTime.bHour, tTime.bMin, tTime.bSec);
 		//LCDWriteStringXY(8,0,str);
 		sprintf(str, "%02d", tTime.bHour);
-		LCDWriteStringXY(11, 0, str);
+		LCDWriteStringXY(CLOCK_CURSOR_POSITION, 0, str);
 		sprintf(str, "%02d", tTime.bMin);
-		LCDWriteStringXY(14, 0, str);
+		LCDWriteStringXY(CLOCK_CURSOR_POSITION+3, 0, str);
 	}
-	if(!bTempChanged){ NULL; }
-	else{
+	if(bTempChanged){
 		bTempChanged=0;
-		sprintf(temp_str, "%05.2f", dTemperature);		// float printed with 5 digits (dot included), 2 of which are decimal, zero padded
-		LCDWriteStringXY(0,1, "T= ");
-		LCDWriteStringXY(3,1, temp_str);
+		sprintf(str, "%04.1f", dTemperature);		// float printed with 4 digits (dot included), 1 of which are decimal, zero padded
+		LCDWriteStringXY(0,1, "T=");
+		LCDWriteStringXY(TEMP_CURSOR_POSITION,1, str);
+	}
+	if(bHumChanged){
+		bHumChanged=0;
+		sprintf(str, "%2d", bHumidity);
+		LCDWriteStringXY(HUM_CURSOR_POSITION, 1, str);
+		if(bHumidity>99){ bSfo=1; }		// se l'umidità arriva al 100% cancella il carattere '%':
+		if(bHumidity<100 && bSfo){		// lo ripristiniamo in questo modo.
+			bSfo=0;
+			LCDWriteStringXY(HUM_CURSOR_POSITION+2,1,"%");
+		}
 	}
 }
 
@@ -678,7 +785,7 @@ void changeEditDate(byte bPosition, byte bButton){
 	}
 }
 
-int checkDate(TIME_DATE *time, byte * days){	
+int checkDate(time_date *time, byte * days){	
 	/* se bDay supera il valore massimo del corrispondente bMonth,	 *
 	 * esso viene portato al massimo valore consentito.				 */
 	
@@ -691,12 +798,17 @@ int checkDate(TIME_DATE *time, byte * days){
 
 void toggleTimeColon(){
 	if(bTimeCommaState){
-		LCDWriteStringXY(13, 0, ":");
+		LCDWriteStringXY(CLOCK_CURSOR_POSITION+2, 0, ":");
 		bTimeCommaState=0;
 	}else{
-		LCDWriteStringXY(13, 0, " ");
+		LCDWriteStringXY(CLOCK_CURSOR_POSITION+2, 0, " ");
 		bTimeCommaState=1;
 	}
+}
+
+int round_(double x){
+	if((x-((int)x))>0.5) return ((int)x)+1;
+	else return (int)x;
 }
 
 
