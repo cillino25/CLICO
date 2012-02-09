@@ -1,19 +1,19 @@
 # 1 ".././CLICO.c"
-# 1 "D:\\My Dropbox\\internal_sharing\\AVRStudio\\CLICO\\CLICO\\Debug//"
+# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\AVRStudio\\CLICO\\CLICO\\Debug//"
 # 1 "<built-in>"
 # 1 "<command-line>"
 # 1 ".././CLICO.c"
-# 19 ".././CLICO.c"
+# 17 ".././CLICO.c"
 # 1 ".././CLICO.h" 1
-# 16 ".././CLICO.h"
-# 1 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/avr/io.h" 1
-# 99 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/avr/io.h"
-# 1 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/avr/sfr_defs.h" 1
-# 126 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/avr/sfr_defs.h"
-# 1 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/inttypes.h" 1
-# 37 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/inttypes.h"
-# 1 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/stdint.h" 1
-# 121 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/stdint.h"
+# 24 ".././CLICO.h"
+# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/io.h" 1
+# 99 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/io.h"
+# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/sfr_defs.h" 1
+# 126 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/sfr_defs.h"
+# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/inttypes.h" 1
+# 37 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/inttypes.h"
+# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/stdint.h" 1
+# 121 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/stdint.h"
 typedef int int8_t __attribute__((__mode__(__QI__)));
 typedef unsigned int uint8_t __attribute__((__mode__(__QI__)));
 typedef int int16_t __attribute__ ((__mode__ (__HI__)));
@@ -23,14 +23,14 @@ typedef unsigned int uint32_t __attribute__ ((__mode__ (__SI__)));
 
 typedef int int64_t __attribute__((__mode__(__DI__)));
 typedef unsigned int uint64_t __attribute__((__mode__(__DI__)));
-# 142 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/stdint.h"
+# 142 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/stdint.h"
 typedef int16_t intptr_t;
 
 
 
 
 typedef uint16_t uintptr_t;
-# 159 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/stdint.h"
+# 159 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/stdint.h"
 typedef int8_t int_least8_t;
 
 
@@ -72,7 +72,7 @@ typedef int64_t int_least64_t;
 
 
 typedef uint64_t uint_least64_t;
-# 213 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/stdint.h"
+# 213 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/stdint.h"
 typedef int8_t int_fast8_t;
 
 
@@ -114,60 +114,60 @@ typedef int64_t int_fast64_t;
 
 
 typedef uint64_t uint_fast64_t;
-# 273 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/stdint.h"
+# 273 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/stdint.h"
 typedef int64_t intmax_t;
 
 
 
 
 typedef uint64_t uintmax_t;
-# 38 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/inttypes.h" 2
-# 77 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/inttypes.h"
+# 38 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/inttypes.h" 2
+# 77 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/inttypes.h"
 typedef int32_t int_farptr_t;
 
 
 
 typedef uint32_t uint_farptr_t;
-# 127 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/avr/sfr_defs.h" 2
-# 100 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/avr/io.h" 2
-# 152 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/avr/io.h"
-# 1 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/avr/iom128.h" 1
-# 153 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/avr/io.h" 2
-# 446 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/avr/io.h"
-# 1 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/avr/portpins.h" 1
-# 447 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/avr/io.h" 2
+# 127 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/sfr_defs.h" 2
+# 100 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/io.h" 2
+# 152 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/io.h"
+# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/iom128.h" 1
+# 153 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/io.h" 2
+# 446 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/io.h"
+# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/portpins.h" 1
+# 447 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/io.h" 2
 
-# 1 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/avr/common.h" 1
-# 449 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/avr/io.h" 2
+# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/common.h" 1
+# 449 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/io.h" 2
 
-# 1 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/avr/version.h" 1
-# 451 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/avr/io.h" 2
+# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/version.h" 1
+# 451 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/io.h" 2
 
 
-# 1 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/avr/fuse.h" 1
-# 239 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/avr/fuse.h"
+# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/fuse.h" 1
+# 239 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/fuse.h"
 typedef struct
 {
     unsigned char low;
     unsigned char high;
     unsigned char extended;
 } __fuse_t;
-# 454 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/avr/io.h" 2
+# 454 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/io.h" 2
 
 
-# 1 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/avr/lock.h" 1
-# 457 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/avr/io.h" 2
-# 17 ".././CLICO.h" 2
-# 1 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/avr/interrupt.h" 1
-# 18 ".././CLICO.h" 2
+# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/lock.h" 1
+# 457 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/io.h" 2
+# 25 ".././CLICO.h" 2
+# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/interrupt.h" 1
+# 26 ".././CLICO.h" 2
 
-# 1 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/string.h" 1
-# 45 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/string.h"
-# 1 "c:\\program files\\atmel\\avr studio 5.0\\extensions\\application\\avr toolchain\\bin\\../lib/gcc/avr/4.5.1/include/stddef.h" 1 3 4
-# 211 "c:\\program files\\atmel\\avr studio 5.0\\extensions\\application\\avr toolchain\\bin\\../lib/gcc/avr/4.5.1/include/stddef.h" 3 4
+# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/string.h" 1
+# 45 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/string.h"
+# 1 "c:\\program files (x86)\\atmel\\avr studio 5.0\\avr toolchain\\bin\\../lib/gcc/avr/4.5.1/include/stddef.h" 1 3 4
+# 211 "c:\\program files (x86)\\atmel\\avr studio 5.0\\avr toolchain\\bin\\../lib/gcc/avr/4.5.1/include/stddef.h" 3 4
 typedef unsigned int size_t;
-# 46 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/string.h" 2
-# 111 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/string.h"
+# 46 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/string.h" 2
+# 111 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/string.h"
 extern int ffs (int __val) __attribute__((__const__));
 extern int ffsl (long __val) __attribute__((__const__));
 extern int ffsll (long long __val) __attribute__((__const__));
@@ -206,15 +206,15 @@ extern char *strstr(const char *, const char *) __attribute__((__pure__));
 extern char *strtok(char *, const char *);
 extern char *strtok_r(char *, const char *, char **);
 extern char *strupr(char *);
-# 20 ".././CLICO.h" 2
+# 28 ".././CLICO.h" 2
 
-# 1 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/util/delay.h" 1
-# 43 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/util/delay.h"
-# 1 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/util/delay_basic.h" 1
-# 40 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/util/delay_basic.h"
+# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/util/delay.h" 1
+# 43 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/util/delay.h"
+# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/util/delay_basic.h" 1
+# 40 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/util/delay_basic.h"
 static inline void _delay_loop_1(uint8_t __count) __attribute__((always_inline));
 static inline void _delay_loop_2(uint16_t __count) __attribute__((always_inline));
-# 80 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/util/delay_basic.h"
+# 80 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/util/delay_basic.h"
 void
 _delay_loop_1(uint8_t __count)
 {
@@ -225,7 +225,7 @@ _delay_loop_1(uint8_t __count)
   : "0" (__count)
  );
 }
-# 102 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/util/delay_basic.h"
+# 102 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/util/delay_basic.h"
 void
 _delay_loop_2(uint16_t __count)
 {
@@ -236,11 +236,11 @@ _delay_loop_2(uint16_t __count)
   : "0" (__count)
  );
 }
-# 44 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/util/delay.h" 2
-# 83 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/util/delay.h"
+# 44 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/util/delay.h" 2
+# 83 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/util/delay.h"
 static inline void _delay_us(double __us) __attribute__((always_inline));
 static inline void _delay_ms(double __ms) __attribute__((always_inline));
-# 131 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/util/delay.h"
+# 131 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/util/delay.h"
 void
 _delay_ms(double __ms)
 {
@@ -250,14 +250,14 @@ _delay_ms(double __ms)
  uint32_t __ticks_dc;
  extern void __builtin_avr_delay_cycles(unsigned long);
  __tmp = ((16000000UL) / 1e3) * __ms;
-# 149 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/util/delay.h"
+# 149 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/util/delay.h"
   __ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
 
 
  __builtin_avr_delay_cycles(__ticks_dc);
-# 174 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/util/delay.h"
+# 174 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/util/delay.h"
 }
-# 208 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/util/delay.h"
+# 208 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/util/delay.h"
 void
 _delay_us(double __us)
 {
@@ -267,21 +267,248 @@ _delay_us(double __us)
  uint32_t __ticks_dc;
  extern void __builtin_avr_delay_cycles(unsigned long);
  __tmp = ((16000000UL) / 1e6) * __us;
-# 226 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/util/delay.h"
+# 226 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/util/delay.h"
   __ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
 
 
  __builtin_avr_delay_cycles(__ticks_dc);
-# 244 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/util/delay.h"
+# 244 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/util/delay.h"
 }
-# 22 ".././CLICO.h" 2
-# 1 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/util/lcd.c" 1
-# 25 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/util/lcd.c"
-# 1 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/util/lcd.h" 1
-# 9 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/util/lcd.h"
-# 1 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/util/myutils.h" 1
-# 10 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/util/lcd.h" 2
-# 44 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/util/lcd.h"
+# 30 ".././CLICO.h" 2
+# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/util/24c_.c" 1
+
+
+
+
+
+
+
+# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/util/24c_.h" 1
+
+
+
+void EEOpen(void);
+uint8_t EEWriteByte(uint16_t address, uint8_t data);
+uint8_t EEReadByte(uint16_t address);
+# 9 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/util/24c_.c" 2
+
+void EEOpen(void)
+{
+
+ (*(volatile uint8_t *)(0x70)) = 12;
+ (*(volatile uint8_t *)(0x71)) &= (~((1<<1)|(1<<0)));
+ return;
+}
+
+uint8_t EEWriteByte(uint16_t address,uint8_t data)
+{
+ do
+ {
+  (*(volatile uint8_t *)(0x74))=(1<<7)|(1<<5)|(1<<2);
+
+  while(!((*(volatile uint8_t *)(0x74)) & (1<<7)));
+
+  if(((*(volatile uint8_t *)(0x71)) & 0xF8) != 0x08)
+   return 0;
+
+
+
+  (*(volatile uint8_t *)(0x73))=0b10100000;
+
+
+  (*(volatile uint8_t *)(0x74))=(1<<7)|(1<<2);
+
+
+  while(!((*(volatile uint8_t *)(0x74)) & (1<<7)));
+
+ }while(((*(volatile uint8_t *)(0x71)) & 0xF8) != 0x18);
+
+ (*(volatile uint8_t *)(0x73))=(address>>8);
+
+ (*(volatile uint8_t *)(0x74))=(1<<7)|(1<<2);
+
+ while(!((*(volatile uint8_t *)(0x74)) & (1<<7)));
+
+ if(((*(volatile uint8_t *)(0x71)) & 0xF8) != 0x28)
+  return 0;
+
+ (*(volatile uint8_t *)(0x73))=(address);
+
+ (*(volatile uint8_t *)(0x74))=(1<<7)|(1<<2);
+
+ while(!((*(volatile uint8_t *)(0x74)) & (1<<7)));
+
+ if(((*(volatile uint8_t *)(0x71)) & 0xF8) != 0x28)
+  return 0;
+
+ (*(volatile uint8_t *)(0x73))=(data);
+
+ (*(volatile uint8_t *)(0x74))=(1<<7)|(1<<2);
+
+ while(!((*(volatile uint8_t *)(0x74)) & (1<<7)));
+
+ if(((*(volatile uint8_t *)(0x71)) & 0xF8) != 0x28)
+  return 0;
+
+ (*(volatile uint8_t *)(0x74))=(1<<7)|(1<<2)|(1<<4);
+
+ while((*(volatile uint8_t *)(0x74)) & (1<<4));
+
+
+
+ return 1;
+
+}
+
+uint8_t EEReadByte(uint16_t address)
+{
+ uint8_t data;
+
+
+ do
+ {
+
+  (*(volatile uint8_t *)(0x74))=(1<<7)|(1<<5)|(1<<2);
+
+
+  while(!((*(volatile uint8_t *)(0x74)) & (1<<7)));
+
+
+  if(((*(volatile uint8_t *)(0x71)) & 0xF8) != 0x08)
+   return 0;
+
+
+
+  (*(volatile uint8_t *)(0x73))=0b10100000;
+
+
+  (*(volatile uint8_t *)(0x74))=(1<<7)|(1<<2);
+
+
+  while(!((*(volatile uint8_t *)(0x74)) & (1<<7)));
+
+ }while(((*(volatile uint8_t *)(0x71)) & 0xF8) != 0x18);
+
+
+
+ (*(volatile uint8_t *)(0x73))=(address>>8);
+
+
+ (*(volatile uint8_t *)(0x74))=(1<<7)|(1<<2);
+
+
+ while(!((*(volatile uint8_t *)(0x74)) & (1<<7)));
+
+
+ if(((*(volatile uint8_t *)(0x71)) & 0xF8) != 0x28)
+  return 0;
+
+
+ (*(volatile uint8_t *)(0x73))=(address);
+
+
+ (*(volatile uint8_t *)(0x74))=(1<<7)|(1<<2);
+
+
+ while(!((*(volatile uint8_t *)(0x74)) & (1<<7)));
+
+
+ if(((*(volatile uint8_t *)(0x71)) & 0xF8) != 0x28)
+  return 0;
+
+
+
+
+
+
+ (*(volatile uint8_t *)(0x74))=(1<<7)|(1<<5)|(1<<2);
+
+
+ while(!((*(volatile uint8_t *)(0x74)) & (1<<7)));
+
+
+ if(((*(volatile uint8_t *)(0x71)) & 0xF8) != 0x10)
+  return 0;
+
+
+
+ (*(volatile uint8_t *)(0x73))=0b10100001;
+
+
+ (*(volatile uint8_t *)(0x74))=(1<<7)|(1<<2);
+
+
+ while(!((*(volatile uint8_t *)(0x74)) & (1<<7)));
+
+
+ if(((*(volatile uint8_t *)(0x71)) & 0xF8) != 0x40)
+  return 0;
+
+
+ (*(volatile uint8_t *)(0x74))=(1<<7)|(1<<2);
+
+
+ while(!((*(volatile uint8_t *)(0x74)) & (1<<7)));
+
+
+ if(((*(volatile uint8_t *)(0x71)) & 0xF8) != 0x58)
+  return 0;
+
+
+ data=(*(volatile uint8_t *)(0x73));
+
+
+ (*(volatile uint8_t *)(0x74))=(1<<7)|(1<<2)|(1<<4);
+
+
+ while((*(volatile uint8_t *)(0x74)) & (1<<4));
+
+
+ return data;
+}
+# 31 ".././CLICO.h" 2
+# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/util/atomic.h" 1
+# 42 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/util/atomic.h"
+static __inline__ uint8_t __iSeiRetVal(void)
+{
+    __asm__ __volatile__ ("sei" ::: "memory");
+    return 1;
+}
+
+static __inline__ uint8_t __iCliRetVal(void)
+{
+    __asm__ __volatile__ ("cli" ::: "memory");
+    return 1;
+}
+
+static __inline__ void __iSeiParam(const uint8_t *__s)
+{
+    __asm__ __volatile__ ("sei" ::: "memory");
+    __asm__ volatile ("" ::: "memory");
+    (void)__s;
+}
+
+static __inline__ void __iCliParam(const uint8_t *__s)
+{
+    __asm__ __volatile__ ("cli" ::: "memory");
+    __asm__ volatile ("" ::: "memory");
+    (void)__s;
+}
+
+static __inline__ void __iRestore(const uint8_t *__s)
+{
+    (*(volatile uint8_t *)((0x3F) + 0x20)) = *__s;
+    __asm__ volatile ("" ::: "memory");
+}
+# 32 ".././CLICO.h" 2
+
+# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/lcd.c" 1
+# 25 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/lcd.c"
+# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/lcd.h" 1
+# 9 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/lcd.h"
+# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/myutils.h" 1
+# 10 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/lcd.h" 2
+# 49 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/lcd.h"
 void InitLCD(uint8_t style);
 void LCDWriteString(const char *msg);
 void LCDWriteInt(int val,unsigned int field_length);
@@ -295,8 +522,8 @@ void LCDByte(uint8_t,uint8_t);
 
 
 void LCDBusyLoop();
-# 26 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/util/lcd.c" 2
-# 51 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/util/lcd.c"
+# 26 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/lcd.c" 2
+# 51 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/lcd.c"
 void LCDByte(uint8_t c,uint8_t isdata)
 {
 
@@ -317,7 +544,7 @@ void LCDByte(uint8_t c,uint8_t isdata)
  else
   ((*(volatile uint8_t *)((0x15) + 0x20))|=(1<<1));
 
- _delay_us(0.500);
+ _delay_us(0.5f);
 
  ((*(volatile uint8_t *)((0x15) + 0x20))|=(1<<2));
 
@@ -367,8 +594,7 @@ void LCDBusyLoop()
 
 
 
- _delay_us(0.5);
-
+ _delay_us(0.5f);
 
  do
  {
@@ -376,19 +602,19 @@ void LCDBusyLoop()
   ((*(volatile uint8_t *)((0x15) + 0x20))|=(1<<2));
 
 
-  _delay_us(0.5);
+  _delay_us(0.5f);
 
   status=(*(volatile uint8_t *)((0x19) + 0x20));
   status=status<<4;
 
-  _delay_us(0.5);
+  _delay_us(0.5f);
 
 
   ((*(volatile uint8_t *)((0x15) + 0x20))&=(~(1<<2)));
   _delay_us(1);
 
   ((*(volatile uint8_t *)((0x15) + 0x20))|=(1<<2));
-  _delay_us(0.5);
+  _delay_us(0.5f);
 
   temp=(*(volatile uint8_t *)((0x19) + 0x20));
   temp&=0x0F;
@@ -397,7 +623,7 @@ void LCDBusyLoop()
 
   busy=status & 0b10000000;
 
-  _delay_us(0.5);
+  _delay_us(0.5f);
   ((*(volatile uint8_t *)((0x15) + 0x20))&=(~(1<<2)));
   _delay_us(1);
  }while(busy);
@@ -410,7 +636,7 @@ void LCDBusyLoop()
 
 void InitLCD(uint8_t style)
 {
-# 177 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/util/lcd.c"
+# 176 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/lcd.c"
  _delay_ms(30);
 
 
@@ -425,7 +651,7 @@ void InitLCD(uint8_t style)
  ((*(volatile uint8_t *)((0x15) + 0x20))&=(~(1<<1)));
 
 
- _delay_us(0.3);
+ _delay_us(0.3f);
 
  ((*(volatile uint8_t *)((0x15) + 0x20))|=(1<<2));
  (*(volatile uint8_t *)((0x1B) + 0x20))|=(0b00000010);
@@ -443,7 +669,7 @@ void InitLCD(uint8_t style)
 }
 void LCDWriteString(const char *msg)
 {
-# 219 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/util/lcd.c"
+# 218 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/lcd.c"
  while(*msg!='\0')
  {
  (LCDByte(*msg,1));
@@ -453,7 +679,7 @@ void LCDWriteString(const char *msg)
 
 void LCDWriteInt(int val,unsigned int field_length)
 {
-# 239 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/util/lcd.c"
+# 238 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/lcd.c"
  char str[5]={0,0,0,0,0};
  int i=4,j=0;
  while(val)
@@ -487,133 +713,536 @@ void LCDWriteStringXY(uint8_t x, uint8_t y, const char *msg){
  LCDGotoXY(x, y);
  LCDWriteString(msg);
 }
-# 23 ".././CLICO.h" 2
-# 1 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/util/24c.h" 1
+# 34 ".././CLICO.h" 2
+# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/EEPROM.c" 1
 
 
 
 
 
 
-void EEOpen();
-uint8_t EEWriteByte(uint16_t,uint8_t);
-uint8_t EEReadByte(uint16_t address);
-# 24 ".././CLICO.h" 2
-# 1 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/util/atomic.h" 1
-# 42 "D:\\My Dropbox\\internal_sharing\\avrStudio_include/util/atomic.h"
-static __inline__ uint8_t __iSeiRetVal(void)
+# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/EEPROM.h" 1
+# 40 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/EEPROM.h"
+unsigned char EEPROM_open (void);
+# 57 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/EEPROM.h"
+unsigned char EEPROM_readByte( uint16_t address, unsigned char ACK);
+
+
+unsigned char EEPROM_writeByte( uint16_t address, uint8_t data, unsigned char ACK);
+unsigned char * EEPROM_readPage( unsigned int pageNumber );
+unsigned char EEPROM_writePage( unsigned int pageNumber, unsigned char * data );
+unsigned char EEPROM_sequentialRead(uint16_t address, uint16_t numOfBytes, unsigned char * dest, unsigned char ACK);
+unsigned char EEPROM_sequentialWrite(uint16_t address, uint16_t numOfBytes, unsigned char * data);
+unsigned char EEPROM_erase( void );
+# 8 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/EEPROM.c" 2
+# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/i2c.h" 1
+# 28 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/i2c.h"
+unsigned char i2c_start(void);
+unsigned char i2c_start_address(unsigned char);
+unsigned char i2c_repeatStart(void);
+unsigned char i2c_sendAddress_ACK(unsigned char);
+unsigned char i2c_sendAddress_NACK(unsigned char);
+unsigned char i2c_sendData_ACK(unsigned char);
+unsigned char i2c_sendData_NACK(unsigned char);
+unsigned char i2c_receiveData_ACK(void);
+unsigned char i2c_receiveData_NACK(void);
+
+void i2c_stop(void);
+# 9 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/EEPROM.c" 2
+
+
+uint8_t EEPROM_Open()
 {
-    __asm__ __volatile__ ("sei" ::: "memory");
-    return 1;
+
+ (*(volatile uint8_t *)(0x71)) = 0;
+ (*(volatile uint8_t *)(0x70)) = ((16000000UL / 400000UL) - 16) / 2;
+ if ((*(volatile uint8_t *)(0x70)) < 11)
+  return 0;
+ return 1;
 }
 
-static __inline__ uint8_t __iCliRetVal(void)
-{
-    __asm__ __volatile__ ("cli" ::: "memory");
-    return 1;
+
+
+unsigned char EEPROM_readByte(uint16_t address, unsigned char ACK){
+
+ unsigned char errorStatus, i, data;
+ uint8_t highAddress, lowAddress;
+ highAddress=(address>>8);
+ lowAddress=(address);
+
+ if((i2c_start_address(0xa0))!=0){
+  i2c_stop();
+  return 0x7e -1;
+ }
+ errorStatus |= i2c_sendData_ACK(highAddress);
+ errorStatus |= i2c_sendData_ACK(lowAddress);
+
+ errorStatus |= i2c_repeatStart();
+
+ errorStatus |= i2c_sendAddress_ACK(0xa1);
+
+ if(errorStatus==1){
+  i2c_stop();
+  return 0x7e -1;
+ }
+
+ if(ACK)
+  data = i2c_receiveData_ACK();
+ else
+  data = i2c_receiveData_NACK();
+
+ if(data == 0x7e){
+  i2c_stop();
+     return 0x7e -1;
+ }
+ i2c_stop();
+ return data;
 }
 
-static __inline__ void __iSeiParam(const uint8_t *__s)
-{
-    __asm__ __volatile__ ("sei" ::: "memory");
-    __asm__ volatile ("" ::: "memory");
-    (void)__s;
+
+unsigned char EEPROM_writeByte(uint16_t address, uint8_t data, unsigned char ACK){
+
+ unsigned char errorStatus, highAddress, lowAddress;
+ highAddress=address>>8;
+ lowAddress=address;
+
+ errorStatus = i2c_start_address(0xa0);
+ errorStatus |= i2c_sendData_ACK(highAddress);
+ errorStatus |= i2c_sendData_ACK(lowAddress);
+
+ if(errorStatus == 1){
+  i2c_stop();
+  return(1);
+ }
+ if(ACK)
+  errorStatus = i2c_sendData_ACK(data);
+ else
+  errorStatus = i2c_sendData_NACK(data);
+
+ if(errorStatus == 1){
+  i2c_stop();
+     return(1);
+ }
+
+ i2c_stop();
+ _delay_ms(5);
+ return(0);
+
+
+
 }
 
-static __inline__ void __iCliParam(const uint8_t *__s)
-{
-    __asm__ __volatile__ ("cli" ::: "memory");
-    __asm__ volatile ("" ::: "memory");
-    (void)__s;
+
+
+
+unsigned char * EEPROM_readPage( unsigned int pageNumber ){
+
+ unsigned char *values;
+ unsigned int pageAddress, numOfRead;
+
+ pageAddress = pageNumber * 128;
+
+ numOfRead = EEPROM_sequentialRead(pageAddress, 128, values, 0);
+ if(values==((void *)0)){ return ((void *)0); }
+ else return values;
+ }
+
+
+unsigned char EEPROM_writePage( unsigned int pageNumber, unsigned char * data ){
+
+ unsigned char highAddress, lowAddress, errorStatus, i;
+ unsigned int pageAddress;
+
+
+ pageAddress = pageNumber * 128;
+ for(i=0;i<128;i++){
+  errorStatus = EEPROM_writeByte(pageAddress, data[i], 1);
+  if(errorStatus){
+   i2c_stop();
+   return 1;
+  }
+ }
+
+
+ return(0);
 }
 
-static __inline__ void __iRestore(const uint8_t *__s)
-{
-    (*(volatile uint8_t *)((0x3F) + 0x20)) = *__s;
-    __asm__ volatile ("" ::: "memory");
+
+unsigned char EEPROM_sequentialRead(uint16_t address, uint16_t numOfBytes, unsigned char * dest, unsigned char ACK){
+
+ unsigned char errorStatus, i;
+ uint8_t highAddress=(address>>8), lowAddress=(address);
+
+ errorStatus = i2c_start();
+ _delay_ms(3);
+ errorStatus |= i2c_sendAddress_ACK(0xa0);
+ errorStatus |= i2c_sendData_ACK(highAddress);
+ errorStatus |= i2c_sendData_ACK(lowAddress);
+ errorStatus |= i2c_repeatStart();
+ errorStatus |= i2c_sendAddress_ACK(0xa1);
+
+ if(errorStatus){
+  i2c_stop();
+  return errorStatus;
+ }
+
+ for(i=0;i<numOfBytes;i++){
+  if(ACK)
+   *dest = i2c_receiveData_ACK();
+  else
+   *dest = i2c_receiveData_NACK();
+
+  if(*(++dest) == 0x7e){
+   i2c_stop();
+      return(0x7e);
+  }
+ }
+ i2c_stop();
+
+ return numOfBytes;
 }
-# 25 ".././CLICO.h" 2
+
+
+unsigned char EEPROM_sequentialWrite(uint16_t address, uint16_t numOfBytes, unsigned char * data){
+ unsigned char errorStatus, i;
+
+ for(i=0;i<numOfBytes;i++){
+  errorStatus=EEPROM_writeByte(address,data[i], 1);
+  if(errorStatus){
+   i2c_stop();
+   return 1;
+  }
+ }
+ return 0;
+}
+
+
+unsigned char EEPROM_erase(void){
+
+ unsigned char errorStatus;
+ unsigned int i;
+
+ errorStatus = i2c_start_address(0xa0);
+ errorStatus |= i2c_sendData_ACK(0x00);
+ errorStatus |= i2c_sendData_ACK(0x00);
+ if(errorStatus == 1){
+  i2c_stop();
+  return(1);
+ }
+
+ for(i=0;i<0x8000;i++){
+  errorStatus = i2c_sendData_ACK(0xff);
+  if(errorStatus == 1){
+   i2c_stop();
+   return(1);
+  }
+ }
+
+ i2c_stop();
+
+ return(0);
+}
+# 35 ".././CLICO.h" 2
+# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/i2c.c" 1
+
+
+
+
+
+# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/i2c.h" 1
+# 28 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/i2c.h"
+unsigned char i2c_start(void);
+unsigned char i2c_start_address(unsigned char);
+unsigned char i2c_repeatStart(void);
+unsigned char i2c_sendAddress_ACK(unsigned char);
+unsigned char i2c_sendAddress_NACK(unsigned char);
+unsigned char i2c_sendData_ACK(unsigned char);
+unsigned char i2c_sendData_NACK(unsigned char);
+unsigned char i2c_receiveData_ACK(void);
+unsigned char i2c_receiveData_NACK(void);
+
+void i2c_stop(void);
+# 7 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/i2c.c" 2
+
+
+unsigned char i2c_start(void)
+{
+ (*(volatile uint8_t *)(0x74)) = (1<<7)|(1<<5)|(1<<2);
+
+ while (!((*(volatile uint8_t *)(0x74)) & (1<<7)));
+
+
+ if ((((*(volatile uint8_t *)(0x71)) & 0xF8) == 0x08) || (((*(volatile uint8_t *)(0x71)) & 0xF8) == 0x10))
+  return 0;
+ else
+  return 1;
+}
+
+unsigned char i2c_start_address(unsigned char address)
+{
+ uint8_t twst;
+
+ (*(volatile uint8_t *)(0x74)) = (1<<7)|(1<<5)|(1<<2);
+
+ while (!((*(volatile uint8_t *)(0x74)) & (1<<7)));
+
+ twst = (*(volatile uint8_t *)(0x71)) & 0xF8;
+
+ if ((twst != 0x08) && (twst != 0x10))
+  return 2;
+
+ (*(volatile uint8_t *)(0x73)) = address;
+ (*(volatile uint8_t *)(0x74)) = (1<<7)|(1<<2);
+
+ while(!((*(volatile uint8_t *)(0x74)) & (1<<7)));
+
+
+ twst = (*(volatile uint8_t *)(0x71));
+
+ if ( (twst != 0x18) && (twst != 0x40) )
+  return 1;
+
+ return 0;
+}
+
+unsigned char i2c_repeatStart(void)
+{
+
+ (*(volatile uint8_t *)(0x74)) = (1<<7)|(1<<5)|(1<<2);
+
+ while (!((*(volatile uint8_t *)(0x74)) & (1<<7)));
+
+ if (((*(volatile uint8_t *)(0x71)) & 0xF8) == 0x10)
+  return(0);
+ else
+  return(1);
+}
+
+
+unsigned char i2c_sendAddress_ACK(unsigned char address)
+{
+ unsigned char STATUS;
+
+ if((address & 0x01) == 0)
+  STATUS = 0x18;
+ else
+  STATUS = 0x40;
+
+ (*(volatile uint8_t *)(0x73)) = address;
+ (*(volatile uint8_t *)(0x74)) = (1<<7)|(1<<2);
+ (*(volatile uint8_t *)(0x74)) |= (1<<6);
+
+ while (!((*(volatile uint8_t *)(0x74)) & (1<<7)));
+
+
+ if (((*(volatile uint8_t *)(0x71)) & 0xF8) == STATUS)
+  return(0);
+ else
+  return(1);
+}
+
+unsigned char i2c_sendAddress_NACK(unsigned char address)
+{
+ unsigned char STATUS;
+
+ if((address & 0x01) == 0)
+  STATUS = 0x20;
+ else
+  STATUS = 0x48;
+
+ (*(volatile uint8_t *)(0x73)) = address;
+ (*(volatile uint8_t *)(0x74)) = (1<<7)|(1<<2);
+
+ while (!((*(volatile uint8_t *)(0x74)) & (1<<7)));
+
+
+ if (((*(volatile uint8_t *)(0x71)) & 0xF8) == STATUS)
+  return(0);
+ else
+  return(1);
+}
+
+unsigned char i2c_sendData_ACK(unsigned char data)
+{
+ (*(volatile uint8_t *)(0x73)) = data;
+ (*(volatile uint8_t *)(0x74)) = (1<<7)|(1<<2)|(1<<6);
+
+ while (!((*(volatile uint8_t *)(0x74)) & (1<<7)));
+
+ if (((*(volatile uint8_t *)(0x71)) & 0xF8) == 0x28)
+  return(0);
+ else
+  return(1);
+}
+unsigned char i2c_sendData_NACK(unsigned char data)
+{
+ (*(volatile uint8_t *)(0x73)) = data;
+ (*(volatile uint8_t *)(0x74)) = (1<<7)|(1<<2);
+
+ while (!((*(volatile uint8_t *)(0x74)) & (1<<7)));
+
+ if (((*(volatile uint8_t *)(0x71)) & 0xF8) == 0x30)
+  return(0);
+ else
+  return(1);
+}
+
+
+
+unsigned char i2c_receiveData_ACK(void)
+{
+ unsigned char data;
+
+ (*(volatile uint8_t *)(0x74)) = (1<<6)|(1<<7)|(1<<2);
+
+ while (!((*(volatile uint8_t *)(0x74)) & (1<<7)));
+
+ if (((*(volatile uint8_t *)(0x71)) & 0xF8) != 0x50)
+  return(0x7e);
+
+ data = (*(volatile uint8_t *)(0x73));
+ return(data);
+}
+
+
+unsigned char i2c_receiveData_NACK(void)
+{
+ unsigned char data;
+
+ (*(volatile uint8_t *)(0x74)) = (1<<7)|(1<<2);
+
+ while (!((*(volatile uint8_t *)(0x74)) & (1<<7)));
+
+ if (((*(volatile uint8_t *)(0x71)) & 0xF8) != 0x58)
+  return(0x7e);
+
+ data = (*(volatile uint8_t *)(0x73));
+ return(data);
+}
+# 181 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/i2c.c"
+void i2c_stop(void)
+{
+ (*(volatile uint8_t *)(0x74)) = (1<<7)|(1<<2)|(1<<4);
+ while((*(volatile uint8_t *)(0x74)) & (1<<4));
+}
+# 36 ".././CLICO.h" 2
+
+
+
+
+typedef uint8_t byte;
+typedef uint16_t word;
+typedef uint32_t longword;
+
 
 typedef struct{
- uint16_t wMilli;
- uint8_t bSec;
- uint8_t bMin;
- uint8_t bHour;
- uint8_t bDay;
- uint8_t bMonth;
- uint8_t bYear;
-} TIME_DATE;
-# 133 ".././CLICO.h"
-void _init();
-void getTemperature();
-void refreshQuote();
-int isLeapYear(uint8_t year);
-void changeEditDate(uint8_t bPosition, uint8_t bButton);
-void changeEditTimeDate(uint8_t bPosition, uint8_t bButton);
-void checkDate(TIME_DATE time, int* days);
+ word wMilli;
+ byte bSec;
+ byte bMin;
+ byte bHour;
+ byte bDay;
+ byte bMonth;
+ byte bYear;
+} time_date;
 
-void writeLCD(int caller);
-# 156 ".././CLICO.h"
+typedef struct{
+ byte bMin;
+ byte bHour;
+} time;
+
+typedef struct{
+ word wA;
+ word wB;
+ word wC;
+ word wAB;
+} count;
+
+typedef struct{
+ byte val_int;
+ byte val_dec;
+} read;
+# 220 ".././CLICO.h"
+void _init(void);
+double getTemperature(void);
+byte getHumidity(void);
+void multiplexADChannel(void);
+double ADC_average(double * valuesDOUBLE, byte * valuesBYTE);
+void refreshQuote(void);
+int isLeapYear(byte year);
+void changeEditDate(byte bPosition, byte bButton);
+void changeEditTimeDate(byte bPosition, byte bButton);
+int checkDate(time_date *time, byte* days);
+void toggleTimeColon(void);
+int _round(double x);
+
 char *itoa(int value, char * str, int base);
 int sprintf(char * str, const char * format, ...);
-# 20 ".././CLICO.c" 2
+# 18 ".././CLICO.c" 2
 
+volatile time_date tTime;
+volatile time_date tTimeEditing;
+volatile count cButtonIntegrator;
 
+volatile byte bTimeChanged;
+volatile byte bDateChanged=1;
+volatile byte bTempChanged;
+volatile byte bHumChanged;
+volatile byte bFirst=1;
 
+volatile word wADC_garbage;
+volatile word wADC_counts;
+volatile byte bChannel;
 
-typedef struct{
- uint16_t wA;
- uint16_t wB;
- uint16_t wC;
-} COUNT;
-
-uint8_t aDays[12]={31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-
-volatile TIME_DATE tTime;
-volatile TIME_DATE tTimeEditing;
-volatile COUNT cIntegrator;
-
-volatile uint8_t bTimeChanged;
-volatile uint8_t bDateChanged=1;
-volatile uint8_t bTempChanged;
-volatile uint8_t bFirst=1;
+volatile word wBacklightCounter;
 
 volatile double dVp;
 volatile double dRpt;
-volatile uint16_t wCount_eInt0, wCount_adc;
 volatile double dTemperature;
+volatile double adTemperature[100];
 volatile double dTemperatureOld;
 
+volatile double AD;
+volatile double dRH;
+volatile double dRH_comp;
+volatile double dVout;
+volatile byte bHumidity;
+volatile byte adHumidity[100];
+volatile byte bOvFlo;
 
-volatile uint8_t bBtnAPressed;
-volatile uint8_t bBtnBPressed;
-volatile uint8_t bBtnCPressed;
-volatile uint8_t bInhibite;
-volatile uint8_t bPort;
-volatile uint8_t bBtn;
+volatile byte bBtnAPressed;
+volatile byte bBtnBPressed;
+volatile byte bBtnCPressed;
+volatile byte bInhibite;
+volatile byte bPort;
 
+volatile byte bSelectionMenu;
+volatile byte bSelectionMenuChanged;
+volatile byte bSelectionDate;
+volatile byte bSelectionDateChanged;
+volatile byte bSelectionTime;
+volatile byte bSelectionTimeChanged;
+volatile byte bTimeCommaState;
+volatile byte bTimeColonToToggle;
 
-volatile uint8_t bSelectionMenu;
-volatile uint8_t bSelectionMenuChanged;
-volatile uint8_t bSelectionDate;
-volatile uint8_t bSelectionDateChanged;
-volatile uint8_t bSelectionTime;
-volatile uint8_t bSelectionTimeChanged;
-volatile uint8_t bPriLev;
-volatile uint8_t bState=0;
+volatile byte bZone=1;
+volatile time tZ1;
+volatile time tZ2;
 
+volatile byte sreg;
+volatile byte bPriLev;
+volatile byte bState=0;
+volatile byte bBtn;
 
-
-char temp_str[5]="";
 char str[10]="";
-char options[8][16]={"1.Timezone     ","2.Date         ", "3.Time         ",
+char options[7 +1][16]={"1.Timezone     ","2.Date         ", "3.Time         ",
      "4.USB transfer ", "5.hello        ", "6.world        ", "7.osti         ", "               "};
 
-char tmp_str[13]="";
-char rtc_LCD_str[8]="";
 
-char white_str[16]="               ";
+byte aDays[12]={31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
+
+volatile unsigned long i=0;
+volatile unsigned char val[11], *val1;
 
 
 
@@ -621,13 +1250,7 @@ char white_str[16]="               ";
 
 
 int main(void){
-
  bPriLev=9;
-
- (*(volatile uint8_t *)((0x1A) + 0x20)) = 0xff;
-
- (*(volatile uint8_t *)((0x14) + 0x20)) = 0x13;
- (*(volatile uint8_t *)((0x12) + 0x20)) = 0x13;
 
  tTime.bDay=7;
  tTime.bMonth=8;
@@ -635,23 +1258,78 @@ int main(void){
 
 
 
-
  _init();
 
  while(1) {
+
+  (LCDByte(0b00000001,0));;
+
+  if(!EEPROM_Open()){
+   (LCDByte(0b00000001,0));;
+   sprintf(str, "Error: bitrate");
+   LCDWriteStringXY(0,0,str);
+   sprintf(str, "  too high!");
+   LCDWriteStringXY(0,1,str);
+   _delay_ms(1000);
+  }
+
+
+  unsigned char ch, da;
+
+  for(i=0; i<15; i++){
+   ch = EEPROM_writeByte(i, i, 1);
+  }
+
+  if(ch==1) {
+   (LCDByte(0b00000001,0));;
+   sprintf(str, "error while writing");
+   LCDWriteStringXY(0,0, str);
+   _delay_ms(500);
+  }
+
+  for(i=0;i<5;i++){
+   da=EEPROM_readByte(i, 0);
+
+   sprintf(str, "%d at %d", da, i);
+   (LCDByte(0b00000001,0));;
+   LCDWriteStringXY(0,0,str);
+   _delay_ms(250);
+  }
+
+
+  for(i=0;i<10;i++){ val[i]=0; }
+  EEPROM_sequentialRead(0,10,val,0);
+  val[10]='\0';
+
+
+  for(i=0;i<10;i++){
+   sprintf(str, "%3d at %2d", val[i], i);
+   LCDWriteStringXY(0,1,str);
+   _delay_ms(750);
+  }
+# 165 ".././CLICO.c"
   switch(bState){
+
 
    case 0:
     switch(bBtn){
      case 0:
+      if(bTimeColonToToggle){ toggleTimeColon(); bTimeColonToToggle=0; }
       refreshQuote();
       bFirst=1;
+
       break;
-
-
-
+     case 2:
+     case 4:
+     case 6:
+     case 3:
+     case 5:
+      (*(volatile uint8_t *)((0x18) + 0x20)) |= 0x1; (*(volatile uint8_t *)((0x25) + 0x20)) |= (1<<2)|(0<<1)|(1<<0);;
+      bBtn=0;
+      break;
      case 7:
       bState = 1;
+      (*(volatile uint8_t *)((0x18) + 0x20)) |= 0x1;;
       bBtn=0;
       break;
      default:
@@ -682,7 +1360,7 @@ int main(void){
 
      case 4:
       if(bSelectionMenu>0) bSelectionMenu--;
-      else bSelectionMenu=6;
+      else bSelectionMenu=(7 -1);
       bSelectionMenu %= 7;
       bSelectionMenuChanged=1;
       bBtn=0;
@@ -690,14 +1368,16 @@ int main(void){
 
      case 6:
       switch(bSelectionMenu){
-       case 0:
-        break;
        case 1:
         bState = 2;
         bBtn = 0;
         break;
        case 2:
         bState = 4;
+        bBtn = 0;
+        break;
+       case 0:
+        bState = 6;
         bBtn = 0;
         break;
        default:
@@ -709,7 +1389,11 @@ int main(void){
      case 7:
       bState = 0;
       bBtn=0;
-      (LCDByte(0b00000001,0));
+      (*(volatile uint8_t *)((0x18) + 0x20)) &= 0xfe;;
+      (*(volatile uint8_t *)((0x18) + 0x20)) |= 0x1; (*(volatile uint8_t *)((0x25) + 0x20)) |= (1<<2)|(0<<1)|(1<<0);;
+
+      (LCDByte(0b00000001,0));; (LCDByte(0x02,0)); (LCDByte(0x0C,0));;
+
       bSelectionMenu=0;
       bDateChanged=1;
       bTimeChanged=1;
@@ -727,14 +1411,13 @@ int main(void){
      case 0:
       if(bFirst){
        bFirst=0;
-       (LCDByte(0b00000001,0));
-       tTimeEditing = (bSelectionDateChanged==1) ? tTimeEditing : tTime;
-       bSelectionDateChanged=0;
+       (LCDByte(0b00000001,0));;
+       tTimeEditing = tTime;
        sprintf(str, "%02d/%02d/%02d", tTimeEditing.bDay, tTimeEditing.bMonth, tTimeEditing.bYear);
        LCDWriteStringXY(0,0, "Editing date:");
        LCDWriteStringXY(3,1, str);
        (LCDByte(0x0f,0));
-       for(int i=0; i<8; i++) (LCDByte(0x10,0));;
+       for(i=0; i<8; i++) (LCDByte(0x10,0));;
       }
       break;
      case 2:
@@ -742,19 +1425,28 @@ int main(void){
       changeEditDate(bSelectionDate, 2);
       sprintf(str, "%02d/%02d/%02d", tTimeEditing.bDay, tTimeEditing.bMonth, tTimeEditing.bYear);
       LCDWriteStringXY(3,1,str);
-      for(int i=0; i<8-bSelectionDate; i++) (LCDByte(0x10,0));;
+      for(i=0; i<8-bSelectionDate; i++) (LCDByte(0x10,0));;
       break;
      case 4:
       bBtn = 0;
       changeEditDate(bSelectionDate, 4);
       sprintf(str, "%02d/%02d/%02d", tTimeEditing.bDay, tTimeEditing.bMonth, tTimeEditing.bYear);
       LCDWriteStringXY(3,1,str);
-      for(int i=0; i<8-bSelectionDate; i++) (LCDByte(0x10,0));;
+      for(i=0; i<8-bSelectionDate; i++) (LCDByte(0x10,0));;
       break;
      case 6:
-      if(bSelectionDate<7){ (LCDByte(0x14,0)); bSelectionDate++; }
-      else{ bSelectionDate=0; for(int i=0; i<7; i++) (LCDByte(0x10,0));; }
-      if(bSelectionDate==2 || bSelectionDate==5){ (LCDByte(0x14,0)); bSelectionDate++; }
+      if(bSelectionDate<7){ for(i=0; i<1; i++) (LCDByte(0x14,0));; bSelectionDate++; }
+      else{ bSelectionDate=0; for(i=0; i<7; i++) (LCDByte(0x10,0));; }
+
+      if(bSelectionDate==2 || bSelectionDate==5){
+       for(i=0; i<1; i++) (LCDByte(0x14,0));;
+       bSelectionDate++;
+       if(checkDate(&tTimeEditing, aDays)){
+        sprintf(str, "%02d/%02d/%02d", tTimeEditing.bDay, tTimeEditing.bMonth, tTimeEditing.bYear);
+        LCDWriteStringXY(3,1,str);
+        for(i=0; i<8-bSelectionDate; i++) (LCDByte(0x10,0));;
+       }
+      }
       bBtn = 0;
       break;
      case 7:
@@ -767,18 +1459,19 @@ int main(void){
     }
     break;
 
+
     case 3:
      switch(bBtn){
       case 0:
        if(bFirst){
         LCDWriteStringXY(0,0, "Confermi? Si/No");
-        for(int i=0; i<5; i++) (LCDByte(0x10,0));;
+        for(i=0; i<5; i++) (LCDByte(0x10,0));;
         bFirst=0;
         bSelectionDate=0;
        }
        if(bSelectionDateChanged){
-        if(bSelectionDate==0){ (LCDByte(0b00000010,0));; for(int i=0; i<10; i++) (LCDByte(0x14,0));; }
-        else{ (LCDByte(0b00000010,0));; for(int i=0; i<13; i++) (LCDByte(0x14,0));; }
+        if(bSelectionDate==0){ (LCDByte(0b00000010,0));; for(i=0; i<10; i++) (LCDByte(0x14,0));; }
+        else{ (LCDByte(0b00000010,0));; for(i=0; i<13; i++) (LCDByte(0x14,0));; }
         bSelectionDateChanged=0;
        }
        break;
@@ -791,16 +1484,14 @@ int main(void){
 
       case 7:
        if(bSelectionDate){
-        bState = 2;
+        bState = 1;
         bSelectionDate=0;
-        bSelectionDateChanged=1;
        }else{
         tTime.bDay = tTimeEditing.bDay;
         tTime.bMonth = tTimeEditing.bMonth;
         tTime.bYear = tTimeEditing.bYear;
         bState = 1;
-        (LCDByte(0x02,0));
-        (LCDByte(0x0C,0));
+        (LCDByte(0b00000001,0));; (LCDByte(0x02,0)); (LCDByte(0x0C,0));;
        }
        bBtn = 0;
        bFirst=1;
@@ -809,19 +1500,19 @@ int main(void){
      }
     break;
 
+
    case 4:
      switch(bBtn){
       case 0:
        if(bFirst){
         bFirst=0;
-        (LCDByte(0b00000001,0));
-        tTimeEditing = (bSelectionTimeChanged==1) ? tTimeEditing : tTime;
-        bSelectionTimeChanged=0;
+        (LCDByte(0b00000001,0));;
+        tTimeEditing = tTime;
         sprintf(str, "%02d:%02d:%02d", tTimeEditing.bHour, tTimeEditing.bMin, tTimeEditing.bSec);
         LCDWriteStringXY(0,0, "Editing time:");
         LCDWriteStringXY(3,1, str);
         (LCDByte(0x0f,0));
-        for(int i=0; i<8; i++) (LCDByte(0x10,0));;
+        for(i=0; i<8; i++) (LCDByte(0x10,0));;
        }
        break;
       case 2:
@@ -829,18 +1520,18 @@ int main(void){
        changeEditTime(bSelectionTime, 2);
        sprintf(str, "%02d:%02d:%02d", tTimeEditing.bHour, tTimeEditing.bMin, tTimeEditing.bSec);
        LCDWriteStringXY(3,1,str);
-       for(int i=0; i<8-bSelectionTime; i++) (LCDByte(0x10,0));;
+       for(i=0; i<8-bSelectionTime; i++) (LCDByte(0x10,0));;
        break;
       case 4:
        bBtn = 0;
        changeEditTime(bSelectionTime, 4);
        sprintf(str, "%02d:%02d:%02d", tTimeEditing.bHour, tTimeEditing.bMin, tTimeEditing.bSec);
        LCDWriteStringXY(3,1,str);
-       for(int i=0; i<8-bSelectionTime; i++) (LCDByte(0x10,0));;
+       for(i=0; i<8-bSelectionTime; i++) (LCDByte(0x10,0));;
        break;
       case 6:
        if(bSelectionTime<7){ (LCDByte(0x14,0)); bSelectionTime++; }
-       else{ bSelectionTime=0; for(int i=0; i<7; i++) (LCDByte(0x10,0));; }
+       else{ bSelectionTime=0; for(i=0; i<7; i++) (LCDByte(0x10,0));; }
        if(bSelectionTime==2 || bSelectionTime==5){ (LCDByte(0x14,0)); bSelectionTime++; }
        bBtn = 0;
        break;
@@ -854,18 +1545,19 @@ int main(void){
      }
     break;
 
+
    case 5:
      switch(bBtn){
       case 0:
        if(bFirst){
         LCDWriteStringXY(0,0, "Confermi? Si/No");
-        for(int i=0; i<5; i++) (LCDByte(0x10,0));;
+        for(i=0; i<5; i++) (LCDByte(0x10,0));;
         bFirst=0;
         bSelectionTime=0;
        }
        if(bSelectionTimeChanged){
-        if(bSelectionTime==0){ (LCDByte(0b00000010,0));; for(int i=0; i<10; i++) (LCDByte(0x14,0));; }
-        else{ (LCDByte(0b00000010,0));; for(int i=0; i<13; i++) (LCDByte(0x14,0));; }
+        if(bSelectionTime==0){ (LCDByte(0b00000010,0));; for(i=0; i<10; i++) (LCDByte(0x14,0));; }
+        else{ (LCDByte(0b00000010,0));; for(i=0; i<13; i++) (LCDByte(0x14,0));; }
         bSelectionTimeChanged=0;
        }
        break;
@@ -878,16 +1570,14 @@ int main(void){
 
       case 7:
        if(bSelectionTime){
-        bState = 4;
+        bState = 1;
         bSelectionTime=0;
-        bSelectionTimeChanged=1;
        }else{
         tTime.bSec = tTimeEditing.bSec;
         tTime.bMin = tTimeEditing.bMin;
         tTime.bHour = tTimeEditing.bHour;
         bState = 1;
-        (LCDByte(0x02,0));
-        (LCDByte(0x0C,0));
+        (LCDByte(0b00000001,0));; (LCDByte(0x02,0)); (LCDByte(0x0C,0));;
        }
        bBtn = 0;
        bFirst=1;
@@ -897,62 +1587,86 @@ int main(void){
     break;
 
 
+   case 6:
+    switch(bBtn){
+     case 0:
+      if(bFirst){
+       bFirst=0;
+       (LCDByte(0b00000001,0));;
+       LCDWriteStringXY(0,0, "Edit timezone:");
+       LCDWriteStringXY(0,1,"1=");
+
+      }
+      break;
+     default:
+      break;
+    }
+    break;
    default:
     break;
   }
  }
 }
-# 375 ".././CLICO.c"
+# 474 ".././CLICO.c"
 void __vector_15 (void) __attribute__ ((signal,used, externally_visible)) ; void __vector_15 (void){
  if(bPriLev<1) return;
- uint8_t bOldPriLev = bPriLev;
+ byte bOldPriLev = bPriLev;
  bPriLev=1;
 
- bPort = (*(volatile uint8_t *)((0x10) + 0x20));
- bBtnAPressed = bPort & 1;
- bBtnBPressed = bPort & 16;
- bBtnCPressed = bPort & 2;
+
+ bPort = (*(volatile uint8_t *)((0x01) + 0x20));
+ bBtnAPressed = bPort & 32;
+ bBtnBPressed = bPort & 128;
+ bBtnCPressed = bPort & 64;
+
+
  if(!bBtnCPressed&&(!bInhibite)){
-  cIntegrator.wC++;
-  if(cIntegrator.wC>100){ bInhibite=1; }
+  cButtonIntegrator.wC++;
+  if(cButtonIntegrator.wC>100){ bInhibite=1; }
  }
  else{
   if(bBtnCPressed!=0){ bInhibite=0; }
-  if(cIntegrator.wC<15){ cIntegrator.wC=0; }
-  else if((cIntegrator.wC>15)&&(cIntegrator.wC<100)){
-
-   cIntegrator.wC=0;
+  if(cButtonIntegrator.wC<15){ cButtonIntegrator.wC=0; }
+  else if((cButtonIntegrator.wC>15)&&(cButtonIntegrator.wC<100)){
+   cButtonIntegrator.wC=0;
    bBtn = 6;
-  }else if(cIntegrator.wC>100){
-
-   cIntegrator.wC=0;
+  }else if(cButtonIntegrator.wC>100){
+   cButtonIntegrator.wC=0;
    bBtn = 7;
   }
  }
- if((bState>0)&&(!bBtnAPressed)){ cIntegrator.wA++; }
+ if(!bBtnAPressed){ cButtonIntegrator.wA++; }
  else{
-  if(cIntegrator.wA<15){ cIntegrator.wA=0; }
+  if(cButtonIntegrator.wA<15){ cButtonIntegrator.wA=0; }
   else{
    bBtn = 2;
-   cIntegrator.wA=0;
+   cButtonIntegrator.wA=0;
+  }
+ }
+ if(!bBtnBPressed){ cButtonIntegrator.wB++; }
+ else{
+  if(cButtonIntegrator.wB<15){ cButtonIntegrator.wB=0; }
+  else{
+   bBtn = 4;
+   cButtonIntegrator.wB=0;
+  }
+ }
+ if((!bBtnAPressed)&&(!bBtnBPressed)){ cButtonIntegrator.wAB++; }
+ else{
+  if(cButtonIntegrator.wAB<15){ cButtonIntegrator.wAB=0; }
+  else{
+   bBtn = 8;
+   cButtonIntegrator.wAB=0;
   }
  }
 
- if((bState>0)&&(!bBtnBPressed)){ cIntegrator.wB++; }
- else{
-  if(cIntegrator.wB<15){ cIntegrator.wB=0; }
-  else{
-   bBtn = 4;
-   cIntegrator.wB=0;
-  }
- }
 
 
 
  if(tTime.wMilli<99) tTime.wMilli++;
  else{
   tTime.wMilli=0;
-  if(tTime.bSec<59) tTime.bSec++;
+  if(tTime.bSec<59){ tTime.bSec++; bTimeColonToToggle=1; }
   else{
    tTime.bSec=0;
    if(tTime.bMin<59) tTime.bMin++;
@@ -980,52 +1694,106 @@ void __vector_15 (void) __attribute__ ((signal,used, externally_visible)) ; void
    }
    bTimeChanged=1;
   }
+
  }
  bPriLev = bOldPriLev;
 }
+
+
+void __vector_9 (void) __attribute__ ((signal,used, externally_visible)) ; void __vector_9 (void){
+ if(bPriLev<3) return;
+ byte bOldPriLev = bPriLev;
+
+ if(wBacklightCounter<300){ wBacklightCounter++; return; }
+ wBacklightCounter=0;
+ (*(volatile uint8_t *)((0x18) + 0x20)) &= 0xfe; (*(volatile uint8_t *)((0x25) + 0x20)) &= (0<<2)|(0<<1)|(0<<0);;
+
+ bPriLev = bOldPriLev;
+}
+
 
 void __vector_21 (void) __attribute__ ((signal,used, externally_visible)) ; void __vector_21 (void){
  if(bPriLev<2) return;
- uint8_t bOldPriLev = bPriLev;
+ byte bOldPriLev = bPriLev;
 
- if(wCount_adc < 5000){
-  wCount_adc++;
+ sreg = (*(volatile uint8_t *)((0x34) + 0x20));
+ __asm__ __volatile__ ("cli" ::: "memory");
+
+ if(wADC_garbage < 20){
+  wADC_garbage++;
  }else{
-  wCount_adc=0;
-  getTemperature();
+  wADC_garbage=0;
+  if(wADC_counts<100){
+   switch(bChannel){
+    case 0:
+     adTemperature[wADC_counts]=getTemperature();
+     break;
+    case 1:
+     adHumidity[wADC_counts]=getHumidity();
+     break;
+    default: break;
+   }
+   wADC_counts++;
+  }else{
+   wADC_counts=0;
+   switch(bChannel){
+    case 0:
+     dTemperature=ADC_average(adTemperature, ((void *)0));
+     bTempChanged=1;
+     break;
+    case 1:
+     bHumidity = _round(ADC_average(((void *)0), adHumidity));
+     bHumChanged=1;
+     break;
+    default: break;
+   }
+   multiplexADChannel();
+  }
  }
+
+ __asm__ __volatile__ ("sei" ::: "memory");
+ (*(volatile uint8_t *)((0x34) + 0x20))=sreg;
+
  bPriLev = bOldPriLev;
 }
+
 
 
 
 
 void _init(){
 
+ (*(volatile uint8_t *)((0x1A) + 0x20)) = 0xf;
+ (*(volatile uint8_t *)((0x17) + 0x20)) = 0x1;
+
+ (*(volatile uint8_t *)((0x03) + 0x20)) = 32 +128 +64;
+
+
+
  (*(volatile uint8_t *)((0x06) + 0x20)) = (1<<2)|(1<<1)|(1<<0);
-
- (*(volatile uint8_t *)((0x07) + 0x20)) |= (1<<3)|(1<<1)|(1<<0);
  (*(volatile uint8_t *)((0x06) + 0x20)) |= (1<<5)|(1<<7)|(1<<3);
-
-
-
- (*(volatile uint8_t *)((0x17) + 0x20)) |= (1<<7);
- (*(volatile uint8_t *)((0x23) + 0x20)) = 64;
- (*(volatile uint8_t *)((0x25) + 0x20)) = (1<<3)|(1<<6)|(1<<5)|(1<<0)|(1<<1);
-
-
-
+ (*(volatile uint8_t *)((0x07) + 0x20))=0; (*(volatile uint8_t *)((0x07) + 0x20)) |= (1<<3)|(1<<1)|(1<<0);;
+# 647 ".././CLICO.c"
  InitLCD(0);
- (LCDByte(0b00000001,0));
+ (LCDByte(0b00000001,0));;
  LCDWriteStringXY(11,0,"00:00");
- LCDWriteStringXY(0,1,"T= 0.00");
+ LCDWriteStringXY(2 -2,1,"T=00.0");
+ LCDByte(0b11011111, 1);
+
+ LCDWriteStringXY(11 -4, 1, "C_H=88%");
+ LCDWriteStringXY(15 -1,1,"_1");
 
 
 
  (*(volatile uint8_t *)((0x33) + 0x20)) |= (1<<2)|(1<<1)|(1<<0);
  (*(volatile uint8_t *)((0x33) + 0x20)) |= (1<<3)|(0<<6);
  (*(volatile uint8_t *)((0x37) + 0x20)) |= (1<<1);
- (*(volatile uint8_t *)((0x31) + 0x20)) = 156;
+ (*(volatile uint8_t *)((0x31) + 0x20)) = 155;
+
+
+ (*(volatile uint8_t *)((0x25) + 0x20)) |= (1<<3)|(0<<6);
+ (*(volatile uint8_t *)((0x37) + 0x20)) |= (1<<7);
+ (*(volatile uint8_t *)((0x23) + 0x20)) = 156;
 
 
  __asm__ __volatile__ ("sei" ::: "memory");
@@ -1033,79 +1801,101 @@ void _init(){
 }
 
 
-void getTemperature(){
- __asm__ __volatile__ ("cli" ::: "memory");
+double getTemperature(){
+ double temp;
  dVp = 2.5 + (*(volatile uint16_t *)((0x04) + 0x20)) * 5.0/(1024*200.0);
  dRpt = (dVp*(1200.0 +1100.0) - 5.0*1100.0)/(5.0 - dVp);
- dTemperature = (dRpt-100) / 0.3878461538;
- bTempChanged=1;
- __asm__ __volatile__ ("sei" ::: "memory");
+ temp = (dRpt-100) / 0.3878461538;
+
+ return temp;
 }
 
-void writeLCD(int caller){
- if(caller!=bState) return;
- switch(bState){
- case 0:
-  __asm__ __volatile__ ("cli" ::: "memory");
-  (LCDByte(0b00000001,0));
-  (LCDByte(0x0F,0));
-  LCDWriteStringXY(8,0, str);
-  LCDWriteStringXY(0,1, "T= ");
-  LCDGotoXY(3,1);
-  LCDWriteString(temp_str);
-  __asm__ __volatile__ ("sei" ::: "memory");
-  break;
+byte getHumidity(void){
+ AD = (*(volatile uint16_t *)((0x04) + 0x20));
+ dVout = 5*(AD/1024);
+ dRH = (dVout - 0.16*5.0)/(5.0*0.0062);
+ dRH_comp = dRH/(1.0546-0.00216*(_round(dTemperature)));
+ return _round(dRH_comp);
+}
 
- case 1:
-  (LCDByte(0b00000001,0));
-  LCDWriteStringXY(0,0, "nothing");
-  break;
-
- case 2:
-  (LCDByte(0b00000001,0));
-  LCDWriteStringXY(0,0,"-");
-  LCDWriteStringXY(1,0, options[bSelectionMenu]);
-  LCDWriteStringXY(1,1, options[bSelectionMenu+1]);
-  break;
- case 3:
-  (LCDByte(0b00000001,0));
-
-  break;
- default:
-  break;
+void multiplexADChannel(){
+ switch(bChannel){
+  case 0:
+   (*(volatile uint8_t *)((0x07) + 0x20))=0; (*(volatile uint8_t *)((0x07) + 0x20)) |= (1<<1);;
+   bChannel=1;
+   break;
+  case 1:
+   (*(volatile uint8_t *)((0x07) + 0x20))=0; (*(volatile uint8_t *)((0x07) + 0x20)) |= (1<<3)|(1<<1)|(1<<0);;
+   bChannel = 0;
+   break;
+  default: break;
  }
+}
+
+double ADC_average(double * valuesDOUBLE, byte * valuesBYTE){
+ sreg = (*(volatile uint8_t *)((0x34) + 0x20));
+ __asm__ __volatile__ ("cli" ::: "memory");
+
+ double value;
+ double sumA=0;
+ word sumB=0;
+ word i;
+ if(valuesDOUBLE != ((void *)0)){
+  for(i=0;i<100;i++){
+   sumA+=valuesDOUBLE[i];
+  }
+  value=sumA/i;
+ }else{
+  for(i=0;i<100;i++){
+   sumB+=valuesBYTE[i];
+  }
+  value=sumB/i;
+ }
+
+
+ __asm__ __volatile__ ("sei" ::: "memory");
+ (*(volatile uint8_t *)((0x34) + 0x20)) = sreg;
+ return value;
 }
 
 
 void refreshQuote(){
- if(!bDateChanged){ ((void *)0); }
- else{
+ if(bDateChanged){
   bDateChanged=0;
   sprintf(str, "%02d/%02d/%02d,", tTime.bDay, tTime.bMonth, tTime.bYear);
   LCDWriteStringXY(0,0,str);
  }
- if(!bTimeChanged){ ((void *)0); }
- else{
+ if(bTimeChanged){
   bTimeChanged=0;
-  sprintf(str, "%02d:%02d", tTime.bHour, tTime.bMin, tTime.bSec);
-
-  LCDWriteStringXY(11,0,str);
+  sprintf(str, "%02d", tTime.bHour);
+  LCDWriteStringXY(11, 0, str);
+  sprintf(str, "%02d", tTime.bMin);
+  LCDWriteStringXY(11 +3, 0, str);
  }
- if(!bTempChanged){ ((void *)0); }
- else{
+ if(bTempChanged){
   bTempChanged=0;
-  sprintf(temp_str, "%05.2f", dTemperature);
-  LCDWriteStringXY(0,1, "T= ");
-  LCDWriteStringXY(3,1, temp_str);
+  sprintf(str, "%04.1f", dTemperature);
+  LCDWriteStringXY(0,1, "T=");
+  LCDWriteStringXY(2,1, str);
+ }
+ if(bHumChanged){
+  bHumChanged=0;
+  sprintf(str, "%2d", bHumidity);
+  LCDWriteStringXY(11, 1, str);
+  if(bHumidity>99){ bOvFlo=1; }
+  if(bHumidity<100 && bOvFlo){
+   bOvFlo=0;
+   LCDWriteStringXY(11 +2,1,"%");
+  }
  }
 }
 
-int isLeapYear(uint8_t year){
+int isLeapYear(byte year){
  if((year%4)==0) return 1;
  return 0;
 }
 
-void changeEditTime(uint8_t bPosition, uint8_t bButton){
+void changeEditTime(byte bPosition, byte bButton){
 
  int bHunita;
  int bHdecine;
@@ -1146,7 +1936,7 @@ void changeEditTime(uint8_t bPosition, uint8_t bButton){
 
 }
 
-void changeEditDate(uint8_t bPosition, uint8_t bButton){
+void changeEditDate(byte bPosition, byte bButton){
 
  int bYunita;
  int bYdecine;
@@ -1186,13 +1976,30 @@ void changeEditDate(uint8_t bPosition, uint8_t bButton){
   default:
    break;
  }
-
-
 }
 
-void checkDate(TIME_DATE time, int * days){
+int checkDate(time_date *time, byte * days){
 
- if(tTimeEditing.bDay<days[tTimeEditing.bMonth-1]) return;
- else tTimeEditing.bDay = days[tTimeEditing.bMonth-1];
 
+
+ if(time->bDay > days[time->bMonth-1]){
+  time->bDay = days[time->bMonth-1];
+  return 1;
+ }
+ return 0;
+}
+
+void toggleTimeColon(){
+ if(bTimeCommaState){
+  LCDWriteStringXY(11 +2, 0, ":");
+  bTimeCommaState=0;
+ }else{
+  LCDWriteStringXY(11 +2, 0, " ");
+  bTimeCommaState=1;
+ }
+}
+
+int _round(double x){
+ if((x-((int)x))>0.5) return ((int)x)+1;
+ else return (int)x;
 }
