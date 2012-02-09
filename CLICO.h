@@ -2,15 +2,40 @@
  * CLICO.h
  *
  * Created: 08/07/2011 11:33:56
- *  Author: cillino
+ *  Author: Stefano Cillo
  */ 
+
+/*
+Doxygen documenting commands:
+\class is used to indicate that the comment block contains documentation for the class.
+\struct to document a C-struct.
+\union to document a union.
+\enum to document an enumeration type.
+\fn to document a function.
+\var to document a variable or typedef or enum value.
+\def to document a #define.
+\typedef to document a type definition.
+\file to document a file.
+\namespace to document a namespace.
+\package to document a Java package.
+\interface to document an IDL interface.
+*/
 
 #ifndef CLICO_H_
 #define CLICO_H_
 
+
+/* Fcpu = 16 MHz */
 #ifndef F_CPU
-	#define F_CPU 16000000UL
+#define F_CPU 16000000UL
 #endif
+
+/* Twi bitrate = 400 KHz */
+#ifndef TWI_BITRATE
+#define TWI_BITRATE 400000UL 
+#endif
+
+#define __HAS_DELAY_CYCLES 1
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -18,9 +43,12 @@
 #include <string.h>
 #include <avr/sfr_defs.h>
 #include <util/delay.h>
-#include <util/lcd.c>
-#include <util/24c.h>
+#include <util/24c_.c>
 #include <util/atomic.h>
+
+#include <CLICO_util/lcd.c>
+#include <CLICO_util/EEPROM.c>
+#include <CLICO_util/i2c.c>
 
 
 
@@ -63,7 +91,12 @@ typedef struct{
 #define BUTTON_PINS		PINE
 #define BACKLIGHT_PORT	PORTB
 
+#define BUTTON_A	BIT5
+#define BUTTON_B	BIT7
+#define BUTTON_C	BIT6
 
+#define ACK		1
+#define NACK	0
 
 
 /************************* Constants ****************************/
@@ -136,10 +169,12 @@ typedef struct{
 #define BIT7	128
 
 
+/* LCD cursor position possible values */
 #define CLOCK_CURSOR_POSITION	11
 #define ZONE_CURSOR_POSITION	15
-#define TEMP_CURSOR_POSITION	2	
+#define TEMP_CURSOR_POSITION	2
 #define HUM_CURSOR_POSITION		11
+
 
 /***********************************************************************/
 
@@ -148,6 +183,7 @@ typedef struct{
 	ADMUX=0;\
 	ADMUX |= (1<<MUX3)|(1<<MUX1)|(1<<MUX0);
 
+// ADC2, single ended
 #define ADC_SET_HUMIDITY_CHANNEL()\
 	ADMUX=0;\
 	ADMUX |= (1<<MUX1);
@@ -167,8 +203,8 @@ typedef struct{
 
 /****************************** LCD Macros ******************************/
 
-#define LCD_CURSOR_LEFT_N(n) for(int i=0; i<n; i++) LCDCmd(0x10);
-#define LCD_CURSOR_RIGHT_N(n) for(int i=0; i<n; i++) LCDCmd(0x14);
+#define LCD_CURSOR_LEFT_N(n) for(i=0; i<n; i++) LCDCmd(0x10);
+#define LCD_CURSOR_RIGHT_N(n) for(i=0; i<n; i++) LCDCmd(0x14);
 
 //changes cursor position keeping it in the same row
 #define LCD_SET_CURSOR_POSITION(n)\
@@ -191,7 +227,11 @@ typedef struct{
 
 
 
+
+/*************************************************************************************/
 /*********************************** Headers *****************************************/
+/*************************************************************************************/
+
 
 void _init(void);
 double getTemperature(void);
@@ -204,7 +244,7 @@ void changeEditDate(byte bPosition, byte bButton);
 void changeEditTimeDate(byte bPosition, byte bButton);
 int checkDate(time_date *time, byte* days);
 void toggleTimeColon(void);
-int round_(double x);
+int _round(double x);
 
 char *itoa(int value, char * str, int base);
 int sprintf(char * str, const char * format, ...);

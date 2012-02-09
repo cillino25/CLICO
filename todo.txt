@@ -1,0 +1,121 @@
+*************************************
+**** AVR MicroClimate Controller ****
+*************************************
+
+3 buttons (?): 
+				/\		A : UP button.
+				--
+				
+				
+				(o)		C : menu btn.   <--- If this btn is long-pressed we'll enter in the menu and sub-menus.
+				
+				
+				--
+				\/		B : DOWN button.  <---  A short pression of A or B will cause the display to backlight
+
+
+
+
+
+
+
+TODO list:  (XXX -> done)
+
+******************* 1 *******************
+	===== Data acquisition =====
+	
+XXX	- Temperature
+XXX	- Humidity	<--- Multiplexing!!
+	- Percentage of power to the wheel
+	
+	
+******************* 2 *******************
+	===== USB Transfer =====	
+	
+
+******************* 3 *******************
+===== Store data in external EEPROM =====
+	----
+		struct DAILY_Store{
+			.. variables with Day, Month, Year ..
+			data[]; // array containing every-X-minutes captures. --> X=10?
+		}
+
+	----
+		24 hours * 60 mins = 1440 min per day --> capture every X mins => 1440/X captures per day
+		144 * N (N=number of variables to capture: humidity, temp)
+		Size of each variable: B Byte
+		
+		TOTAL per day= (1440 / X) * B * N
+		
+		//////example: X = 10 mins, B = 1 Byte, N = 2 vars
+		//////		--> tot = 144*2 = 244 bytes per day
+		example: X= 30m, B= 4 byte --> tot = 48 * 4 = ~200 byte.
+
+	ATMega1284P: 4KB EEPROM -> 4096/244 ~= 16 days of capturing before filling the eeprom
+	External EEPROM: 128K -> 131072/244 ~= 537 days  --> VERY GOOD
+	External EEprom: 512K -> 524288/200 ~= 2621 days --> even better ;)
+	NO 1024K (at24c1024) because it requires a different addressing method (8 bit instead of 7)
+	
+	
+	----
+XXX		External I2C lib
+	----
+		External EEPROM lib	--> return are now ERROR_CODE => to be replaced with 1
+	----
+		Reset routine for external eeprom module at24c1024b
+
+
+******************* 4 *******************
+XXX	===== Backlight control =====
+	
+		If menu is entered or menu key is pressed, the display
+		will backlight for 10 or 20 secs.  (state=x ???)
+	
+
+******************* 5 *******************
+	===== Zone control / Zone division editing =====
+	
+		Depending upon the time zone, the mcu will drive the motor
+		at constant speed or it will adjust its speed in relation
+		with the humidity and temperature of the area.
+		
+		An entry in the main menu will allow to modify the timezone division, Z1 and Z2.
+
+******************* 6 *******************
+	===== Motor speed control =====
+		Inside the timezone regolation there will be an entry which
+		allows to edit the motor speed of that zone (fixed||variable speed).
+	
+
+******************* 7 *******************
+XXX	===== Date and time regolation =====
+
+		When entered in the menu, selecting "Regola ora" or "Regola data"
+		it'll be possible to change date and time.
+		Starting from left to right, each entry (h, m, s || day, month, year)
+		is selected at once and it can be edited using UP and DOWN buttons.
+		The CENTER button pression will move the cursor to the right, or
+		end the editing if the last position was at the most right.
+		
+		__rev: if the cursor is at most right, the pression of CENTER button will
+				bring it to the first position on the left.
+				If CENTER is long-pressed a confirm message will appear, and if Yes will be
+				selected and another long-pression will occur, the regolation of date or time
+				will take effect.
+	
+	***************** FIXME! ******************
+	
+		We shall modify it in order to act like this:
+		if I enter in the Time editing menu, all I can do is to hit UP or DOWN buttons
+		and that makes the time go up or down of ONE UNIT for each hit;
+		if i choose 31 and the month was 02, if I move to the right the day will be
+		changed to 28 (or 29 depending on leap year).
+	
+	
+******************* 8 *******************
+XXX	===== ADC MULTIPLEXING!!! =====
+	
+		Using one channel for the temperature and another for
+		the humidity it will be necessary to multiplex the channels,
+		in order to capture correctly the analog values.

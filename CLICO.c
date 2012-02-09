@@ -2,7 +2,15 @@
  * CLICO.c
  *
  * Created: 08/07/2011 11:32:02
- *  Author: cillino
+ *  Author: Stefano Cillo
+ *  Version: 0.04
+ *  Copyright 2012 Stefano Cillo
+ * 
+ * The purpose of this code is to sensor ambient parameters like
+ * temperature and humidity in a room; it will also record data into
+ * an external EEPROM chip and make it available to the user thanks to
+ * an FTDI serial to USB interface.
+ *
  */ 
 
 /*
@@ -15,7 +23,6 @@ Hungarian notation:
 */
 
 #include "CLICO.h"
-
 
 volatile time_date tTime;
 volatile time_date tTimeEditing;
@@ -45,7 +52,7 @@ volatile double dRH_comp;
 volatile double dVout;
 volatile byte bHumidity;
 volatile byte adHumidity[NUMBER_OF_CONVERSIONS];
-volatile byte bSfo;
+volatile byte bOvFlo;
 
 volatile byte bBtnAPressed;
 volatile byte bBtnBPressed;
@@ -63,8 +70,8 @@ volatile byte bTimeCommaState;
 volatile byte bTimeColonToToggle;
 
 volatile byte bZone=1;
-volatile time tZ1;
-volatile time tZ2;
+volatile time_date tZ1;
+volatile time_date tZ2;
 
 volatile byte sreg;
 volatile byte bPriLev;
@@ -77,6 +84,10 @@ char options[NUMBER_OF_OPTIONS+1][16]={"1.Timezone     ","2.Date         ", "3.T
 
 
 byte aDays[12]={31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+	
+	
+volatile unsigned long i=0;
+volatile unsigned char val[11], *val1;
 
 
 /******************************************************************************/
@@ -84,7 +95,6 @@ byte aDays[12]={31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 /******************************************************************************/
 
 int main(void){
-	
 	bPriLev=PRI_MAIN;
 	
 	tTime.bDay=7;
@@ -96,6 +106,70 @@ int main(void){
 	_init();
 	
 	while(1) { /* Infinite Loop */
+	
+		LCDClear();
+		
+		if(!EEPROM_Open()){
+			LCDClear();
+			sprintf(str, "Error: bitrate");
+			LCDWriteStringXY(0,0,str);
+			sprintf(str, "  too high!");
+			LCDWriteStringXY(0,1,str);
+			_delay_ms(1000);
+		}
+		
+		
+		unsigned char ch, da;
+		
+		for(i=0; i<15; i++){
+			ch = EEPROM_writeByte(i, i, AT24_BW_ACK);
+		}
+		
+		if(ch==1) {
+			LCDClear();
+			sprintf(str, "error while writing");
+			LCDWriteStringXY(0,0, str);
+			_delay_ms(500);
+		}
+		
+		for(i=0;i<5;i++){
+			da=EEPROM_readByte(i, AT24_RR_ACK);
+			//da=EEReadByte(i);
+			sprintf(str, "%d at %d", da, i);
+			LCDClear();
+			LCDWriteStringXY(0,0,str);
+			_delay_ms(250);
+		}
+		
+		
+		for(i=0;i<10;i++){ val[i]=0; }
+		EEPROM_sequentialRead(0,10,val,NACK);
+		val[10]='\0';
+		
+		
+		for(i=0;i<10;i++){
+			sprintf(str, "%3d at %2d", val[i], i);
+			LCDWriteStringXY(0,1,str);
+			_delay_ms(750);
+		}
+		//*************************************/
+		
+		
+		/*for(i=0;i<65535;i++){
+			da=EEPROM_readByte(i, (unsigned char)i);
+			if(da!=255){
+				sprintf(str, "%d at %d", da, i);
+				LCDWriteStringXY(0,1,str);
+				_delay_ms(500);
+			}
+		}*/
+		
+		
+		//_delay_ms(3000);
+	
+		
+	
+	
 		switch(bState){
 
 /*--------------------------------------------------------------------------------------------------*/
@@ -412,9 +486,9 @@ ISR(TIMER0_COMP_vect){
 	
 /*	*************** FILTERS **************	*/
 	bPort = BUTTON_PINS;
-	bBtnAPressed = bPort & BIT0;		// UP
-	bBtnBPressed = bPort & BIT4;		// DOWN
-	bBtnCPressed = bPort & BIT1;		// MENU
+	bBtnAPressed = bPort & BIT5;		// UP
+	bBtnBPressed = bPort & BIT7;		// DOWN
+	bBtnCPressed = bPort & BIT6;		// MENU
 	// bBtnXPressed=0  -->bottone x premuto! (collegati a massa)
 	
 	if(!bBtnCPressed&&(!bInhibite)){
@@ -520,7 +594,7 @@ ISR(ADC_vect){
 		wADC_garbage++;
 	}else{
 		wADC_garbage=0;
-		if(wADC_counts<NUMBER_OF_CONVERSIONS){	
+		if(wADC_counts<NUMBER_OF_CONVERSIONS){	//wadcounts++
 			switch(bChannel){
 				case TEMPERATURE:
 					adTemperature[wADC_counts]=getTemperature();
@@ -539,7 +613,7 @@ ISR(ADC_vect){
 					bTempChanged=1;
 					break;
 				case HUMIDITY:
-					bHumidity = round_(ADC_average(NULL, adHumidity));
+					bHumidity = _round(ADC_average(NULL, adHumidity));
 					bHumChanged=1;
 					break;
 				default: break;
@@ -560,16 +634,16 @@ ISR(ADC_vect){
 
 void _init(){
 	/******************* Pin Configuration ***********************/
-	DDRA = 0xff;		// PORTA = output
+	DDRA = 0xf;		// PORTA = output
 	DDRB = 0x1;			// PORTB.0 = output (backlight)
 	
-	BUTTON_PORT = 0x13;		// pins 0,1,4 of BUTTON_PORT (portE) are pulled high
+	BUTTON_PORT = BUTTON_A+BUTTON_B+BUTTON_C;		// pins 0,1,4 of BUTTON_PORT (portE) are pulled high
 	
 	
 	/******************* ADC Setup / Temperature first *********************/
 	ADCSRA = (1<<ADPS2)|(1<<ADPS1)|(1<<ADPS0);		// ADC Prescaler = Fck/128
 	ADCSRA |= (1<<ADFR)|(1<<ADEN)|(1<<ADIE);		// Free-running mode, enabling ADC and ADC Interrupt
-	
+	ADC_SET_TEMPERATURE_CHANNEL();
 	
 	/******************* PWM Setup *********************/
 	//DDRB |= (1<<PB7);
@@ -581,24 +655,23 @@ void _init(){
 	InitLCD(0);
 	LCDClear();
 	LCDWriteStringXY(CLOCK_CURSOR_POSITION,0,"00:00");
-	LCDWriteStringXY(0,1,"T=00.0");
-	LCDByte(0b11011111, 1);		// Scrive il carattere °: dalla tabella 4 del datasheet HD44780.pdf vediamo che il carattere è 11011111;
+	LCDWriteStringXY(TEMP_CURSOR_POSITION-2,1,"T=00.0");
+	LCDByte(0b11011111, 1);		// Scrive il carattere ï¿½: dalla tabella 4 del datasheet HD44780.pdf vediamo che il carattere ï¿½ 11011111;
 								// lo mandiamo come byte (LCDByte()) sapendo che dobbiamo mettere RS a 1 (dato!)
 	LCDWriteStringXY(HUM_CURSOR_POSITION-4, 1, "C_H=88%");
 	LCDWriteStringXY(ZONE_CURSOR_POSITION-1,1,"_1");
 	
 	
-	/******************* RTC Setup *********************/
+	/******************* Timer0 Setup: RTC *********************/
 	TCCR0 |= (1<<CS02)|(1<<CS01)|(1<<CS00);			// clock: F_CPU / 1024
 	TCCR0 |= (1<<WGM01)|(0<<WGM00);					// Clear Timer on Compare
 	TIMSK |= (1<<OCIE0);							// Output compare match interrupt enable
-	OCR0 = 156;										// Interrupt every 10ms
+	OCR0 = 155;										// Interrupt every 10ms
 	
-	/******************* Timer2 setup: backlight *********************/
-	//TCCR2 |= (1<<CS22)|(0<<CS21)|(1<<CS20);		// clock: F_CPU / 1024
-	TCCR2 |= (1<<WGM21)|(0<<WGM20);					// Clear Timer on Compare
-	TIMSK |= (1<<OCIE2);							// Output compare match interrupt enable
-	OCR2 = 156;										// Interrupt every 10ms
+	/******************* Timer2 Setup: backlight *********************/
+	TCCR2 |= (1<<WGM21)|(0<<WGM20);
+	TIMSK |= (1<<OCIE2);
+	OCR2 = 156;
 	
 		
 	sei();
@@ -610,7 +683,7 @@ double getTemperature(){
 	double temp;
 	dVp = VM + ADC * VREF/(1024*GAIN);
 	dRpt = (dVp*(R1+R2) - VREF*R2)/(VREF - dVp);
-	temp = (dRpt-RPT0) / K_Rpt;
+	temp = (dRpt-RPT0) / K_Rpt;						// Linearization of the PT100
 	
 	return temp;
 }
@@ -618,9 +691,9 @@ double getTemperature(){
 byte getHumidity(void){
 	AD = ADC;
 	dVout = 5*(AD/1024);
-	dRH = (dVout - 0.16*VREF)/(VREF*0.0062);
-	dRH_comp = dRH/(1.0546-0.00216*(round_(dTemperature)));
-	return round_(dRH_comp);
+	dRH = (dVout - 0.16*VREF)/(VREF*0.0062);					// Formulas given by the datasheet of HIH-4030
+	dRH_comp = dRH/(1.0546-0.00216*(_round(dTemperature)));		//
+	return _round(dRH_comp);
 }
 
 void multiplexADChannel(){
@@ -644,7 +717,7 @@ double ADC_average(double * valuesDOUBLE, byte * valuesBYTE){
 	double value;
 	double sumA=0;
 	word sumB=0;
-	byte i;
+	word i;
 	if(valuesDOUBLE != NULL){
 		for(i=0;i<NUMBER_OF_CONVERSIONS;i++){
 			sumA+=valuesDOUBLE[i];
@@ -672,8 +745,6 @@ void refreshQuote(){
 	}
 	if(bTimeChanged){
 		bTimeChanged=0;
-		//sprintf(str, "%02d:%02d:%02d", tTime.bHour, tTime.bMin, tTime.bSec);
-		//LCDWriteStringXY(8,0,str);
 		sprintf(str, "%02d", tTime.bHour);
 		LCDWriteStringXY(CLOCK_CURSOR_POSITION, 0, str);
 		sprintf(str, "%02d", tTime.bMin);
@@ -689,9 +760,9 @@ void refreshQuote(){
 		bHumChanged=0;
 		sprintf(str, "%2d", bHumidity);
 		LCDWriteStringXY(HUM_CURSOR_POSITION, 1, str);
-		if(bHumidity>99){ bSfo=1; }		// se l'umidità arriva al 100% cancella il carattere '%':
-		if(bHumidity<100 && bSfo){		// lo ripristiniamo in questo modo.
-			bSfo=0;
+		if(bHumidity>99){ bOvFlo=1; }		// se l'umiditï¿½ arriva al 100% cancella il carattere '%':
+		if(bHumidity<100 && bOvFlo){		// lo ripristiniamo in questo modo.
+			bOvFlo=0;
 			LCDWriteStringXY(HUM_CURSOR_POSITION+2,1,"%");
 		}
 	}
@@ -702,7 +773,7 @@ int isLeapYear(byte year){
 	return 0;
 }
 
-void changeEditTime(byte bPosition, byte bButton){
+void changeEditTime(byte bPosition, byte bButton){ //Da cambiare!
 	
 	int bHunita;
 	int bHdecine;
@@ -806,7 +877,7 @@ void toggleTimeColon(){
 	}
 }
 
-int round_(double x){
+int _round(double x){
 	if((x-((int)x))>0.5) return ((int)x)+1;
 	else return (int)x;
 }

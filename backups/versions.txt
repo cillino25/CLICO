@@ -2,10 +2,9 @@
 
 Versions:
 
---0.01:
-	*date: 03/08/2011, 15.38
+--0.01 ____ 03/08/2011, 15.38
 	
-	Backup effettuato perchè nel main verrà invertito l'ordine di controllo tra bState e bBtn: diventerà
+	+Nel main verrà invertito l'ordine di controllo tra bState e bBtn: diventerà
 	
 		switch(bState){
 			switch(bBtn){
@@ -16,5 +15,23 @@ Versions:
 
 --0.02 ____ 04/08/2011
 
-	Terminata opzione di modifica dell'ora corrente,
+	+Terminata opzione di modifica dell'ora corrente,
 	+macro EDIT_TIME, per gestire i dati introdotti dall'utente al momento della modifica.
+	
+	
+--0.03 ____ 16/08/2011, 22.12
+
+	+Aggiunta possibilità di modifica della data, con controllo della correttezza del giorno:
+	se venisse inserito il giorno 31/09/11, quando si sposta il cursore dal giorno al mese
+	o dal mese all'anno tale data verrà modificata in 30/09/11.
+	( int checkDate(TIME_DATE *tTime, uint8_t *days) )
+	
+	+La macro EDIT_TIME verrà modificata in modo da diventare una funzione (?) --> NO!
+	
+
+--0.04 ____  28/08/2011
+	
+	+Aggiunto controllo della retroilluminazione del display LCD.
+	+Aggiunta rilevazione dell'umidità con multiplexing del canale
+	+Aggiunta funzione che calcola la media dei valori acquisiti dall'ADC
+	    (semplice media aritmetica di 100 valori, ognuno preso ogni 20 scartati).
