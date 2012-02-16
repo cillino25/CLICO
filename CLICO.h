@@ -1,38 +1,44 @@
-/*
- * CLICO.h
+/**
+ * \file CLICO.h
+ * \brief Header file for CLICO project.
  *
- * Created: 08/07/2011 11:33:56
- *  Author: Stefano Cillo
+ * \date 08/07/2011 11:32:02
+ * \author Stefano Cillo <cillino.25@gmail.com>
+ * \version v0.04
+ *
+ * This file will contain all necessary includes and definitions.
+ * 
  */ 
 
 /*
 Doxygen documenting commands:
-\class is used to indicate that the comment block contains documentation for the class.
-\struct to document a C-struct.
-\union to document a union.
-\enum to document an enumeration type.
-\fn to document a function.
-\var to document a variable or typedef or enum value.
-\def to document a #define.
-\typedef to document a type definition.
-\file to document a file.
-\namespace to document a namespace.
-\package to document a Java package.
-\interface to document an IDL interface.
+\brief		add a short description.
+\class		is used to indicate that the comment block contains documentation for the class.
+\struct		to document a C-struct.
+\union		to document a union..
+\enum		to document an enumeration type.
+\fn			to document a function.
+\var		to document a variable or typedef or enum value.
+\def		to document a #define.
+\typedef	to document a type definition.
+\file		to document a file.
+\namespace	to document a namespace.
+\package	to document a Java package.
+\interface	to document an IDL interface.
 */
 
 #ifndef CLICO_H_
 #define CLICO_H_
 
 
-/* Fcpu = 16 MHz */
+/** \def CPU Frequency := 16 MHz */
 #ifndef F_CPU
 #define F_CPU 16000000UL
 #endif
 
-/* Twi bitrate = 400 KHz */
+/** \def Twi bitrate := 400 KHz */
 #ifndef TWI_BITRATE
-#define TWI_BITRATE 400000UL 
+#define TWI_BITRATE 400000UL
 #endif
 
 #define __HAS_DELAY_CYCLES 1
@@ -170,10 +176,10 @@ typedef struct{
 
 
 /* LCD cursor position possible values */
-#define CLOCK_CURSOR_POSITION	11
-#define ZONE_CURSOR_POSITION	15
+#define CLOCK_CURSOR_POSITION	15
 #define TEMP_CURSOR_POSITION	2
-#define HUM_CURSOR_POSITION		11
+#define HUM_CURSOR_POSITION		12
+#define ZONE_CURSOR_POSITION	19
 
 
 /***********************************************************************/
@@ -235,7 +241,7 @@ typedef struct{
 
 void _init(void);
 double getTemperature(void);
-byte getHumidity(void);
+byte getHumidity(double temperature);
 void multiplexADChannel(void);
 double ADC_average(double * valuesDOUBLE, byte * valuesBYTE);
 void refreshQuote(void);

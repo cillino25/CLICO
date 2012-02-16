@@ -1,17 +1,17 @@
-/*
- * CLICO.c
+/**
+ * \file CLICO.c
+ * \brief Main file for CLICO project.
  *
- * Created: 08/07/2011 11:32:02
- *  Author: Stefano Cillo
- *  Version: 0.04
- *  Copyright 2012 Stefano Cillo
+ * \date 08/07/2011 11:32:02
+ * \author Stefano Cillo <cillino.25@gmail.com>
+ * \version v0.04
  * 
- * The purpose of this code is to sensor ambient parameters like
+ * The purpose of this code is to get ambient parameters like
  * temperature and humidity in a room; it will also record data into
  * an external EEPROM chip and make it available to the user thanks to
- * an FTDI serial to USB interface.
+ * an FTDI serial-to-USB interface.
  *
- */ 
+ */
 
 /*
 Hungarian notation:
@@ -24,35 +24,74 @@ Hungarian notation:
 
 #include "CLICO.h"
 
+/// The actual RTC time.
 volatile time_date tTime;
+/// The value which the RTC will be set to.
 volatile time_date tTimeEditing;
+
+/// Keeps track of the time a button is being pressed.
 volatile count cButtonIntegrator;
 
+/// Reports time is changed and quotes have to be refreshed
 volatile byte bTimeChanged;
-volatile byte bDateChanged=1;
+/// Reports date has changed.
+volatile byte bDateChanged;
+///Reports temperature has changed.
 volatile byte bTempChanged;
+/// Reports humidity has chaged.
 volatile byte bHumChanged;
-volatile byte bFirst=1;
+/// Reports that quotes has to be printed.
+volatile byte bPrintQuotes;
 
+
+/// Garbage counter for ADC samples.
 volatile word wADC_garbage;
+/// Counter for ADC samples.
 volatile word wADC_counts;
+/// ADC channel selector value.
 volatile byte bChannel;
 
+/// Time counter for backlight.
 volatile word wBacklightCounter;
 
-volatile double dVp;
-volatile double dRpt;
+/// Temperature measured.
 volatile double dTemperature;
-volatile double adTemperature[NUMBER_OF_CONVERSIONS];
-volatile double dTemperatureOld;
 
-volatile double AD;
-volatile double dRH;
-volatile double dRH_comp;
-volatile double dVout;
+/**
+ *	\brief Temperature samples array.
+ *	
+ *	Array kept in memory in order to store the acquired temperature samples;
+ *	every NUMBER_OF_CONVERSIONS the average of these values will be calculated,
+ *	and the variable dTemperature will be assigned.
+ *	\sa NUMBER_OF_CONVERSION
+ *	\sa dTemperature
+*/
+volatile double adTemperature[NUMBER_OF_CONVERSIONS];
+
+volatile double dVp;			// working variables: useful only for seeing theri value in Isis.
+volatile double dRpt;			//
+volatile double dAD;			//
+volatile double dRH;			//
+volatile double dRH_comp;		//
+volatile double dVout;			//
+
+/// Humidity measured.
 volatile byte bHumidity;
+
+/**
+ * \brief Humidity samples array.
+ *
+ *  Array kept in memory in order to store the acquired humidity samples;
+ *	every NUMBER_OF_CONVERSIONS the average of these values will be calculated,
+ *	and the variable dHumidity will be assigned.
+ *	\sa NUMBER_OF_CONVERSION
+ *	\sa dHumidity
+ */
 volatile byte adHumidity[NUMBER_OF_CONVERSIONS];
-volatile byte bOvFlo;
+
+/// Needed for displaying correctly the humidity value onto the LCD.
+volatile byte bHumOverflow;
+
 
 volatile byte bBtnAPressed;
 volatile byte bBtnBPressed;
@@ -78,9 +117,9 @@ volatile byte bPriLev;
 volatile byte bState=STATE_IDLE;
 volatile byte bBtn;
 
-char str[10]="";
-char options[NUMBER_OF_OPTIONS+1][16]={"1.Timezone     ","2.Date         ", "3.Time         ",
-					"4.USB transfer ", "5.hello        ", "6.world        ", "7.osti         ", "               "};
+char str[14]="";
+char options[NUMBER_OF_OPTIONS+1][20]={"1.Timezone         ","2.Date             ", "3.Time             ",
+					"4.USB transfer     ", "5.hello            ", "6.world            ", "7.osti             ", "                   "};
 
 
 byte aDays[12]={31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
@@ -106,9 +145,9 @@ int main(void){
 	_init();
 	
 	while(1) { /* Infinite Loop */
-	
-		LCDClear();
 		
+		/*
+		LCDClear();
 		if(!EEPROM_Open()){
 			LCDClear();
 			sprintf(str, "Error: bitrate");
@@ -178,7 +217,7 @@ int main(void){
 					case NO_BTN:
 						if(bTimeColonToToggle){ toggleTimeColon(); bTimeColonToToggle=0; }
 						refreshQuote();
-						bFirst=1;
+						bPrintQuotes=1;
 						
 						break;
 					case BTN_A:
@@ -203,8 +242,8 @@ int main(void){
 			case STATE_MENU:
 				switch(bBtn){
 					case NO_BTN:
-						if(bSelectionMenuChanged || bFirst){
-							bFirst=0;
+						if(bSelectionMenuChanged || bPrintQuotes){
+							bPrintQuotes=0;
 							bSelectionMenuChanged=0;
 							LCDWriteStringXY(0,0,"-");
 							LCDWriteStringXY(1,0, options[bSelectionMenu]);
@@ -245,7 +284,7 @@ int main(void){
 							default:
 								break;
 						}
-						bFirst=1;
+						bPrintQuotes=1;
 						break;
 					
 					case BTN_C_LONG:
@@ -271,8 +310,8 @@ int main(void){
 			case STATE_EDIT_DATE:
 				switch(bBtn){
 					case NO_BTN:
-						if(bFirst){
-							bFirst=0;
+						if(bPrintQuotes){
+							bPrintQuotes=0;
 							LCDClear();
 							tTimeEditing = tTime;
 							sprintf(str, "%02d/%02d/%02d", tTimeEditing.bDay, tTimeEditing.bMonth, tTimeEditing.bYear);
@@ -314,7 +353,7 @@ int main(void){
 					case BTN_C_LONG:
 						bState=STATE_EDIT_DATE_CONFIRM;
 						bBtn=NO_BTN;
-						bFirst=1;
+						bPrintQuotes=1;
 						break;
 					default:
 						break;
@@ -325,10 +364,10 @@ int main(void){
 				case STATE_EDIT_DATE_CONFIRM:
 					switch(bBtn){
 						case NO_BTN:
-							if(bFirst){ 
+							if(bPrintQuotes){ 
 								LCDWriteStringXY(0,0, "Confermi? Si/No");
 								LCD_CURSOR_LEFT_N(5);
-								bFirst=0;
+								bPrintQuotes=0;
 								bSelectionDate=0;
 							}
 							if(bSelectionDateChanged){
@@ -356,7 +395,7 @@ int main(void){
 								LCD_RESET();
 							}
 							bBtn = NO_BTN;
-							bFirst=1;
+							bPrintQuotes=1;
 							break;
 						default: break;
 					}
@@ -366,8 +405,8 @@ int main(void){
 			case STATE_EDIT_TIME:
 					switch(bBtn){
 						case NO_BTN:
-							if(bFirst){
-								bFirst=0;
+							if(bPrintQuotes){
+								bPrintQuotes=0;
 								LCDClear();
 								tTimeEditing = tTime;
 								sprintf(str, "%02d:%02d:%02d", tTimeEditing.bHour, tTimeEditing.bMin, tTimeEditing.bSec);
@@ -400,7 +439,7 @@ int main(void){
 						case BTN_C_LONG:
 							bState=STATE_EDIT_TIME_CONFIRM;
 							bBtn=NO_BTN;
-							bFirst=1;
+							bPrintQuotes=1;
 							break;
 						default:
 							break;
@@ -411,10 +450,10 @@ int main(void){
 			case STATE_EDIT_TIME_CONFIRM:
 					switch(bBtn){
 						case NO_BTN:
-							if(bFirst){ 
+							if(bPrintQuotes){ 
 								LCDWriteStringXY(0,0, "Confermi? Si/No");
 								LCD_CURSOR_LEFT_N(5);
-								bFirst=0;
+								bPrintQuotes=0;
 								bSelectionTime=0;
 							}
 							if(bSelectionTimeChanged){
@@ -442,7 +481,7 @@ int main(void){
 								LCD_RESET();
 							}
 							bBtn = NO_BTN;
-							bFirst=1;
+							bPrintQuotes=1;
 							break;
 						default: break;
 					}
@@ -452,8 +491,8 @@ int main(void){
 			case STATE_EDIT_TIMEZONE:
 				switch(bBtn){
 					case NO_BTN:
-						if(bFirst){
-							bFirst=0;
+						if(bPrintQuotes){
+							bPrintQuotes=0;
 							LCDClear();
 							LCDWriteStringXY(0,0, "Edit timezone:");
 							LCDWriteStringXY(0,1,"1=");
@@ -489,16 +528,21 @@ ISR(TIMER0_COMP_vect){
 	bBtnAPressed = bPort & BIT5;		// UP
 	bBtnBPressed = bPort & BIT7;		// DOWN
 	bBtnCPressed = bPort & BIT6;		// MENU
-	// bBtnXPressed=0  -->bottone x premuto! (collegati a massa)
+	// bBtnXPressed=0  -->button X pressed! connected to ground
 	
-	if(!bBtnCPressed&&(!bInhibite)){
+	if(!bBtnCPressed&&(!bInhibite)){ //btnC is pressed
 		cButtonIntegrator.wC++;
-		if(cButtonIntegrator.wC>LONG_PRESSION_TIME){ bInhibite=1; }
+		if(cButtonIntegrator.wC>LONG_PRESSION_TIME){ bInhibite=1; }  // inhibites the btnC counter whenever entered in the menu
 	}
 	else{
-		if(bBtnCPressed!=0){ bInhibite=0; }
-		if(cButtonIntegrator.wC<DEBOUNCE_TIME){ cButtonIntegrator.wC=0; }
-		else if((cButtonIntegrator.wC>DEBOUNCE_TIME)&&(cButtonIntegrator.wC<LONG_PRESSION_TIME)){
+		if(bBtnCPressed!=0){	//btnC is not pressed <-- è qui la furbata! disinibisco il pulsante C solo nel momento in 
+			bInhibite=0;		// cui questo viene rilasciato; se entro nel menu e il pulsante è ancora premuto,
+		}						// bInhibite resta a 1 e quindi wC a 0; questo finchè mantengo premuto C.
+								// Quando lo rilascio lo disinibisco, riattivandolo.
+		
+		if(cButtonIntegrator.wC<DEBOUNCE_TIME){
+			cButtonIntegrator.wC=0;
+		}else if((cButtonIntegrator.wC>DEBOUNCE_TIME)&&(cButtonIntegrator.wC<LONG_PRESSION_TIME)){
 			cButtonIntegrator.wC=0;
 			bBtn = BTN_C;
 		}else if(cButtonIntegrator.wC>LONG_PRESSION_TIME){
@@ -537,7 +581,7 @@ ISR(TIMER0_COMP_vect){
 	if(tTime.wMilli<99) tTime.wMilli++;
 	else{
 		tTime.wMilli=0;
-		if(tTime.bSec<59){ tTime.bSec++; bTimeColonToToggle=1; }
+		if(tTime.bSec<59){ tTime.bSec++; bTimeColonToToggle=1; } // time colon is flashing at 1 Hz
 		else{
 			tTime.bSec=0;
 			if(tTime.bMin<59) tTime.bMin++;
@@ -563,9 +607,9 @@ ISR(TIMER0_COMP_vect){
 					bDateChanged=1;
 				}				
 			}
-			bTimeChanged=1;		// refresh quote every min
+			bTimeChanged=1;		// refresh quote every min for the minutes changing
 		}
-		//bTimeChanged=1;  //refresh quote every sec
+		//bTimeChanged=1;  //refresh quote every sec (testing case)
 	}
 	bPriLev = bOldPriLev;
 }
@@ -587,7 +631,7 @@ ISR(ADC_vect){
 	if(bPriLev<PRI_ADC) return;
 	byte bOldPriLev = bPriLev;
 	
-	sreg = MCUSR;	// togliamo le int durante l'esecuzione di questo codice: operazioni con float
+	sreg = MCUSR;	// float operations: avoid interrupts to make operations reliable
 	cli();
 	
 	if(wADC_garbage < NUMBER_OF_GARBAGE){	// some of the values are not considered
@@ -597,14 +641,13 @@ ISR(ADC_vect){
 		if(wADC_counts<NUMBER_OF_CONVERSIONS){	//wadcounts++
 			switch(bChannel){
 				case TEMPERATURE:
-					adTemperature[wADC_counts]=getTemperature();
+					adTemperature[wADC_counts++]=getTemperature();
 					break;
 				case HUMIDITY:
-					adHumidity[wADC_counts]=getHumidity();
+					adHumidity[wADC_counts++]=getHumidity(dTemperature);
 					break;
 				default: break;
 			}
-			wADC_counts++;
 		}else{
 			wADC_counts=0;
 			switch(bChannel){
@@ -633,6 +676,9 @@ ISR(ADC_vect){
 /*******************************************************************/
 
 void _init(){
+	bDateChanged = 1;
+	bPrintQuotes = 1;
+	
 	/******************* Pin Configuration ***********************/
 	DDRA = 0xf;		// PORTA = output
 	DDRB = 0x1;			// PORTB.0 = output (backlight)
@@ -656,10 +702,11 @@ void _init(){
 	LCDClear();
 	LCDWriteStringXY(CLOCK_CURSOR_POSITION,0,"00:00");
 	LCDWriteStringXY(TEMP_CURSOR_POSITION-2,1,"T=00.0");
-	LCDByte(0b11011111, 1);		// Scrive il carattere �: dalla tabella 4 del datasheet HD44780.pdf vediamo che il carattere � 11011111;
+	LCDByte(0b11011111, 1);		// Scrive il carattere °: dalla tabella 4 del datasheet HD44780.pdf vediamo che il carattere � 11011111;
 								// lo mandiamo come byte (LCDByte()) sapendo che dobbiamo mettere RS a 1 (dato!)
-	LCDWriteStringXY(HUM_CURSOR_POSITION-4, 1, "C_H=88%");
-	LCDWriteStringXY(ZONE_CURSOR_POSITION-1,1,"_1");
+	LCDWriteStringXY(TEMP_CURSOR_POSITION+5, 1, "C");
+	LCDWriteStringXY(HUM_CURSOR_POSITION-2, 1, "H=88%");
+	LCDWriteStringXY(ZONE_CURSOR_POSITION-2,1,"Z=1");
 	
 	
 	/******************* Timer0 Setup: RTC *********************/
@@ -674,25 +721,33 @@ void _init(){
 	OCR2 = 156;
 	
 		
-	sei();
+	sei();					// SEt Interrupts: let's start!
 	ADCSRA |= 1<<ADSC;		// ADC Start Conversion
 }
 
 
 double getTemperature(){
 	double temp;
+	//double dVp;
+	//double dRpt;
+	
 	dVp = VM + ADC * VREF/(1024*GAIN);
 	dRpt = (dVp*(R1+R2) - VREF*R2)/(VREF - dVp);
-	temp = (dRpt-RPT0) / K_Rpt;						// Linearization of the PT100
+	temp = (dRpt-RPT0) / K_Rpt;						// Linearization of PT100
 	
 	return temp;
 }
 
-byte getHumidity(void){
-	AD = ADC;
-	dVout = 5*(AD/1024);
+byte getHumidity(double temperature){
+	//double dAD
+	//double dVout
+	//double dRH
+	//double dRH_comp
+	
+	dAD = ADC;
+	dVout = 5*(dAD/1024);
 	dRH = (dVout - 0.16*VREF)/(VREF*0.0062);					// Formulas given by the datasheet of HIH-4030
-	dRH_comp = dRH/(1.0546-0.00216*(_round(dTemperature)));		//
+	dRH_comp = dRH/(1.0546-0.00216*(_round(temperature)));		//
 	return _round(dRH_comp);
 }
 
@@ -740,7 +795,7 @@ double ADC_average(double * valuesDOUBLE, byte * valuesBYTE){
 void refreshQuote(){
 	if(bDateChanged){
 		bDateChanged=0;
-		sprintf(str, "%02d/%02d/%02d,", tTime.bDay, tTime.bMonth, tTime.bYear);
+		sprintf(str, "%02d/%02d/20%02d,", tTime.bDay, tTime.bMonth, tTime.bYear);
 		LCDWriteStringXY(0,0,str);
 	}
 	if(bTimeChanged){
@@ -760,11 +815,14 @@ void refreshQuote(){
 		bHumChanged=0;
 		sprintf(str, "%2d", bHumidity);
 		LCDWriteStringXY(HUM_CURSOR_POSITION, 1, str);
-		if(bHumidity>99){ bOvFlo=1; }		// se l'umidit� arriva al 100% cancella il carattere '%':
-		if(bHumidity<100 && bOvFlo){		// lo ripristiniamo in questo modo.
-			bOvFlo=0;
-			LCDWriteStringXY(HUM_CURSOR_POSITION+2,1,"%");
-		}
+		if(bHumidity>99){
+			bHumOverflow=1;		// se l'umidita' arriva al 100% cancella il carattere '%':
+			LCDWriteStringXY(HUM_CURSOR_POSITION+3, 1, "%");
+		}		
+		else if(bHumidity<100 && bHumOverflow){		// lo ripristiniamo in questo modo.
+			bHumOverflow=0;
+			LCDWriteStringXY(HUM_CURSOR_POSITION+2,1,"% ");
+		}else{}
 	}
 }
 

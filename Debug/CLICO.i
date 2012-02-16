@@ -3,9 +3,9 @@
 # 1 "<built-in>"
 # 1 "<command-line>"
 # 1 ".././CLICO.c"
-# 17 ".././CLICO.c"
+# 25 ".././CLICO.c"
 # 1 ".././CLICO.h" 1
-# 24 ".././CLICO.h"
+# 46 ".././CLICO.h"
 # 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/io.h" 1
 # 99 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/io.h"
 # 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/sfr_defs.h" 1
@@ -157,9 +157,9 @@ typedef struct
 
 # 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/lock.h" 1
 # 457 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/io.h" 2
-# 25 ".././CLICO.h" 2
+# 47 ".././CLICO.h" 2
 # 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/interrupt.h" 1
-# 26 ".././CLICO.h" 2
+# 48 ".././CLICO.h" 2
 
 # 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/string.h" 1
 # 45 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/string.h"
@@ -206,7 +206,7 @@ extern char *strstr(const char *, const char *) __attribute__((__pure__));
 extern char *strtok(char *, const char *);
 extern char *strtok_r(char *, const char *, char **);
 extern char *strupr(char *);
-# 28 ".././CLICO.h" 2
+# 50 ".././CLICO.h" 2
 
 # 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/util/delay.h" 1
 # 43 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/util/delay.h"
@@ -274,7 +274,7 @@ _delay_us(double __us)
  __builtin_avr_delay_cycles(__ticks_dc);
 # 244 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/util/delay.h"
 }
-# 30 ".././CLICO.h" 2
+# 52 ".././CLICO.h" 2
 # 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/util/24c_.c" 1
 
 
@@ -466,7 +466,7 @@ uint8_t EEReadByte(uint16_t address)
 
  return data;
 }
-# 31 ".././CLICO.h" 2
+# 53 ".././CLICO.h" 2
 # 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/util/atomic.h" 1
 # 42 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/util/atomic.h"
 static __inline__ uint8_t __iSeiRetVal(void)
@@ -500,15 +500,15 @@ static __inline__ void __iRestore(const uint8_t *__s)
     (*(volatile uint8_t *)((0x3F) + 0x20)) = *__s;
     __asm__ volatile ("" ::: "memory");
 }
-# 32 ".././CLICO.h" 2
+# 54 ".././CLICO.h" 2
 
 # 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/lcd.c" 1
-# 25 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/lcd.c"
+# 23 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/lcd.c"
 # 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/lcd.h" 1
-# 9 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/lcd.h"
+# 16 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/lcd.h"
 # 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/myutils.h" 1
-# 10 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/lcd.h" 2
-# 49 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/lcd.h"
+# 17 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/lcd.h" 2
+# 60 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/lcd.h"
 void InitLCD(uint8_t style);
 void LCDWriteString(const char *msg);
 void LCDWriteInt(int val,unsigned int field_length);
@@ -522,8 +522,8 @@ void LCDByte(uint8_t,uint8_t);
 
 
 void LCDBusyLoop();
-# 26 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/lcd.c" 2
-# 51 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/lcd.c"
+# 24 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/lcd.c" 2
+# 49 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/lcd.c"
 void LCDByte(uint8_t c,uint8_t isdata)
 {
 
@@ -636,7 +636,7 @@ void LCDBusyLoop()
 
 void InitLCD(uint8_t style)
 {
-# 176 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/lcd.c"
+# 174 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/lcd.c"
  _delay_ms(30);
 
 
@@ -669,7 +669,7 @@ void InitLCD(uint8_t style)
 }
 void LCDWriteString(const char *msg)
 {
-# 218 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/lcd.c"
+# 216 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/lcd.c"
  while(*msg!='\0')
  {
  (LCDByte(*msg,1));
@@ -679,7 +679,7 @@ void LCDWriteString(const char *msg)
 
 void LCDWriteInt(int val,unsigned int field_length)
 {
-# 238 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/lcd.c"
+# 236 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/lcd.c"
  char str[5]={0,0,0,0,0};
  int i=4,j=0;
  while(val)
@@ -713,18 +713,13 @@ void LCDWriteStringXY(uint8_t x, uint8_t y, const char *msg){
  LCDGotoXY(x, y);
  LCDWriteString(msg);
 }
-# 34 ".././CLICO.h" 2
+# 56 ".././CLICO.h" 2
 # 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/EEPROM.c" 1
-
-
-
-
-
-
+# 13 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/EEPROM.c"
 # 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/EEPROM.h" 1
-# 40 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/EEPROM.h"
+# 49 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/EEPROM.h"
 unsigned char EEPROM_open (void);
-# 57 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/EEPROM.h"
+# 66 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/EEPROM.h"
 unsigned char EEPROM_readByte( uint16_t address, unsigned char ACK);
 
 
@@ -734,9 +729,9 @@ unsigned char EEPROM_writePage( unsigned int pageNumber, unsigned char * data );
 unsigned char EEPROM_sequentialRead(uint16_t address, uint16_t numOfBytes, unsigned char * dest, unsigned char ACK);
 unsigned char EEPROM_sequentialWrite(uint16_t address, uint16_t numOfBytes, unsigned char * data);
 unsigned char EEPROM_erase( void );
-# 8 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/EEPROM.c" 2
+# 14 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/EEPROM.c" 2
 # 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/i2c.h" 1
-# 28 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/i2c.h"
+# 35 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/i2c.h"
 unsigned char i2c_start(void);
 unsigned char i2c_start_address(unsigned char);
 unsigned char i2c_repeatStart(void);
@@ -748,7 +743,7 @@ unsigned char i2c_receiveData_ACK(void);
 unsigned char i2c_receiveData_NACK(void);
 
 void i2c_stop(void);
-# 9 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/EEPROM.c" 2
+# 15 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/EEPROM.c" 2
 
 
 uint8_t EEPROM_Open()
@@ -942,15 +937,11 @@ unsigned char EEPROM_erase(void){
 
  return(0);
 }
-# 35 ".././CLICO.h" 2
+# 57 ".././CLICO.h" 2
 # 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/i2c.c" 1
-
-
-
-
-
+# 12 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/i2c.c"
 # 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/i2c.h" 1
-# 28 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/i2c.h"
+# 35 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/i2c.h"
 unsigned char i2c_start(void);
 unsigned char i2c_start_address(unsigned char);
 unsigned char i2c_repeatStart(void);
@@ -962,7 +953,7 @@ unsigned char i2c_receiveData_ACK(void);
 unsigned char i2c_receiveData_NACK(void);
 
 void i2c_stop(void);
-# 7 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/i2c.c" 2
+# 13 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/i2c.c" 2
 
 
 unsigned char i2c_start(void)
@@ -1119,13 +1110,13 @@ unsigned char i2c_receiveData_NACK(void)
  data = (*(volatile uint8_t *)(0x73));
  return(data);
 }
-# 181 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/i2c.c"
+# 187 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/i2c.c"
 void i2c_stop(void)
 {
  (*(volatile uint8_t *)(0x74)) = (1<<7)|(1<<2)|(1<<4);
  while((*(volatile uint8_t *)(0x74)) & (1<<4));
 }
-# 36 ".././CLICO.h" 2
+# 58 ".././CLICO.h" 2
 
 
 
@@ -1161,10 +1152,10 @@ typedef struct{
  byte val_int;
  byte val_dec;
 } read;
-# 220 ".././CLICO.h"
+# 242 ".././CLICO.h"
 void _init(void);
 double getTemperature(void);
-byte getHumidity(void);
+byte getHumidity(double temperature);
 void multiplexADChannel(void);
 double ADC_average(double * valuesDOUBLE, byte * valuesBYTE);
 void refreshQuote(void);
@@ -1177,37 +1168,58 @@ int _round(double x);
 
 char *itoa(int value, char * str, int base);
 int sprintf(char * str, const char * format, ...);
-# 18 ".././CLICO.c" 2
+# 26 ".././CLICO.c" 2
+
 
 volatile time_date tTime;
+
 volatile time_date tTimeEditing;
+
+
 volatile count cButtonIntegrator;
 
+
 volatile byte bTimeChanged;
-volatile byte bDateChanged=1;
+
+volatile byte bDateChanged;
+
 volatile byte bTempChanged;
+
 volatile byte bHumChanged;
-volatile byte bFirst=1;
+
+volatile byte bPrintQuotes;
+
+
 
 volatile word wADC_garbage;
+
 volatile word wADC_counts;
+
 volatile byte bChannel;
+
 
 volatile word wBacklightCounter;
 
+
+volatile double dTemperature;
+# 69 ".././CLICO.c"
+volatile double adTemperature[100];
+
 volatile double dVp;
 volatile double dRpt;
-volatile double dTemperature;
-volatile double adTemperature[100];
-volatile double dTemperatureOld;
-
-volatile double AD;
+volatile double dAD;
 volatile double dRH;
 volatile double dRH_comp;
 volatile double dVout;
+
+
 volatile byte bHumidity;
+# 90 ".././CLICO.c"
 volatile byte adHumidity[100];
-volatile byte bOvFlo;
+
+
+volatile byte bHumOverflow;
+
 
 volatile byte bBtnAPressed;
 volatile byte bBtnBPressed;
@@ -1225,17 +1237,17 @@ volatile byte bTimeCommaState;
 volatile byte bTimeColonToToggle;
 
 volatile byte bZone=1;
-volatile time tZ1;
-volatile time tZ2;
+volatile time_date tZ1;
+volatile time_date tZ2;
 
 volatile byte sreg;
 volatile byte bPriLev;
 volatile byte bState=0;
 volatile byte bBtn;
 
-char str[10]="";
-char options[7 +1][16]={"1.Timezone     ","2.Date         ", "3.Time         ",
-     "4.USB transfer ", "5.hello        ", "6.world        ", "7.osti         ", "               "};
+char str[14]="";
+char options[7 +1][20]={"1.Timezone         ","2.Date             ", "3.Time             ",
+     "4.USB transfer     ", "5.hello            ", "6.world            ", "7.osti             ", "                   "};
 
 
 byte aDays[12]={31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
@@ -1261,53 +1273,7 @@ int main(void){
  _init();
 
  while(1) {
-
-  (LCDByte(0b00000001,0));;
-
-  if(!EEPROM_Open()){
-   (LCDByte(0b00000001,0));;
-   sprintf(str, "Error: bitrate");
-   LCDWriteStringXY(0,0,str);
-   sprintf(str, "  too high!");
-   LCDWriteStringXY(0,1,str);
-   _delay_ms(1000);
-  }
-
-
-  unsigned char ch, da;
-
-  for(i=0; i<15; i++){
-   ch = EEPROM_writeByte(i, i, 1);
-  }
-
-  if(ch==1) {
-   (LCDByte(0b00000001,0));;
-   sprintf(str, "error while writing");
-   LCDWriteStringXY(0,0, str);
-   _delay_ms(500);
-  }
-
-  for(i=0;i<5;i++){
-   da=EEPROM_readByte(i, 0);
-
-   sprintf(str, "%d at %d", da, i);
-   (LCDByte(0b00000001,0));;
-   LCDWriteStringXY(0,0,str);
-   _delay_ms(250);
-  }
-
-
-  for(i=0;i<10;i++){ val[i]=0; }
-  EEPROM_sequentialRead(0,10,val,0);
-  val[10]='\0';
-
-
-  for(i=0;i<10;i++){
-   sprintf(str, "%3d at %2d", val[i], i);
-   LCDWriteStringXY(0,1,str);
-   _delay_ms(750);
-  }
-# 165 ".././CLICO.c"
+# 212 ".././CLICO.c"
   switch(bState){
 
 
@@ -1316,7 +1282,7 @@ int main(void){
      case 0:
       if(bTimeColonToToggle){ toggleTimeColon(); bTimeColonToToggle=0; }
       refreshQuote();
-      bFirst=1;
+      bPrintQuotes=1;
 
       break;
      case 2:
@@ -1341,8 +1307,8 @@ int main(void){
    case 1:
     switch(bBtn){
      case 0:
-      if(bSelectionMenuChanged || bFirst){
-       bFirst=0;
+      if(bSelectionMenuChanged || bPrintQuotes){
+       bPrintQuotes=0;
        bSelectionMenuChanged=0;
        LCDWriteStringXY(0,0,"-");
        LCDWriteStringXY(1,0, options[bSelectionMenu]);
@@ -1383,7 +1349,7 @@ int main(void){
        default:
         break;
       }
-      bFirst=1;
+      bPrintQuotes=1;
       break;
 
      case 7:
@@ -1409,8 +1375,8 @@ int main(void){
    case 2:
     switch(bBtn){
      case 0:
-      if(bFirst){
-       bFirst=0;
+      if(bPrintQuotes){
+       bPrintQuotes=0;
        (LCDByte(0b00000001,0));;
        tTimeEditing = tTime;
        sprintf(str, "%02d/%02d/%02d", tTimeEditing.bDay, tTimeEditing.bMonth, tTimeEditing.bYear);
@@ -1452,7 +1418,7 @@ int main(void){
      case 7:
       bState=3;
       bBtn=0;
-      bFirst=1;
+      bPrintQuotes=1;
       break;
      default:
       break;
@@ -1463,10 +1429,10 @@ int main(void){
     case 3:
      switch(bBtn){
       case 0:
-       if(bFirst){
+       if(bPrintQuotes){
         LCDWriteStringXY(0,0, "Confermi? Si/No");
         for(i=0; i<5; i++) (LCDByte(0x10,0));;
-        bFirst=0;
+        bPrintQuotes=0;
         bSelectionDate=0;
        }
        if(bSelectionDateChanged){
@@ -1494,7 +1460,7 @@ int main(void){
         (LCDByte(0b00000001,0));; (LCDByte(0x02,0)); (LCDByte(0x0C,0));;
        }
        bBtn = 0;
-       bFirst=1;
+       bPrintQuotes=1;
        break;
       default: break;
      }
@@ -1504,8 +1470,8 @@ int main(void){
    case 4:
      switch(bBtn){
       case 0:
-       if(bFirst){
-        bFirst=0;
+       if(bPrintQuotes){
+        bPrintQuotes=0;
         (LCDByte(0b00000001,0));;
         tTimeEditing = tTime;
         sprintf(str, "%02d:%02d:%02d", tTimeEditing.bHour, tTimeEditing.bMin, tTimeEditing.bSec);
@@ -1538,7 +1504,7 @@ int main(void){
       case 7:
        bState=5;
        bBtn=0;
-       bFirst=1;
+       bPrintQuotes=1;
        break;
       default:
        break;
@@ -1549,10 +1515,10 @@ int main(void){
    case 5:
      switch(bBtn){
       case 0:
-       if(bFirst){
+       if(bPrintQuotes){
         LCDWriteStringXY(0,0, "Confermi? Si/No");
         for(i=0; i<5; i++) (LCDByte(0x10,0));;
-        bFirst=0;
+        bPrintQuotes=0;
         bSelectionTime=0;
        }
        if(bSelectionTimeChanged){
@@ -1580,7 +1546,7 @@ int main(void){
         (LCDByte(0b00000001,0));; (LCDByte(0x02,0)); (LCDByte(0x0C,0));;
        }
        bBtn = 0;
-       bFirst=1;
+       bPrintQuotes=1;
        break;
       default: break;
      }
@@ -1590,8 +1556,8 @@ int main(void){
    case 6:
     switch(bBtn){
      case 0:
-      if(bFirst){
-       bFirst=0;
+      if(bPrintQuotes){
+       bPrintQuotes=0;
        (LCDByte(0b00000001,0));;
        LCDWriteStringXY(0,0, "Edit timezone:");
        LCDWriteStringXY(0,1,"1=");
@@ -1607,7 +1573,7 @@ int main(void){
   }
  }
 }
-# 474 ".././CLICO.c"
+# 521 ".././CLICO.c"
 void __vector_15 (void) __attribute__ ((signal,used, externally_visible)) ; void __vector_15 (void){
  if(bPriLev<1) return;
  byte bOldPriLev = bPriLev;
@@ -1626,8 +1592,10 @@ void __vector_15 (void) __attribute__ ((signal,used, externally_visible)) ; void
  }
  else{
   if(bBtnCPressed!=0){ bInhibite=0; }
-  if(cButtonIntegrator.wC<15){ cButtonIntegrator.wC=0; }
-  else if((cButtonIntegrator.wC>15)&&(cButtonIntegrator.wC<100)){
+
+  if(cButtonIntegrator.wC<15){
+   cButtonIntegrator.wC=0;
+  }else if((cButtonIntegrator.wC>15)&&(cButtonIntegrator.wC<100)){
    cButtonIntegrator.wC=0;
    bBtn = 6;
   }else if(cButtonIntegrator.wC>100){
@@ -1726,14 +1694,13 @@ void __vector_21 (void) __attribute__ ((signal,used, externally_visible)) ; void
   if(wADC_counts<100){
    switch(bChannel){
     case 0:
-     adTemperature[wADC_counts]=getTemperature();
+     adTemperature[wADC_counts++]=getTemperature();
      break;
     case 1:
-     adHumidity[wADC_counts]=getHumidity();
+     adHumidity[wADC_counts++]=getHumidity(dTemperature);
      break;
     default: break;
    }
-   wADC_counts++;
   }else{
    wADC_counts=0;
    switch(bChannel){
@@ -1762,6 +1729,9 @@ void __vector_21 (void) __attribute__ ((signal,used, externally_visible)) ; void
 
 
 void _init(){
+ bDateChanged = 1;
+ bPrintQuotes = 1;
+
 
  (*(volatile uint8_t *)((0x1A) + 0x20)) = 0xf;
  (*(volatile uint8_t *)((0x17) + 0x20)) = 0x1;
@@ -1773,15 +1743,16 @@ void _init(){
  (*(volatile uint8_t *)((0x06) + 0x20)) = (1<<2)|(1<<1)|(1<<0);
  (*(volatile uint8_t *)((0x06) + 0x20)) |= (1<<5)|(1<<7)|(1<<3);
  (*(volatile uint8_t *)((0x07) + 0x20))=0; (*(volatile uint8_t *)((0x07) + 0x20)) |= (1<<3)|(1<<1)|(1<<0);;
-# 647 ".././CLICO.c"
+# 698 ".././CLICO.c"
  InitLCD(0);
  (LCDByte(0b00000001,0));;
- LCDWriteStringXY(11,0,"00:00");
+ LCDWriteStringXY(15,0,"00:00");
  LCDWriteStringXY(2 -2,1,"T=00.0");
  LCDByte(0b11011111, 1);
 
- LCDWriteStringXY(11 -4, 1, "C_H=88%");
- LCDWriteStringXY(15 -1,1,"_1");
+ LCDWriteStringXY(2 +5, 1, "C");
+ LCDWriteStringXY(12 -2, 1, "H=88%");
+ LCDWriteStringXY(19 -2,1,"Z=1");
 
 
 
@@ -1803,6 +1774,9 @@ void _init(){
 
 double getTemperature(){
  double temp;
+
+
+
  dVp = 2.5 + (*(volatile uint16_t *)((0x04) + 0x20)) * 5.0/(1024*200.0);
  dRpt = (dVp*(1200.0 +1100.0) - 5.0*1100.0)/(5.0 - dVp);
  temp = (dRpt-100) / 0.3878461538;
@@ -1810,11 +1784,16 @@ double getTemperature(){
  return temp;
 }
 
-byte getHumidity(void){
- AD = (*(volatile uint16_t *)((0x04) + 0x20));
- dVout = 5*(AD/1024);
+byte getHumidity(double temperature){
+
+
+
+
+
+ dAD = (*(volatile uint16_t *)((0x04) + 0x20));
+ dVout = 5*(dAD/1024);
  dRH = (dVout - 0.16*5.0)/(5.0*0.0062);
- dRH_comp = dRH/(1.0546-0.00216*(_round(dTemperature)));
+ dRH_comp = dRH/(1.0546-0.00216*(_round(temperature)));
  return _round(dRH_comp);
 }
 
@@ -1862,15 +1841,15 @@ double ADC_average(double * valuesDOUBLE, byte * valuesBYTE){
 void refreshQuote(){
  if(bDateChanged){
   bDateChanged=0;
-  sprintf(str, "%02d/%02d/%02d,", tTime.bDay, tTime.bMonth, tTime.bYear);
+  sprintf(str, "%02d/%02d/20%02d,", tTime.bDay, tTime.bMonth, tTime.bYear);
   LCDWriteStringXY(0,0,str);
  }
  if(bTimeChanged){
   bTimeChanged=0;
   sprintf(str, "%02d", tTime.bHour);
-  LCDWriteStringXY(11, 0, str);
+  LCDWriteStringXY(15, 0, str);
   sprintf(str, "%02d", tTime.bMin);
-  LCDWriteStringXY(11 +3, 0, str);
+  LCDWriteStringXY(15 +3, 0, str);
  }
  if(bTempChanged){
   bTempChanged=0;
@@ -1881,12 +1860,15 @@ void refreshQuote(){
  if(bHumChanged){
   bHumChanged=0;
   sprintf(str, "%2d", bHumidity);
-  LCDWriteStringXY(11, 1, str);
-  if(bHumidity>99){ bOvFlo=1; }
-  if(bHumidity<100 && bOvFlo){
-   bOvFlo=0;
-   LCDWriteStringXY(11 +2,1,"%");
+  LCDWriteStringXY(12, 1, str);
+  if(bHumidity>99){
+   bHumOverflow=1;
+   LCDWriteStringXY(12 +3, 1, "%");
   }
+  else if(bHumidity<100 && bHumOverflow){
+   bHumOverflow=0;
+   LCDWriteStringXY(12 +2,1,"% ");
+  }else{}
  }
 }
 
@@ -1991,10 +1973,10 @@ int checkDate(time_date *time, byte * days){
 
 void toggleTimeColon(){
  if(bTimeCommaState){
-  LCDWriteStringXY(11 +2, 0, ":");
+  LCDWriteStringXY(15 +2, 0, ":");
   bTimeCommaState=0;
  }else{
-  LCDWriteStringXY(11 +2, 0, " ");
+  LCDWriteStringXY(15 +2, 0, " ");
   bTimeCommaState=1;
  }
 }
