@@ -146,22 +146,18 @@ int main(void){
 	
 	while(1) { /* Infinite Loop */
 		
-		/*
-		LCDClear();
-		if(!EEPROM_Open()){
-			LCDClear();
-			sprintf(str, "Error: bitrate");
-			LCDWriteStringXY(0,0,str);
-			sprintf(str, "  too high!");
-			LCDWriteStringXY(0,1,str);
-			_delay_ms(1000);
-		}
-		
+		EEPROM_open();
 		
 		unsigned char ch, da;
 		
 		for(i=0; i<15; i++){
-			ch = EEPROM_writeByte(i, i, AT24_BW_ACK);
+			ch |= EEPROM_writeByte(i, i*2, AT24_BW_ACK_TYPE);
+			if(ch!=0) {
+				LCDClear();
+				sprintf(str, "%d - error: %d", i, ch);
+				LCDWriteStringXY(0,0, str);
+				_delay_ms(25);
+			}
 		}
 		
 		if(ch==1) {
@@ -172,7 +168,7 @@ int main(void){
 		}
 		
 		for(i=0;i<5;i++){
-			da=EEPROM_readByte(i, AT24_RR_ACK);
+			da=EEPROM_readByte(i, AT24_RR_ACK_TYPE);
 			//da=EEReadByte(i);
 			sprintf(str, "%d at %d", da, i);
 			LCDClear();
@@ -180,7 +176,7 @@ int main(void){
 			_delay_ms(250);
 		}
 		
-		
+		/*
 		for(i=0;i<10;i++){ val[i]=0; }
 		EEPROM_sequentialRead(0,10,val,NACK);
 		val[10]='\0';

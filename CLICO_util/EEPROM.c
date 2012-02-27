@@ -14,7 +14,7 @@
 #include "i2c.h"
 
 
-uint8_t EEPROM_Open()
+uint8_t EEPROM_open()
 {
 
 	TWSR = 0;
@@ -69,13 +69,16 @@ unsigned char EEPROM_writeByte(uint16_t address, uint8_t data, unsigned char ACK
 	highAddress=address>>8;
 	lowAddress=address;
 	
-	errorStatus = i2c_start_address(SLA_W);		// busy waiting
+	if((i2c_start_address(SLA_R))!=0){
+		i2c_stop();
+		return ERROR_CODE-1; // returns 125 if encounters an error
+	}
 	errorStatus |= i2c_sendData_ACK(highAddress);
 	errorStatus |= i2c_sendData_ACK(lowAddress);
 	
 	if(errorStatus == 1){
 		i2c_stop();
-		return(1);
+		return(ERROR_CODE-1);
 	}
 	if(ACK)
 		errorStatus = i2c_sendData_ACK(data);
@@ -88,7 +91,7 @@ unsigned char EEPROM_writeByte(uint16_t address, uint8_t data, unsigned char ACK
 	}
 	
 	i2c_stop();
-	_delay_ms(5);
+	//_delay_ms(5);		??
 	return(0);
 	// Dovremmo aspettare qualche ms affinchè la scrittura venga terminata:
 	// invece, la funzione i2c_start() verrà usata in "busy waiting" : while(!i2c_start()) {}
@@ -105,7 +108,7 @@ unsigned char * EEPROM_readPage( unsigned int pageNumber ){
 	
 	pageAddress = pageNumber * EEPROM_PAGESIZE;	// 128 = page size
 	
-	numOfRead = EEPROM_sequentialRead(pageAddress, EEPROM_PAGESIZE, values, AT24_RR_ACK);
+	numOfRead = EEPROM_sequentialRead(pageAddress, EEPROM_PAGESIZE, values, AT24_RR_ACK_TYPE);
 	if(values==NULL){ return NULL; }
 	else return values;
  } 
@@ -119,7 +122,7 @@ unsigned char EEPROM_writePage( unsigned int pageNumber, unsigned char * data ){
 	
 	pageAddress = pageNumber * EEPROM_PAGESIZE;
 	for(i=0;i<EEPROM_PAGESIZE;i++){
-		errorStatus = EEPROM_writeByte(pageAddress, data[i], AT24_BW_ACK);
+		errorStatus = EEPROM_writeByte(pageAddress, data[i], AT24_BW_ACK_TYPE);
 		if(errorStatus){
 			i2c_stop();
 			return 1;
@@ -170,7 +173,7 @@ unsigned char EEPROM_sequentialWrite(uint16_t address, uint16_t numOfBytes, unsi
 	unsigned char errorStatus, i;
 	
 	for(i=0;i<numOfBytes;i++){
-		errorStatus=EEPROM_writeByte(address,data[i], AT24_BW_ACK);
+		errorStatus=EEPROM_writeByte(address,data[i], AT24_BW_ACK_TYPE);
 		if(errorStatus){
 			i2c_stop();
 			return 1;

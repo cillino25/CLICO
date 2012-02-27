@@ -1,19 +1,19 @@
 # 1 ".././CLICO.c"
-# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\AVRStudio\\CLICO\\CLICO\\Debug//"
+# 1 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\AVRStudio\\CLICO\\CLICO\\Debug//"
 # 1 "<built-in>"
 # 1 "<command-line>"
 # 1 ".././CLICO.c"
 # 25 ".././CLICO.c"
 # 1 ".././CLICO.h" 1
 # 46 ".././CLICO.h"
-# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/io.h" 1
-# 99 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/io.h"
-# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/sfr_defs.h" 1
-# 126 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/sfr_defs.h"
-# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/inttypes.h" 1
-# 37 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/inttypes.h"
-# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/stdint.h" 1
-# 121 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/stdint.h"
+# 1 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/avr/io.h" 1
+# 99 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/avr/io.h"
+# 1 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/avr/sfr_defs.h" 1
+# 126 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/avr/sfr_defs.h"
+# 1 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/inttypes.h" 1
+# 37 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/inttypes.h"
+# 1 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/stdint.h" 1
+# 121 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/stdint.h"
 typedef int int8_t __attribute__((__mode__(__QI__)));
 typedef unsigned int uint8_t __attribute__((__mode__(__QI__)));
 typedef int int16_t __attribute__ ((__mode__ (__HI__)));
@@ -23,14 +23,14 @@ typedef unsigned int uint32_t __attribute__ ((__mode__ (__SI__)));
 
 typedef int int64_t __attribute__((__mode__(__DI__)));
 typedef unsigned int uint64_t __attribute__((__mode__(__DI__)));
-# 142 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/stdint.h"
+# 142 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/stdint.h"
 typedef int16_t intptr_t;
 
 
 
 
 typedef uint16_t uintptr_t;
-# 159 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/stdint.h"
+# 159 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/stdint.h"
 typedef int8_t int_least8_t;
 
 
@@ -72,7 +72,7 @@ typedef int64_t int_least64_t;
 
 
 typedef uint64_t uint_least64_t;
-# 213 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/stdint.h"
+# 213 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/stdint.h"
 typedef int8_t int_fast8_t;
 
 
@@ -114,60 +114,60 @@ typedef int64_t int_fast64_t;
 
 
 typedef uint64_t uint_fast64_t;
-# 273 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/stdint.h"
+# 273 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/stdint.h"
 typedef int64_t intmax_t;
 
 
 
 
 typedef uint64_t uintmax_t;
-# 38 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/inttypes.h" 2
-# 77 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/inttypes.h"
+# 38 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/inttypes.h" 2
+# 77 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/inttypes.h"
 typedef int32_t int_farptr_t;
 
 
 
 typedef uint32_t uint_farptr_t;
-# 127 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/sfr_defs.h" 2
-# 100 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/io.h" 2
-# 152 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/io.h"
-# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/iom128.h" 1
-# 153 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/io.h" 2
-# 446 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/io.h"
-# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/portpins.h" 1
-# 447 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/io.h" 2
+# 127 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/avr/sfr_defs.h" 2
+# 100 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/avr/io.h" 2
+# 152 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/avr/io.h"
+# 1 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/avr/iom128.h" 1
+# 153 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/avr/io.h" 2
+# 446 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/avr/io.h"
+# 1 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/avr/portpins.h" 1
+# 447 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/avr/io.h" 2
 
-# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/common.h" 1
-# 449 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/io.h" 2
+# 1 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/avr/common.h" 1
+# 449 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/avr/io.h" 2
 
-# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/version.h" 1
-# 451 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/io.h" 2
+# 1 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/avr/version.h" 1
+# 451 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/avr/io.h" 2
 
 
-# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/fuse.h" 1
-# 239 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/fuse.h"
+# 1 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/avr/fuse.h" 1
+# 239 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/avr/fuse.h"
 typedef struct
 {
     unsigned char low;
     unsigned char high;
     unsigned char extended;
 } __fuse_t;
-# 454 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/io.h" 2
+# 454 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/avr/io.h" 2
 
 
-# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/lock.h" 1
-# 457 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/io.h" 2
+# 1 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/avr/lock.h" 1
+# 457 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/avr/io.h" 2
 # 47 ".././CLICO.h" 2
-# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/avr/interrupt.h" 1
+# 1 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/avr/interrupt.h" 1
 # 48 ".././CLICO.h" 2
 
-# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/string.h" 1
-# 45 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/string.h"
+# 1 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/string.h" 1
+# 45 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/string.h"
 # 1 "c:\\program files (x86)\\atmel\\avr studio 5.0\\avr toolchain\\bin\\../lib/gcc/avr/4.5.1/include/stddef.h" 1 3 4
 # 211 "c:\\program files (x86)\\atmel\\avr studio 5.0\\avr toolchain\\bin\\../lib/gcc/avr/4.5.1/include/stddef.h" 3 4
 typedef unsigned int size_t;
-# 46 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/string.h" 2
-# 111 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/string.h"
+# 46 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/string.h" 2
+# 111 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/string.h"
 extern int ffs (int __val) __attribute__((__const__));
 extern int ffsl (long __val) __attribute__((__const__));
 extern int ffsll (long long __val) __attribute__((__const__));
@@ -208,13 +208,13 @@ extern char *strtok_r(char *, const char *, char **);
 extern char *strupr(char *);
 # 50 ".././CLICO.h" 2
 
-# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/util/delay.h" 1
-# 43 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/util/delay.h"
-# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/util/delay_basic.h" 1
-# 40 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/util/delay_basic.h"
+# 1 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/util/delay.h" 1
+# 43 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/util/delay.h"
+# 1 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/util/delay_basic.h" 1
+# 40 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/util/delay_basic.h"
 static inline void _delay_loop_1(uint8_t __count) __attribute__((always_inline));
 static inline void _delay_loop_2(uint16_t __count) __attribute__((always_inline));
-# 80 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/util/delay_basic.h"
+# 80 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/util/delay_basic.h"
 void
 _delay_loop_1(uint8_t __count)
 {
@@ -225,7 +225,7 @@ _delay_loop_1(uint8_t __count)
   : "0" (__count)
  );
 }
-# 102 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/util/delay_basic.h"
+# 102 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/util/delay_basic.h"
 void
 _delay_loop_2(uint16_t __count)
 {
@@ -236,11 +236,11 @@ _delay_loop_2(uint16_t __count)
   : "0" (__count)
  );
 }
-# 44 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/util/delay.h" 2
-# 83 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/util/delay.h"
+# 44 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/util/delay.h" 2
+# 83 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/util/delay.h"
 static inline void _delay_us(double __us) __attribute__((always_inline));
 static inline void _delay_ms(double __ms) __attribute__((always_inline));
-# 131 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/util/delay.h"
+# 131 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/util/delay.h"
 void
 _delay_ms(double __ms)
 {
@@ -250,14 +250,14 @@ _delay_ms(double __ms)
  uint32_t __ticks_dc;
  extern void __builtin_avr_delay_cycles(unsigned long);
  __tmp = ((16000000UL) / 1e3) * __ms;
-# 149 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/util/delay.h"
+# 149 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/util/delay.h"
   __ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
 
 
  __builtin_avr_delay_cycles(__ticks_dc);
-# 174 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/util/delay.h"
+# 174 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/util/delay.h"
 }
-# 208 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/util/delay.h"
+# 208 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/util/delay.h"
 void
 _delay_us(double __us)
 {
@@ -267,15 +267,15 @@ _delay_us(double __us)
  uint32_t __ticks_dc;
  extern void __builtin_avr_delay_cycles(unsigned long);
  __tmp = ((16000000UL) / 1e6) * __us;
-# 226 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/util/delay.h"
+# 226 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/util/delay.h"
   __ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
 
 
  __builtin_avr_delay_cycles(__ticks_dc);
-# 244 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/util/delay.h"
+# 244 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/util/delay.h"
 }
 # 52 ".././CLICO.h" 2
-# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/util/24c_.c" 1
+# 1 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/util/24c_.c" 1
 
 
 
@@ -283,14 +283,14 @@ _delay_us(double __us)
 
 
 
-# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/util/24c_.h" 1
+# 1 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/util/24c_.h" 1
 
 
 
 void EEOpen(void);
 uint8_t EEWriteByte(uint16_t address, uint8_t data);
 uint8_t EEReadByte(uint16_t address);
-# 9 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/util/24c_.c" 2
+# 9 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/util/24c_.c" 2
 
 void EEOpen(void)
 {
@@ -379,7 +379,7 @@ uint8_t EEReadByte(uint16_t address)
 
 
 
-  (*(volatile uint8_t *)(0x73))=0b10100000;
+  (*(volatile uint8_t *)(0x73))= 0xa0;
 
 
   (*(volatile uint8_t *)(0x74))=(1<<7)|(1<<2);
@@ -467,8 +467,8 @@ uint8_t EEReadByte(uint16_t address)
  return data;
 }
 # 53 ".././CLICO.h" 2
-# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/util/atomic.h" 1
-# 42 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/util/atomic.h"
+# 1 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/util/atomic.h" 1
+# 42 "C:\\Users\\stefano\\Dropbox\\internal_sharing\\avrStudio_include/util/atomic.h"
 static __inline__ uint8_t __iSeiRetVal(void)
 {
     __asm__ __volatile__ ("sei" ::: "memory");
@@ -502,13 +502,13 @@ static __inline__ void __iRestore(const uint8_t *__s)
 }
 # 54 ".././CLICO.h" 2
 
-# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/lcd.c" 1
-# 23 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/lcd.c"
-# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/lcd.h" 1
-# 16 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/lcd.h"
-# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/myutils.h" 1
-# 17 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/lcd.h" 2
-# 60 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/lcd.h"
+# 1 ".././CLICO_util/lcd.c" 1
+# 23 ".././CLICO_util/lcd.c"
+# 1 ".././CLICO_util/lcd.h" 1
+# 16 ".././CLICO_util/lcd.h"
+# 1 ".././CLICO_util/myutils.h" 1
+# 17 ".././CLICO_util/lcd.h" 2
+# 60 ".././CLICO_util/lcd.h"
 void InitLCD(uint8_t style);
 void LCDWriteString(const char *msg);
 void LCDWriteInt(int val,unsigned int field_length);
@@ -522,8 +522,8 @@ void LCDByte(uint8_t,uint8_t);
 
 
 void LCDBusyLoop();
-# 24 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/lcd.c" 2
-# 49 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/lcd.c"
+# 24 ".././CLICO_util/lcd.c" 2
+# 49 ".././CLICO_util/lcd.c"
 void LCDByte(uint8_t c,uint8_t isdata)
 {
 
@@ -636,7 +636,7 @@ void LCDBusyLoop()
 
 void InitLCD(uint8_t style)
 {
-# 174 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/lcd.c"
+# 174 ".././CLICO_util/lcd.c"
  _delay_ms(30);
 
 
@@ -669,7 +669,7 @@ void InitLCD(uint8_t style)
 }
 void LCDWriteString(const char *msg)
 {
-# 216 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/lcd.c"
+# 216 ".././CLICO_util/lcd.c"
  while(*msg!='\0')
  {
  (LCDByte(*msg,1));
@@ -679,7 +679,7 @@ void LCDWriteString(const char *msg)
 
 void LCDWriteInt(int val,unsigned int field_length)
 {
-# 236 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/lcd.c"
+# 236 ".././CLICO_util/lcd.c"
  char str[5]={0,0,0,0,0};
  int i=4,j=0;
  while(val)
@@ -714,12 +714,12 @@ void LCDWriteStringXY(uint8_t x, uint8_t y, const char *msg){
  LCDWriteString(msg);
 }
 # 56 ".././CLICO.h" 2
-# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/EEPROM.c" 1
-# 13 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/EEPROM.c"
-# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/EEPROM.h" 1
-# 49 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/EEPROM.h"
+# 1 ".././CLICO_util/EEPROM.c" 1
+# 13 ".././CLICO_util/EEPROM.c"
+# 1 ".././CLICO_util/EEPROM.h" 1
+# 49 ".././CLICO_util/EEPROM.h"
 unsigned char EEPROM_open (void);
-# 66 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/EEPROM.h"
+# 66 ".././CLICO_util/EEPROM.h"
 unsigned char EEPROM_readByte( uint16_t address, unsigned char ACK);
 
 
@@ -729,9 +729,9 @@ unsigned char EEPROM_writePage( unsigned int pageNumber, unsigned char * data );
 unsigned char EEPROM_sequentialRead(uint16_t address, uint16_t numOfBytes, unsigned char * dest, unsigned char ACK);
 unsigned char EEPROM_sequentialWrite(uint16_t address, uint16_t numOfBytes, unsigned char * data);
 unsigned char EEPROM_erase( void );
-# 14 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/EEPROM.c" 2
-# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/i2c.h" 1
-# 35 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/i2c.h"
+# 14 ".././CLICO_util/EEPROM.c" 2
+# 1 ".././CLICO_util/i2c.h" 1
+# 35 ".././CLICO_util/i2c.h"
 unsigned char i2c_start(void);
 unsigned char i2c_start_address(unsigned char);
 unsigned char i2c_repeatStart(void);
@@ -743,10 +743,10 @@ unsigned char i2c_receiveData_ACK(void);
 unsigned char i2c_receiveData_NACK(void);
 
 void i2c_stop(void);
-# 15 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/EEPROM.c" 2
+# 15 ".././CLICO_util/EEPROM.c" 2
 
 
-uint8_t EEPROM_Open()
+uint8_t EEPROM_open()
 {
 
  (*(volatile uint8_t *)(0x71)) = 0;
@@ -801,13 +801,16 @@ unsigned char EEPROM_writeByte(uint16_t address, uint8_t data, unsigned char ACK
  highAddress=address>>8;
  lowAddress=address;
 
- errorStatus = i2c_start_address(0xa0);
+ if((i2c_start_address(0xa1))!=0){
+  i2c_stop();
+  return 0x7e -1;
+ }
  errorStatus |= i2c_sendData_ACK(highAddress);
  errorStatus |= i2c_sendData_ACK(lowAddress);
 
  if(errorStatus == 1){
   i2c_stop();
-  return(1);
+  return(0x7e -1);
  }
  if(ACK)
   errorStatus = i2c_sendData_ACK(data);
@@ -820,7 +823,7 @@ unsigned char EEPROM_writeByte(uint16_t address, uint8_t data, unsigned char ACK
  }
 
  i2c_stop();
- _delay_ms(5);
+
  return(0);
 
 
@@ -938,10 +941,10 @@ unsigned char EEPROM_erase(void){
  return(0);
 }
 # 57 ".././CLICO.h" 2
-# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/i2c.c" 1
-# 12 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/i2c.c"
-# 1 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/i2c.h" 1
-# 35 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/i2c.h"
+# 1 ".././CLICO_util/i2c.c" 1
+# 12 ".././CLICO_util/i2c.c"
+# 1 ".././CLICO_util/i2c.h" 1
+# 35 ".././CLICO_util/i2c.h"
 unsigned char i2c_start(void);
 unsigned char i2c_start_address(unsigned char);
 unsigned char i2c_repeatStart(void);
@@ -953,7 +956,7 @@ unsigned char i2c_receiveData_ACK(void);
 unsigned char i2c_receiveData_NACK(void);
 
 void i2c_stop(void);
-# 13 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/i2c.c" 2
+# 13 ".././CLICO_util/i2c.c" 2
 
 
 unsigned char i2c_start(void)
@@ -973,7 +976,7 @@ unsigned char i2c_start_address(unsigned char address)
 {
  uint8_t twst;
 
- (*(volatile uint8_t *)(0x74)) = (1<<7)|(1<<5)|(1<<2);
+ (*(volatile uint8_t *)(0x74)) = (1<<7)|(1<<2)|(1<<5);
 
  while (!((*(volatile uint8_t *)(0x74)) & (1<<7)));
 
@@ -990,7 +993,7 @@ unsigned char i2c_start_address(unsigned char address)
 
  twst = (*(volatile uint8_t *)(0x71));
 
- if ( (twst != 0x18) && (twst != 0x40) )
+ if ( (twst != 0x18) && (twst != 0x48) )
   return 1;
 
  return 0;
@@ -1060,7 +1063,7 @@ unsigned char i2c_sendData_ACK(unsigned char data)
 
  while (!((*(volatile uint8_t *)(0x74)) & (1<<7)));
 
- if (((*(volatile uint8_t *)(0x71)) & 0xF8) == 0x28)
+ if ((((*(volatile uint8_t *)(0x71)) & 0xF8) == 0x28)||(((*(volatile uint8_t *)(0x71)) & 0xF8) == 0x28))
   return(0);
  else
   return(1);
@@ -1110,7 +1113,7 @@ unsigned char i2c_receiveData_NACK(void)
  data = (*(volatile uint8_t *)(0x73));
  return(data);
 }
-# 187 "C:\\Users\\cillino\\Dropbox\\internal_sharing\\avrStudio_include/CLICO_util/i2c.c"
+# 187 ".././CLICO_util/i2c.c"
 void i2c_stop(void)
 {
  (*(volatile uint8_t *)(0x74)) = (1<<7)|(1<<2)|(1<<4);
@@ -1273,7 +1276,37 @@ int main(void){
  _init();
 
  while(1) {
-# 212 ".././CLICO.c"
+
+  EEPROM_open();
+
+  unsigned char ch, da;
+
+  for(i=0; i<15; i++){
+   ch |= EEPROM_writeByte(i, i*2, 1);
+   if(ch!=0) {
+    (LCDByte(0b00000001,0));;
+    sprintf(str, "%d - error: %d", i, ch);
+    LCDWriteStringXY(0,0, str);
+    _delay_ms(25);
+   }
+  }
+
+  if(ch==1) {
+   (LCDByte(0b00000001,0));;
+   sprintf(str, "error while writing");
+   LCDWriteStringXY(0,0, str);
+   _delay_ms(500);
+  }
+
+  for(i=0;i<5;i++){
+   da=EEPROM_readByte(i, 0);
+
+   sprintf(str, "%d at %d", da, i);
+   (LCDByte(0b00000001,0));;
+   LCDWriteStringXY(0,0,str);
+   _delay_ms(250);
+  }
+# 208 ".././CLICO.c"
   switch(bState){
 
 
@@ -1573,7 +1606,7 @@ int main(void){
   }
  }
 }
-# 521 ".././CLICO.c"
+# 517 ".././CLICO.c"
 void __vector_15 (void) __attribute__ ((signal,used, externally_visible)) ; void __vector_15 (void){
  if(bPriLev<1) return;
  byte bOldPriLev = bPriLev;
@@ -1591,7 +1624,10 @@ void __vector_15 (void) __attribute__ ((signal,used, externally_visible)) ; void
   if(cButtonIntegrator.wC>100){ bInhibite=1; }
  }
  else{
-  if(bBtnCPressed!=0){ bInhibite=0; }
+  if(bBtnCPressed!=0){
+   bInhibite=0;
+  }
+
 
   if(cButtonIntegrator.wC<15){
    cButtonIntegrator.wC=0;
@@ -1743,7 +1779,7 @@ void _init(){
  (*(volatile uint8_t *)((0x06) + 0x20)) = (1<<2)|(1<<1)|(1<<0);
  (*(volatile uint8_t *)((0x06) + 0x20)) |= (1<<5)|(1<<7)|(1<<3);
  (*(volatile uint8_t *)((0x07) + 0x20))=0; (*(volatile uint8_t *)((0x07) + 0x20)) |= (1<<3)|(1<<1)|(1<<0);;
-# 698 ".././CLICO.c"
+# 697 ".././CLICO.c"
  InitLCD(0);
  (LCDByte(0b00000001,0));;
  LCDWriteStringXY(15,0,"00:00");

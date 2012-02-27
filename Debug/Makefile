@@ -102,7 +102,7 @@ OUTPUT_FILE_DEP:= ./makedep.mk
 ./%.o: .././%.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler
-	$(QUOTE)$(AVR_APP_PATH)avr-gcc.exe$(QUOTE) -funsigned-char -funsigned-bitfields -I"D:\My Dropbox\internal_sharing\avrStudio_include" -I"C:\Users\cillino\Dropbox\internal_sharing\avrStudio_include"  -Os -fpack-struct -fshort-enums -g2 -Wall -c -fverbose-asm -std=c99 -save-temps  -mmcu=atmega128   -MD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o"$@" "$<"
+	$(QUOTE)$(AVR_APP_PATH)avr-gcc.exe$(QUOTE) -funsigned-char -funsigned-bitfields -I"D:\My Dropbox\internal_sharing\avrStudio_include" -I"C:\Users\stefano\Dropbox\internal_sharing\avrStudio_include"  -Os -fpack-struct -fshort-enums -g2 -Wall -c -fverbose-asm -std=c99 -save-temps  -mmcu=atmega128   -MD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o"$@" "$<"
 	@echo Finished building: $<
 
 

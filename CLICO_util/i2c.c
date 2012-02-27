@@ -29,7 +29,7 @@ unsigned char i2c_start_address(unsigned char address)
 {
 	uint8_t twst;
 	
-	TWCR = (1<<TWINT)|(1<<TWSTA)|(1<<TWEN);		// Prepare and send START condition
+	TWCR = (1<<TWINT)|(1<<TWEN)|(1<<TWSTA);		// Prepare and send START condition
 	
 	while (!(TWCR & (1<<TWINT)));   		//Wait for TWINT flag set. This indicates that the
 											//START condition has been transmitted
@@ -46,7 +46,7 @@ unsigned char i2c_start_address(unsigned char address)
 	//twst = TW_STATUS & 0xF8;
 	twst = TWSR;
 	
-	if ( (twst != MT_SLA_ACK) && (twst != MR_SLA_ACK) )
+	if ( (twst != MT_SLA_ACK) && (twst != MR_SLA_NACK) )
 		return 1;
 	
 	return 0;
@@ -116,7 +116,7 @@ unsigned char i2c_sendData_ACK(unsigned char data)
 	
 	while (!(TWCR & (1<<TWINT)));
 	
-	if ((TWSR & 0xF8) == MT_DATA_ACK)
+	if (((TWSR & 0xF8) == MT_DATA_ACK)||((TWSR & 0xF8) == MT_DATA_ACK))
 		return(0);
 	else
 		return(1);

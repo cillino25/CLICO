@@ -52,9 +52,9 @@ Doxygen documenting commands:
 #include <util/24c_.c>
 #include <util/atomic.h>
 
-#include <CLICO_util/lcd.c>
-#include <CLICO_util/EEPROM.c>
-#include <CLICO_util/i2c.c>
+#include "CLICO_util/lcd.c"
+#include "CLICO_util/EEPROM.c"
+#include "CLICO_util/i2c.c"
 
 
 

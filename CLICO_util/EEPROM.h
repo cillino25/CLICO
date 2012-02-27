@@ -20,11 +20,11 @@
 
 
 /***************** EEPROM MiddleWare *****************/
-#define AT24_RR_ACK		0		// ACK type (ack or Nack) for RANDOM READ type of operation
-									// for AT24XX-like eeproms: at24cXX terminates RANDOM READ with a NACK!!
-									// but for another chip could be different
+#define AT24_RR_ACK_TYPE		0		// ACK type (ack or Nack) for RANDOM READ type of operation
+										// for AT24XX-like eeproms: at24cXX terminates RANDOM READ with a NACK!!
+										// but for another chip could be different
 
-#define AT24_BW_ACK		1			// at24c uses ACK for BYTE READ operations
+#define AT24_BW_ACK_TYPE		1			// at24c uses ACK for BYTE WRITE operations
 
 
 
